@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{254E9F21-E2C6-4C41-8632-D4EA79499650}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Proyecto_IngSoftware</RootNamespace>
+    <AssemblyName>Proyecto IngSoftware</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>packages\BouncyCastle.Cryptography.2.6.2\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.5, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>packages\iTextSharp.5.5.13.5\lib\net461\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Admin\Auditoria.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\Auditoria.Designer.cs">
+      <DependentUpon>Auditoria.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AsignadorPermisos_43BO.cs" />
+    <Compile Include="Admin\IntegridadDV.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\IntegridadDV.Designer.cs">
+      <DependentUpon>IntegridadDV.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\RestoreBD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\RestoreBD.Designer.cs">
+      <DependentUpon>RestoreBD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\BackupBD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\BackupBD.Designer.cs">
+      <DependentUpon>BackupBD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CambiarIdioma.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CambiarIdioma.Designer.cs">
+      <DependentUpon>CambiarIdioma.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CambioContraseña.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CambioContraseña.Designer.cs">
+      <DependentUpon>CambioContraseña.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\GestionUs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\GestionUs.Designer.cs">
+      <DependentUpon>GestionUs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Menu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Menu.Designer.cs">
+      <DependentUpon>Menu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\GestionPerfiles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\GestionPerfiles.Designer.cs">
+      <DependentUpon>GestionPerfiles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Peliculas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Peliculas.Designer.cs">
+      <DependentUpon>Peliculas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Funciones_14OR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Funciones_14OR.Designer.cs">
+      <DependentUpon>Funciones_14OR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Salas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Salas.Designer.cs">
+      <DependentUpon>Salas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DisenarPasillos_14OR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DisenarPasillos_14OR.Designer.cs">
+      <DependentUpon>DisenarPasillos_14OR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Ventas\Cartelera.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ventas\Cartelera.Designer.cs">
+      <DependentUpon>Cartelera.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Ventas\FuncionesPorPelicula.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ventas\FuncionesPorPelicula.Designer.cs">
+      <DependentUpon>FuncionesPorPelicula.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Ventas\SeleccionButacas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ventas\SeleccionButacas.Designer.cs">
+      <DependentUpon>SeleccionButacas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MapaButacas_14OR.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MapaButacas_14OR.Designer.cs">
+      <DependentUpon>MapaButacas_14OR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UIExtension_43BO.cs" />
+    <EmbeddedResource Include="Admin\Auditoria.resx">
+      <DependentUpon>Auditoria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CambiarIdioma.resx">
+      <DependentUpon>CambiarIdioma.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CambioContraseña.resx">
+      <DependentUpon>CambioContraseña.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\GestionUs.resx">
+      <DependentUpon>GestionUs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ventas\Cartelera.resx">
+      <DependentUpon>Cartelera.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ventas\FuncionesPorPelicula.resx">
+      <DependentUpon>FuncionesPorPelicula.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ventas\SeleccionButacas.resx">
+      <DependentUpon>SeleccionButacas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DisenarPasillos_14OR.resx">
+      <DependentUpon>DisenarPasillos_14OR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menu.resx">
+      <DependentUpon>Menu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\GestionPerfiles.resx">
+      <DependentUpon>GestionPerfiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Peliculas.resx">
+      <DependentUpon>Peliculas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Funciones_14OR.resx">
+      <DependentUpon>Funciones_14OR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Salas.resx">
+      <DependentUpon>Salas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapaButacas_14OR.resx">
+      <DependentUpon>MapaButacas_14OR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Idiomas\es.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\EsquemaCompleto_43BO.sql">
+      <Link>EsquemaCompleto_43BO.sql</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Idiomas\pr.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BE\BE_43BO.csproj">
+      <Project>{17831b8c-a419-4ccf-87a8-e917d3bd22be}</Project>
+      <Name>BE_43BO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BLL\BLL_43BO.csproj">
+      <Project>{d0d05733-7006-4d0a-a2d0-e36e9f68b089}</Project>
+      <Name>BLL_43BO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Servicios\Servicios_43BO.csproj">
+      <Project>{679653a6-c4a3-4bbd-9eb2-7f7f85ce8742}</Project>
+      <Name>Servicios_43BO</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Idiomas\en.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

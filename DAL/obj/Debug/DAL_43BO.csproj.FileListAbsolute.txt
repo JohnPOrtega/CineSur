@@ -1,0 +1,13 @@
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\bin\Debug\DAL.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\bin\Debug\DAL.pdb
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\bin\Debug\BE.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\bin\Debug\Servicios.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\bin\Debug\BE.pdb
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\bin\Debug\Servicios.pdb
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\obj\Debug\DAL_43BO.csproj.AssemblyReference.cache
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\obj\Debug\DAL_43BO.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\obj\Debug\DAL_43BO.csproj.Up2Date
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\obj\Debug\DAL.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\obj\Debug\DAL.pdb

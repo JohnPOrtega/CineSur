@@ -1,0 +1,6 @@
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\BE\bin\Debug\BE.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\BE\bin\Debug\BE.pdb
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\BE\obj\Debug\BE_43BO.csproj.AssemblyReference.cache
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\BE\obj\Debug\BE_43BO.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\BE\obj\Debug\BE.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\BE\obj\Debug\BE.pdb
