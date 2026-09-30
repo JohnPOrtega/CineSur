@@ -117,29 +117,41 @@
     <Compile Include="Admin\GestionPerfiles.Designer.cs">
       <DependentUpon>GestionPerfiles.cs</DependentUpon>
     </Compile>
-    <Compile Include="Peliculas.cs">
+    <Compile Include="Master\Peliculas.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Peliculas.Designer.cs">
+    <Compile Include="Master\Peliculas.Designer.cs">
       <DependentUpon>Peliculas.cs</DependentUpon>
     </Compile>
-    <Compile Include="Funciones_14OR.cs">
+    <Compile Include="Master\Funciones_14OR.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Funciones_14OR.Designer.cs">
+    <Compile Include="Master\Funciones_14OR.Designer.cs">
       <DependentUpon>Funciones_14OR.cs</DependentUpon>
     </Compile>
-    <Compile Include="Salas.cs">
+    <Compile Include="Master\Salas.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Salas.Designer.cs">
+    <Compile Include="Master\Salas.Designer.cs">
       <DependentUpon>Salas.cs</DependentUpon>
     </Compile>
-    <Compile Include="DisenarPasillos_14OR.cs">
+    <Compile Include="Master\DisenarPasillos_14OR.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DisenarPasillos_14OR.Designer.cs">
+    <Compile Include="Master\DisenarPasillos_14OR.Designer.cs">
       <DependentUpon>DisenarPasillos_14OR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Master\Promociones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Master\Promociones.Designer.cs">
+      <DependentUpon>Promociones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Master\Clientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Master\Clientes.Designer.cs">
+      <DependentUpon>Clientes.cs</DependentUpon>
     </Compile>
     <Compile Include="Ventas\Cartelera.cs">
       <SubType>Form</SubType>
@@ -158,6 +170,31 @@
     </Compile>
     <Compile Include="Ventas\SeleccionButacas.Designer.cs">
       <DependentUpon>SeleccionButacas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Ventas\Cobro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ventas\Cobro.Designer.cs">
+      <DependentUpon>Cobro.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Ventas\AltaSocio_14OR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ventas\AltaSocio_14OR.Designer.cs">
+      <DependentUpon>AltaSocio_14OR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Ventas\GeneradorTicket_14OR.cs" />
+    <Compile Include="Ventas\ControlAcceso.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ventas\ControlAcceso.Designer.cs">
+      <DependentUpon>ControlAcceso.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ReporteFunciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reportes\ReporteFunciones.Designer.cs">
+      <DependentUpon>ReporteFunciones.cs</DependentUpon>
     </Compile>
     <Compile Include="MapaButacas_14OR.cs">
       <SubType>UserControl</SubType>
@@ -189,7 +226,19 @@
     <EmbeddedResource Include="Ventas\SeleccionButacas.resx">
       <DependentUpon>SeleccionButacas.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DisenarPasillos_14OR.resx">
+    <EmbeddedResource Include="Ventas\Cobro.resx">
+      <DependentUpon>Cobro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ventas\AltaSocio_14OR.resx">
+      <DependentUpon>AltaSocio_14OR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ventas\ControlAcceso.resx">
+      <DependentUpon>ControlAcceso.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ReporteFunciones.resx">
+      <DependentUpon>ReporteFunciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Master\DisenarPasillos_14OR.resx">
       <DependentUpon>DisenarPasillos_14OR.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
@@ -201,14 +250,20 @@
     <EmbeddedResource Include="Admin\GestionPerfiles.resx">
       <DependentUpon>GestionPerfiles.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Peliculas.resx">
+    <EmbeddedResource Include="Master\Peliculas.resx">
       <DependentUpon>Peliculas.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Funciones_14OR.resx">
+    <EmbeddedResource Include="Master\Funciones_14OR.resx">
       <DependentUpon>Funciones_14OR.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Salas.resx">
+    <EmbeddedResource Include="Master\Salas.resx">
       <DependentUpon>Salas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Master\Promociones.resx">
+      <DependentUpon>Promociones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Master\Clientes.resx">
+      <DependentUpon>Clientes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MapaButacas_14OR.resx">
       <DependentUpon>MapaButacas_14OR.cs</DependentUpon>

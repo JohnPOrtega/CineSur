@@ -49,6 +49,10 @@
     <Compile Include="AsientoFuncion_14OR.cs" />
     <Compile Include="Venta_14OR.cs" />
     <Compile Include="Cliente_14OR.cs" />
+    <Compile Include="ClientesXml_14OR.cs" />
+    <Compile Include="TipoPromocion_14OR.cs" />
+    <Compile Include="Promocion_14OR.cs" />
+    <Compile Include="ReporteFuncionOcupacion_14OR.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

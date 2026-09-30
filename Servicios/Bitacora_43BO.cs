@@ -10,7 +10,9 @@ namespace Servicios
     public enum Evento_43BO { Login, Logout, Crear, Desactivar,modificar, Bloqueo,Desbloqueo, CrearRol, ModificarRol, EliminarRol,
         CrearFamilia, ModificarFamilia, EliminarFamilia, AsignarRol, AsignarFamilia, QuitarRol, QuitarFamilia,
         // eventos del modulo Admin (mantenimiento de la BD)
-        Backup, RecalcularDV, RestaurarBackup}
+        Backup, RecalcularDV, RestaurarBackup,
+        // eventos del cine (CUN-002/003/004): venta cobrada, suscripcion de socio, ingreso en control de acceso
+        Cobro, Suscripcion, Ingreso}
     public  class Bitacora_43BO
     {
 		private User_43BO _user;

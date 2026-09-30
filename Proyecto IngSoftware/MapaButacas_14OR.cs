@@ -6,17 +6,19 @@ using System.Windows.Forms;
 
 namespace Proyecto_IngSoftware
 {
-    // control reutilizable: dibuja PANTALLA + numeros de columna + las butacas como botones de color.
-    // se usa en: ABM Sala (ver distribucion), Venta (CUN-001) y Control de acceso (CUN-004).
-    // IMPORTANTE: esta clase va PRIMERA en el archivo (el disenador de VS lo exige).
+   //utilice un UC porque lo usa tnato ventas como control de acceso 
     public partial class MapaButacas_14OR : UserControl
     {
         private bool _clickeable = false;
+
         // en modo diseno todas las butacas son clickeables (para elegir por donde va el pasillo),
-        // sin importar el estado. lo uso en la ventana de "definir pasillos" del abm de sala.
+        // 
         private bool _modoDiseno = false;
 
-        // aviso al formulario que me use cuando se clickea una butaca (solo si es clickeable)
+        //
+        private bool _clickTodas = false;
+
+        // cuadn se lo encesito se lo invoca
         public event EventHandler<CeldaMapa_14OR> ButacaClickeada;
 
         public MapaButacas_14OR()
@@ -25,14 +27,12 @@ namespace Proyecto_IngSoftware
         }
 
         // dibuja todo el mapa.
-        // clickeable = true en la venta (elegir butacas), false en el ABM de sala (solo mirar).
-        // pasillosDespuesDe = lista de columnas despues de las cuales se deja un pasillo.
-        //   ej: new List<int>{ 4, 12 }  ->  columnas 1-4 | pasillo | 5-12 | pasillo | 13-16
-        //   ACA es donde vos decidis la distribucion: cambiando esos numeros moves los pasillos.
-        public void Cargar_14OR(List<CeldaMapa_14OR> celdas, bool clickeable, List<int> pasillosDespuesDe = null, bool modoDiseno = false)
+ 
+        public void Cargar_14OR(List<CeldaMapa_14OR> celdas, bool clickeable, List<int> pasillosDespuesDe = null, bool modoDiseno = false, bool clickTodas = false)
         {
             _clickeable = clickeable;
             _modoDiseno = modoDiseno;
+            _clickTodas = clickTodas;
             this.Controls.Clear();
 
             if (celdas == null || celdas.Count == 0) return;
@@ -50,7 +50,7 @@ namespace Proyecto_IngSoftware
             int maxFila = celdas.Max(c => c.Fila);
             int maxAsiento = celdas.Max(c => c.Asiento);
 
-            // calcula la X de una columna: posicion normal + el ancho de los pasillos que quedan antes
+            //
             Func<int, int> calcularX = (asiento) =>
             {
                 int pasillosAntes = pasillosDespuesDe.Count(col => col < asiento);
@@ -70,7 +70,7 @@ namespace Proyecto_IngSoftware
             pantalla.Size = new Size(anchoTotal, 18);
             this.Controls.Add(pantalla);
 
-            // numeros de columna arriba (1, 2, 3, ...)
+            // numero de las columnas del
             for (int a = 1; a <= maxAsiento; a++)
             {
                 Label lblCol = new Label();
@@ -83,14 +83,14 @@ namespace Proyecto_IngSoftware
                 this.Controls.Add(lblCol);
             }
 
-            // letras de fila a la izquierda (A, B, C...)
+            //for para agregar la filas  de letras de l ziquierda 
             for (int f = 1; f <= maxFila; f++)
             {
                 int y = topButacas + (f - 1) * paso;
 
                 Label lblFila = new Label();
-                // las filas van con letra como en el cine de verdad; la columna queda numero.
-                // asi cada butaca se lee A1, B5, etc. (coincide con el codigo del resumen de la venta)
+        
+                //ojajla funncione ahora
                 lblFila.Text = ((char)('A' + f - 1)).ToString();
                 lblFila.ForeColor = Color.Gray;
                 lblFila.Font = new Font("Segoe UI", 8F);
@@ -120,7 +120,7 @@ namespace Proyecto_IngSoftware
                 // en modo diseno todas son clickeables (elijo columnas para el pasillo).
                 // en modo normal solo engancho el click si es clickeable y la butaca se puede elegir
                 bool disponible = celda.Estado == "Libre" || celda.Estado == "Accesible" || celda.Estado == "Seleccionada";
-                if (_modoDiseno || (_clickeable && disponible))
+                if (_modoDiseno || _clickTodas || (_clickeable && disponible))
                 {
                     b.Click += Butaca_Click_14OR;
                 }
@@ -141,24 +141,24 @@ namespace Proyecto_IngSoftware
         {
             switch (estado)
             {
-                case "Seleccionada": return Color.FromArgb(231, 168, 26);   // ambar/amarillo (la que estoy eligiendo ahora)
-                case "Ocupada": return Color.FromArgb(120, 40, 40);         // rojo oscuro (vendida, ya no se toca)
-                case "Reservada": return Color.FromArgb(200, 60, 55);       // rojo (bloqueo temporal, no se confunde con el ambar)
-                case "Deshabilitada": return Color.FromArgb(60, 60, 60);    // casi negro
-                case "Accesible": return Color.FromArgb(62, 124, 168);      // azul
-                case "Utilizada": return Color.FromArgb(95, 55, 55);        // bordo (ya ingreso)
+                case "Seleccionada": return Color.FromArgb(231, 168, 26);   // ambar/amarillo son los que se seleccionan mientras se sta reservando los asintnos 
+                case "Ocupada": return Color.FromArgb(120, 40, 40);         // rojo oscuro son los vendidos "ocuapdos"
+                case "Reservada": return Color.FromArgb(200, 60, 55);       // rojo  estan bloqeuados temporalmeten
+                case "Deshabilitada": return Color.FromArgb(60, 60, 60);    // casi negro 
+                case "Accesible": return Color.FromArgb(62, 124, 168);      // azul son los normales
+                case "Utilizada": return Color.FromArgb(150, 90, 200);      // violeta/morado (ya ingreso) - se distingue bien del rojo de ocupada
                 default: return Color.FromArgb(76, 140, 90);                // verde = Libre
             }
         }
     }
 
     // esto es lo que le paso al control para dibujar cada butaca.
-    // va DESPUES de la clase del UserControl (si no, el disenador no carga).
+    
     public class CeldaMapa_14OR
     {
         public int Fila;
         public int Asiento;
         public string Estado;       // "Libre","Ocupada","Reservada","Deshabilitada","Accesible","Utilizada","Seleccionada"
-        public object Referencia;   // opcional: para guardar el objeto original (ej el AsientoFuncion en la venta)
+        public object Referencia;   //esto lo pongo po si necesito guardar algo adicional
     }
 }

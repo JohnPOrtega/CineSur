@@ -27,14 +27,28 @@ namespace DAL
         // lo hago con un INSERT ... SELECT asi es un solo comando
         public int GenerarParaFuncion_14OR(int idFuncion, int idSala)
         {
+            // idempotente: inserta un asiento SOLO para las butacas de la sala que todavia
+            // no tengan fila en esta funcion. asi se auto-repara si la sala cambio de butacas
+            // (evita quedar con el mapa vacio por asientos "huerfanos") y nunca duplica.
             string query = @"INSERT INTO AsientoFuncion_14OR (IdFuncion_14OR, IdButaca_14OR, Estado_14OR, Ingreso_14OR)
                              SELECT @f, b.IdButaca_14OR, 'Libre', 0
                              FROM Butaca_14OR b
-                             WHERE b.IdSala_14OR = @s";
+                             WHERE b.IdSala_14OR = @s
+                               AND NOT EXISTS (SELECT 1 FROM AsientoFuncion_14OR af
+                                               WHERE af.IdFuncion_14OR = @f AND af.IdButaca_14OR = b.IdButaca_14OR)";
             SqlParameter[] p = {
                 new SqlParameter("@f", idFuncion),
                 new SqlParameter("@s", idSala)
             };
+            return acceso.Escribir_43BO(query, p);
+        }
+
+        // borra TODO el mapa de asientos de una funcion (se usa al eliminar la funcion).
+        // no toca las ventas: solo saca la asignacion de butacas de esta funcion.
+        public int EliminarPorFuncion_14OR(int idFuncion)
+        {
+            string query = "DELETE FROM AsientoFuncion_14OR WHERE IdFuncion_14OR = @f";
+            SqlParameter[] p = { new SqlParameter("@f", idFuncion) };
             return acceso.Escribir_43BO(query, p);
         }
 
@@ -110,6 +124,101 @@ namespace DAL
 
             // solo es exito si todas las que pedi estaban libres y quedaron reservadas
             return filas == idsButacas.Count;
+        }
+
+        // CUN-002: al cobrar, paso las butacas de Reservada a Ocupada y las engancho a la venta.
+        // solo toco las que estan Reservada (por las dudas). devuelvo cuantas actualice.
+        public int OcuparYAsociar_14OR(int idFuncion, List<int> idsButacas, int idVenta)
+        {
+            if (idsButacas == null || idsButacas.Count == 0) return 0;
+
+            List<string> nombres = new List<string>();
+            List<SqlParameter> parametros = new List<SqlParameter>();
+            parametros.Add(new SqlParameter("@f", idFuncion));
+            parametros.Add(new SqlParameter("@v", idVenta));
+
+            for (int i = 0; i < idsButacas.Count; i++)
+            {
+                string nom = "@b" + i;
+                nombres.Add(nom);
+                parametros.Add(new SqlParameter(nom, idsButacas[i]));
+            }
+
+            string query = @"UPDATE AsientoFuncion_14OR
+                             SET Estado_14OR = 'Ocupada', IdVenta_14OR = @v
+                             WHERE IdFuncion_14OR = @f
+                               AND Estado_14OR = 'Reservada'
+                               AND IdButaca_14OR IN (" + string.Join(",", nombres) + ")";
+
+            return acceso.Escribir_43BO(query, parametros.ToArray());
+        }
+
+        public AsientoFuncion_14OR ObtenerAsiento_14OR(int idFuncion, int idButaca)
+        {
+            string query = @"SELECT AF.Estado_14OR, AF.Ingreso_14OR,
+                                    B.IdButaca_14OR, B.NumeroFila_14OR, B.NumeroAsiento_14OR
+                             FROM AsientoFuncion_14OR AF
+                             INNER JOIN Butaca_14OR B ON AF.IdButaca_14OR = B.IdButaca_14OR
+                             WHERE AF.IdFuncion_14OR = @f AND AF.IdButaca_14OR = @b";
+            SqlParameter[] p = {
+                new SqlParameter("@f", idFuncion),
+                new SqlParameter("@b", idButaca)
+            };
+
+            DataTable tabla = acceso.Leer_43BO(query, p);
+            if (tabla.Rows.Count == 0) return null;
+
+            DataRow fila = tabla.Rows[0];
+            AsientoFuncion_14OR af = new AsientoFuncion_14OR();
+            af.Estado_14OR = fila["Estado_14OR"].ToString();
+            af.Ingreso_14OR = Convert.ToBoolean(fila["Ingreso_14OR"]);
+            af.Butaca = new Butaca_14OR();
+            af.Butaca.IdButaca_14OR = Convert.ToInt32(fila["IdButaca_14OR"]);
+            af.Butaca.NumeroFila_14OR = Convert.ToInt32(fila["NumeroFila_14OR"]);
+            af.Butaca.NumeroAsiento_14OR = Convert.ToInt32(fila["NumeroAsiento_14OR"]);
+            return af;
+        }
+
+        // esto es apra registrar el ingreso de una entrada vendida.
+        public int RegistrarIngreso_14OR(int idFuncion, int idButaca)
+        {
+            string query = @"UPDATE AsientoFuncion_14OR
+                             SET Estado_14OR = 'Utilizada', Ingreso_14OR = 1
+                             WHERE IdFuncion_14OR = @f
+                               AND IdButaca_14OR = @b
+                               AND Estado_14OR = 'Ocupada'
+                               AND Ingreso_14OR = 0";
+            SqlParameter[] p = {
+                new SqlParameter("@f", idFuncion),
+                new SqlParameter("@b", idButaca)
+            };
+            return acceso.Escribir_43BO(query, p);
+        }
+
+        // si el vendedor cancela el cobro, largo la reserva: las butacas vuelven a Libre.
+        // solo suelto las que siguen reservado si no otra vez va a liberar las que ya estban venidasds
+        public int LiberarReserva_14OR(int idFuncion, List<int> idsButacas)
+        {
+            if (idsButacas == null || idsButacas.Count == 0) return 0;
+
+            List<string> nombres = new List<string>();
+            List<SqlParameter> parametros = new List<SqlParameter>();
+            parametros.Add(new SqlParameter("@f", idFuncion));
+
+            for (int i = 0; i < idsButacas.Count; i++)
+            {
+                string nom = "@b" + i;
+                nombres.Add(nom);
+                parametros.Add(new SqlParameter(nom, idsButacas[i]));
+            }
+
+            string query = @"UPDATE AsientoFuncion_14OR
+                             SET Estado_14OR = 'Libre', IdVenta_14OR = NULL
+                             WHERE IdFuncion_14OR = @f
+                               AND Estado_14OR = 'Reservada'
+                               AND IdButaca_14OR IN (" + string.Join(",", nombres) + ")";
+
+            return acceso.Escribir_43BO(query, parametros.ToArray());
         }
     }
 }

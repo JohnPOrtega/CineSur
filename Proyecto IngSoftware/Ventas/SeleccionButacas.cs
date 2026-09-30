@@ -8,11 +8,8 @@ using System.Windows.Forms;
 
 namespace Proyecto_IngSoftware
 {
-    // Pantalla 3 del CUN-001 (el corazon): el mapa de butacas de la funcion + el resumen.
-    // el resumen (labels y botones) y el panel del mapa estan en el disenador (SeleccionButacas.Designer.cs).
-    // el mapa en si (MapaButacas_14OR) se crea aca por codigo adentro de panelMapa, porque sus botones
-    // son dinamicos (uno por butaca) y hay que engancharle el evento de click.
-    public partial class SeleccionButacas : Form
+    //ck.
+    public partial class SeleccionButacas : Form, Servicios.IidiomaObserver.IdiomaObserver_43BO
     {
         private BllAsientoFuncion_14OR bllAF = new BllAsientoFuncion_14OR();
         private BllVenta_14OR bllVenta = new BllVenta_14OR();
@@ -35,6 +32,7 @@ namespace Proyecto_IngSoftware
             this.precioUnit = bllFuncion.CalcularPrecioFinal_14OR(f);
 
             InitializeComponent();
+            GestorIdioma_43BO.Instancia.Suscribir_43BO(this);
 
             // titulo de la ventana y precio unitario salen de la funcion (datos en runtime)
             this.Text = "Butacas - " + funcion.Pelicula.Titulo_14OR + " - Sala " + funcion.Sala.Numero_14OR +
@@ -84,9 +82,19 @@ namespace Proyecto_IngSoftware
                 {
                     Fila = af.Butaca.NumeroFila_14OR,
                     Asiento = af.Butaca.NumeroAsiento_14OR,
-                    Estado = af.Estado_14OR,
+                    // en la VENTA, una butaca ya ingresada ("Utilizada") se muestra como Ocupada (vendida).
+                    // el color de ingreso (violeta) es solo para el Control de Acceso, no para el vendedor.
+                    Estado = (af.Estado_14OR == "Utilizada") ? "Ocupada" : af.Estado_14OR,
                     Referencia = af   // me guardo el asiento original (para saber su estado real al deseleccionar)
                 }).ToList();
+
+                // si la funcion no tiene butacas (la sala quedo sin butacas generadas) aviso en vez de dejar el mapa en blanco
+                if (celdas.Count == 0)
+                {
+                    MessageBox.Show(GestorIdioma_43BO.Instancia.ObtenerTexto_43BO("seleccionbutacas_msg_sinbutacas",
+                        "Esta sala no tiene butacas generadas. Revisala en Master > Salas."),
+                        "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
 
                 DibujarMapa_14OR();
                 ActualizarResumen_14OR();
@@ -100,11 +108,11 @@ namespace Proyecto_IngSoftware
 
         private void DibujarMapa_14OR()
         {
-            // clickeable=true asi el vendedor puede elegir; le paso los pasillos de la sala
+            
             mapa.Cargar_14OR(celdas, true, pasillos);
         }
 
-        // cada vez que tocan una butaca: si estaba elegida la suelto, si estaba libre la elijo (hasta 8)
+     
         private void Mapa_ButacaClickeada_14OR(object sender, CeldaMapa_14OR celda)
         {
             if (celda.Estado == "Seleccionada")
@@ -115,13 +123,7 @@ namespace Proyecto_IngSoftware
             }
             else
             {
-                int elegidas = celdas.Count(c => c.Estado == "Seleccionada");
-                if (elegidas >= 8)
-                {
-                    MessageBox.Show("Maximo 8 butacas por venta.", "Atencion",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                // sin limite de butacas por venta: se puede elegir cualquier cantidad de asientos libres
                 celda.Estado = "Seleccionada";
             }
 
@@ -134,7 +136,7 @@ namespace Proyecto_IngSoftware
             List<CeldaMapa_14OR> elegidas = celdas.Where(c => c.Estado == "Seleccionada")
                                                   .OrderBy(c => c.Fila).ThenBy(c => c.Asiento).ToList();
 
-            lblCantidad.Text = "Cantidad: " + elegidas.Count + " (max 8)";
+            lblCantidad.Text = "Cantidad: " + elegidas.Count;
             lblTotal.Text = "Total: $ " + (elegidas.Count * precioUnit).ToString("0");
 
             // dibujo los codigos tipo A1, B5, ... como chips
@@ -155,7 +157,7 @@ namespace Proyecto_IngSoftware
             btnReservar.Enabled = elegidas.Count > 0;
         }
 
-        // paso fila+asiento al codigo de butaca tipo "A1" (fila 1 = A, fila 2 = B, ...)
+        //aca les paso que butacas segun su codigo A4 , B6 y asi 
         private string Codigo_14OR(int fila, int asiento)
         {
             char letra = (char)('A' + fila - 1);
@@ -188,11 +190,18 @@ namespace Proyecto_IngSoftware
                     return;
                 }
 
-                MessageBox.Show("Listo! Se reservaron " + butacas.Count + " butaca(s).\n" +
-                                "El siguiente paso seria cobrar (CUN-002).",
-                    "Reserva ok", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // reserva OK -> sigue el cobro de una (el CUN-002 va incluido en el CUN-001)
+                using (Cobro cobro = new Cobro(funcion, butacas, precioUnit))
+                {
+                    DialogResult r = cobro.ShowDialog();
+                    if (r != DialogResult.OK)
+                    {
+                        // cancelaron el cobro -> suelto la reserva asi las butacas vuelven a estar libres
+                        bllVenta.LiberarReserva_14OR(funcion.IdFuncion_14OR, butacas);
+                    }
+                }
 
-                RecargarMapa_14OR();   // ahora se ven en rojo (Reservada)
+                RecargarMapa_14OR();   // refresco: quedan Ocupada si se cobro, o Libre si se cancelo
             }
             catch (Exception ex)
             {
@@ -204,5 +213,12 @@ namespace Proyecto_IngSoftware
         {
             this.Close();
         }
-    }
+    
+        // traduccion automatica: al cambiar idioma el gestor llama aca y se traducen
+        // todos los controles estaticos que tengan clave en el JSON (patron observer).
+        public void ActualizarIdioma_43BO(System.Collections.Generic.Dictionary<string, string> dic)
+        {
+            this.TraducirAuto_43BO(dic);
+        }
+}
 }

@@ -33,7 +33,16 @@ namespace DAL
             "Rol_Familia",
             "Rol_Patente",
             "Patente_Familia",
-            "Bitacora_43BO"
+            "Bitacora_43BO",
+            // modulo cine (CUN-001..004): tambien quedan protegidas contra manipulacion externa
+            "Pelicula_14OR",
+            "Sala_14OR",
+            "Butaca_14OR",
+            "Funcion_14OR",
+            "AsientoFuncion_14OR",
+            "Venta_14OR",
+            "Cliente_14OR",
+            "Promocion_14OR"
         };
 
         // -------------------- generacion --------------------

@@ -5,12 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using BE;
 using DAL;
+using Servicios;
 
 namespace BLL
 {
     public class BllFuncion_14OR
     {
         private DALFuncion_14OR dal = new DALFuncion_14OR();
+        private DALAsientoFuncion_14OR dalAsiento = new DALAsientoFuncion_14OR();
+        private BLLBitacora_43BO bllBi = new BLLBitacora_43BO();
 
         //PARTE FUNDAMENTAL, segun lo que vi el tiempo de mantemiento es si o si entre 10-5 minutos mas el tiepo de egreso e ingreso de las funciones 
         private const int MINUTOS_MANTENIMIENTO_14OR = 30;
@@ -39,7 +42,9 @@ namespace BLL
             // en el alta todavia no tiene id, asi que le paso 0 para que compare contra todas
             ValidarMantenimiento_14OR(f, 0);
 
-            return dal.Alta_14OR(f);
+            int r = dal.Alta_14OR(f);
+            bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.Crear, 2);
+            return r;
         }
 
         public int Modificar_14OR(Funcion_14OR f)
@@ -52,7 +57,9 @@ namespace BLL
             // aca me salteo la propia funcion asi no se choca consigo misma
             ValidarMantenimiento_14OR(f, f.IdFuncion_14OR);
 
-            return dal.Modificar_14OR(f);
+            int r = dal.Modificar_14OR(f);
+            bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.modificar, 2);
+            return r;
         }
 
         public int Baja_14OR(int idFuncion)
@@ -60,7 +67,23 @@ namespace BLL
             if (idFuncion <= 0)
                 throw new Exception("No se selecciono ninguna funcion para eliminar.");
 
-            return dal.Baja_14OR(idFuncion);
+            try
+            {
+                // primero borro el mapa de asientos de la funcion (si tiene), asi se puede eliminar
+                // aunque ya se hayan generado/reservado/vendido butacas. una funcion que ya paso
+                // (o de prueba) queda asi eliminable. las ventas no se borran; solo se saca la
+                // asignacion de butacas de esta funcion.
+                dalAsiento.EliminarPorFuncion_14OR(idFuncion);
+                int r = dal.Baja_14OR(idFuncion);
+                bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.Desactivar, 3);
+                return r;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                if (ex.Number == 547)
+                    throw new Exception("error_funcion_con_asientos");
+                throw new Exception("error_no_se_pudo_eliminar");
+            }
         }
 
         // chequeo que esten cargados los datos minimos antes de tocar la base

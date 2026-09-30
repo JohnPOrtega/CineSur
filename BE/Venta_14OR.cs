@@ -64,6 +64,15 @@ namespace BE
             set { _montoTotal = value; }
         }
 
+        // cuanto se le descontó a la venta por la promo aplicada. si no hubo, queda en 0.
+        private double _montoDescuento;
+
+        public double MontoDescuento_14OR
+        {
+            get { return _montoDescuento; }
+            set { _montoDescuento = value; }
+        }
+
         public Venta_14OR()
         {
 
@@ -71,6 +80,10 @@ namespace BE
 
         // Asociaciones del diagrama de dominio
         public Cliente_14OR Cliente { get; set; }
+
+        // la promo que se aplicó en esta venta (null si fue sin descuento / consumidor final)
+        public Promocion_14OR Promocion { get; set; }
+
         public List<AsientoFuncion_14OR> Asientos { get; set; }
     }
 }

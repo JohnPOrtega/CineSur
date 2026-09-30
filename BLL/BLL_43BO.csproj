@@ -62,6 +62,8 @@
     <Compile Include="BllAsientoFuncion_14OR.cs" />
     <Compile Include="BllVenta_14OR.cs" />
     <Compile Include="BllCliente_14OR.cs" />
+    <Compile Include="BllPromocion_14OR.cs" />
+    <Compile Include="BllReporte_14OR.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

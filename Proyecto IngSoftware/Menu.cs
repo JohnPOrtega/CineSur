@@ -187,6 +187,7 @@ namespace Proyecto_IngSoftware
         // abre el abm de peliculas desde Master -> Peliculas
         private void peliculasToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!VerificarPermiso_43BO("Master_Peliculas_Acceso")) return;
             Peliculas frm = new Peliculas();
             frm.MdiParent = this;
             frm.Show();
@@ -196,6 +197,7 @@ namespace Proyecto_IngSoftware
         // abre el abm de funciones desde Master -> Funcion
         private void funcionesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!VerificarPermiso_43BO("Master_Funciones_Acceso")) return;
             Funciones_14OR frm = new Funciones_14OR();
             frm.MdiParent = this;
             frm.Show();
@@ -205,11 +207,14 @@ namespace Proyecto_IngSoftware
         // abre el abm de salas desde Master -> Salas (al dar de alta genera las butacas)
         private void salasToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!VerificarPermiso_43BO("Master_Salas_Acceso")) return;
             Salas frm = new Salas();
             frm.MdiParent = this;
             frm.Show();
             TraducirFormulario(frm);
         }
+
+ 
 
         
 
@@ -227,6 +232,19 @@ namespace Proyecto_IngSoftware
         // unico punto de traduccion: todo pasa por el gestor
         private string ObtenerTexto(string clave, string porDefecto = null)
             => GestorIdioma_43BO.Instancia.ObtenerTexto_43BO(clave, porDefecto ?? clave);
+
+        // control de patente por accion: si el usuario no tiene el permiso, avisa y corta.
+        // el nombre de la patente es el mismo del enum Permisos_43BO.
+        private bool VerificarPermiso_43BO(string patente)
+        {
+            if (SessionManager_43BO.Instancia.Permisos != null &&
+                SessionManager_43BO.Instancia.Permisos.Contains(patente))
+                return true;
+
+            MessageBox.Show(ObtenerTexto("menu.msg_acceso_denegado"),
+                ObtenerTexto("titulo_error", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return false;
+        }
 
         private void cerrarSesiobnToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -297,10 +315,55 @@ namespace Proyecto_IngSoftware
             }
         }
 
-        //CUN-001
+       
         private void reservarButacasToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
+            if (!VerificarPermiso_43BO("Venta_ReservarButacas_Acceso")) return;
              Cartelera frm = new Cartelera();
+            frm.MdiParent = this;
+            frm.Show();
+            TraducirFormulario(frm);
+        }
+
+        private void promocionesToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            if (!VerificarPermiso_43BO("Master_Promociones_Acceso")) return;
+            Promociones frm = new Promociones();
+            frm.MdiParent = this;
+            frm.Show();
+            TraducirFormulario(frm);
+        }
+
+       
+   
+        
+
+
+        private void clientesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!VerificarPermiso_43BO("Master_Clientes_Acceso")) return;
+            Clientes frm = new Clientes();
+            frm.MdiParent = this;
+            frm.Show();
+            TraducirFormulario(frm);
+        }
+
+      
+        private void controlAccesoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!VerificarPermiso_43BO("Venta_ControlAcceso_Acceso")) return;
+            ControlAcceso frm = new ControlAcceso();
+            frm.MdiParent = this;
+            frm.Show();
+            TraducirFormulario(frm);
+        }
+
+       
+
+        private void reporteDeVentasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!VerificarPermiso_43BO("Reporte_FuncionesOcupacion_Acceso")) return;
+            ReporteFunciones frm = new ReporteFunciones();
             frm.MdiParent = this;
             frm.Show();
             TraducirFormulario(frm);

@@ -239,9 +239,9 @@ namespace Proyecto_IngSoftware
             }
             catch (Exception ex)
             {
-                // si la peli tiene funciones cargadas la fk no la deja borrar, aviso lindo
-                MessageBox.Show("No se pudo eliminar. Puede que la pelicula tenga funciones cargadas.\n\nDetalle: " + ex.Message,
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // la BLL manda una clave de mensaje traducible (sin SQL): la muestro con el gestor de idioma
+                MessageBox.Show(Servicios.GestorIdioma_43BO.Instancia.ObtenerTexto_43BO(ex.Message, ex.Message),
+                    "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

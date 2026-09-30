@@ -38,6 +38,20 @@ namespace Servicios
 
         Admin_Backup = 21,
         Admin_RecalcularDV = 22,
-        Admin_Restore = 23
+        Admin_Restore = 23,
+
+        // --- Maestros del cine (acceso a cada ABM) ---
+        Master_Peliculas_Acceso = 24,
+        Master_Salas_Acceso = 25,
+        Master_Funciones_Acceso = 26,
+        Master_Promociones_Acceso = 27,
+        Master_Clientes_Acceso = 28,
+
+        // --- Venta / Control de acceso ---
+        Venta_ReservarButacas_Acceso = 29,
+        Venta_ControlAcceso_Acceso = 30,
+
+        // --- Reportes ---
+        Reporte_FuncionesOcupacion_Acceso = 31
     }
 }

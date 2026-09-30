@@ -9,11 +9,11 @@ using System.Windows.Forms;
 
 namespace Proyecto_IngSoftware
 {
-    // Pantalla 1 del CUN-001: el catalogo / cartelera.
+   
     // muestra las pelis que tienen funciones futuras como tarjetas con afiche.
     // al hacer click en una peli se abre la pantalla de horarios (funciones).
-    // el titulo y el panel (flpPelis) estan en el disenador; las tarjetas se generan por codigo.
-    public partial class Cartelera : Form
+    // el titulo y el panel 
+    public partial class Cartelera : Form, Servicios.IidiomaObserver.IdiomaObserver_43BO
     {
         private BllPelicula_14OR bllPeli = new BllPelicula_14OR();
         private BllFuncion_14OR bllFuncion = new BllFuncion_14OR();
@@ -21,6 +21,7 @@ namespace Proyecto_IngSoftware
         public Cartelera()
         {
             InitializeComponent();
+            GestorIdioma_43BO.Instancia.Suscribir_43BO(this);
             CargarCartelera_14OR();
         }
 
@@ -53,8 +54,7 @@ namespace Proyecto_IngSoftware
             }
         }
 
-        // arma la tarjeta de una peli: afiche arriba, titulo, genero/duracion y cuantas funciones tiene.
-        // esto va por codigo si o si: la cantidad de tarjetas depende de cuantas pelis haya en la base
+        //tube que agregar esto si os i apora que quede bonito al vista  amenos que haya un UC solo para las tarjetas que lleaba asm tiempo 
         private Panel ArmarTarjeta_14OR(Pelicula_14OR p)
         {
             Panel card = new Panel();
@@ -141,5 +141,10 @@ namespace Proyecto_IngSoftware
             // al volver refresco por si algo cambio (nada critico, pero por las dudas)
             CargarCartelera_14OR();
         }
-    }
+    
+        public void ActualizarIdioma_43BO(System.Collections.Generic.Dictionary<string, string> dic)
+        {
+            this.TraducirAuto_43BO(dic);
+        }
+}
 }

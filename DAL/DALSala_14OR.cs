@@ -56,8 +56,7 @@ namespace DAL
             return idSala;
         }
 
-        // arma UN solo insert con todas las butacas (fila 1..filas, asiento 1..asientosPorFila).
-        // lo hago en un solo comando asi no dispara mil veces el recalculo del digito verificador
+  
         private void GenerarButacas_14OR(int idSala, int filas, int asientosPorFila)
         {
             StringBuilder valores = new StringBuilder();
@@ -95,10 +94,19 @@ namespace DAL
             return acceso.Escribir_43BO(query, parametros);
         }
 
-        // borro primero las butacas y despues la sala.
-        // si alguna butaca esta usada por una funcion, la fk lo frena (es lo esperado)
+        // controlo PRIMERO que la sala no este usada por ninguna funcion.
+        // (antes se borraban las butacas y despues fallaba el borrado de la sala por la FK de funciones,
+        //  dejando la sala SIN butacas y los mapas vacios. por eso ahora controlo antes de tocar nada.)
         public int Baja_14OR(int idSala)
         {
+            int usada = acceso.EjecutarScalar_43BO(
+                "SELECT COUNT(*) FROM Funcion_14OR WHERE IdSala_14OR = @id",
+                new SqlParameter[] { new SqlParameter("@id", idSala) });
+
+            if (usada > 0)
+                throw new Exception("error_sala_en_funciones");
+
+            // no esta usada por ninguna funcion: recien ahi borro las butacas y la sala
             acceso.Escribir_43BO("DELETE FROM Butaca_14OR WHERE IdSala_14OR = @id",
                 new SqlParameter[] { new SqlParameter("@id", idSala) });
 

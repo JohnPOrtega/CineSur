@@ -8,10 +8,8 @@ using System.Windows.Forms;
 
 namespace Proyecto_IngSoftware
 {
-    // Pantalla 2 del CUN-001: las funciones (horarios) de la peli elegida.
-    // cada tarjeta muestra fecha, hora, sala, formato, idioma, precio final y cuantas butacas quedan.
-    // titulo/subtitulo/panel estan en el disenador; las tarjetas se generan por codigo.
-    public partial class FuncionesPorPelicula : Form
+   
+    public partial class FuncionesPorPelicula : Form, Servicios.IidiomaObserver.IdiomaObserver_43BO
     {
         private BllFuncion_14OR bllFuncion = new BllFuncion_14OR();
         private BllAsientoFuncion_14OR bllAF = new BllAsientoFuncion_14OR();
@@ -22,6 +20,7 @@ namespace Proyecto_IngSoftware
         {
             this.peli = pelicula;
             InitializeComponent();
+            GestorIdioma_43BO.Instancia.Suscribir_43BO(this);
 
             // el titulo de la ventana y el label grande salen del nombre de la peli (dato en runtime)
             this.Text = "Funciones - " + peli.Titulo_14OR;
@@ -136,5 +135,12 @@ namespace Proyecto_IngSoftware
             if (formato == FormatoFuncion_14OR.CuatroDX) return "4DX";
             return "2D";
         }
-    }
+    
+        // traduccion automatica: al cambiar idioma el gestor llama aca y se traducen
+        // todos los controles estaticos que tengan clave en el JSON (patron observer).
+        public void ActualizarIdioma_43BO(System.Collections.Generic.Dictionary<string, string> dic)
+        {
+            this.TraducirAuto_43BO(dic);
+        }
+}
 }

@@ -55,6 +55,8 @@
     <Compile Include="DALAsientoFuncion_14OR.cs" />
     <Compile Include="DALVenta_14OR.cs" />
     <Compile Include="DALCliente_14OR.cs" />
+    <Compile Include="DALPromocion_14OR.cs" />
+    <Compile Include="DALReporte_14OR.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

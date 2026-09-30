@@ -5,12 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using BE;
 using DAL;
+using Servicios;
 
 namespace BLL
 {
     public class BllSala_14OR
     {
         private DALSala_14OR dal = new DALSala_14OR();
+        private BLLBitacora_43BO bllBi = new BLLBitacora_43BO();
 
         // lo uso para la grilla del abm y para el combo de salas en funciones
         public List<Sala_14OR> Listar_14OR()
@@ -44,7 +46,9 @@ namespace BLL
             // la capacidad no se carga a mano, sale de multiplicar filas por asientos
             s.Capacidad_14OR = filas * asientosPorFila;
 
-            return dal.Alta_14OR(s, filas, asientosPorFila);
+            int r = dal.Alta_14OR(s, filas, asientosPorFila);
+            bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.Crear, 2);
+            return r;
         }
 
         // por ahora la modificacion solo cambia el numero de sala, no la grilla de butacas
@@ -60,7 +64,9 @@ namespace BLL
             if (ExisteNumero_14OR(s.Numero_14OR, s.IdSala_14OR))
                 throw new Exception("Ya existe otra sala con ese numero.");
 
-            return dal.Modificar_14OR(s);
+            int r = dal.Modificar_14OR(s);
+            bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.modificar, 2);
+            return r;
         }
 
         // devuelve true si ya hay una sala con ese numero.
@@ -75,7 +81,19 @@ namespace BLL
             if (idSala <= 0)
                 throw new Exception("No se selecciono ninguna sala para eliminar.");
 
-            return dal.Baja_14OR(idSala);
+            try
+            {
+                int r = dal.Baja_14OR(idSala);
+                bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.Desactivar, 3);
+                return r;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                // 547 = FK: la sala esta siendo usada por una o mas funciones.
+                if (ex.Number == 547)
+                    throw new Exception("error_sala_en_funciones");
+                throw new Exception("error_no_se_pudo_eliminar");
+            }
         }
     }
 }
