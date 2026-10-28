@@ -1,0 +1,13 @@
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\bin\Release\DAL.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\bin\Release\DAL.pdb
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\bin\Release\BE.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\bin\Release\Servicios.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\bin\Release\Newtonsoft.Json.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\bin\Release\BE.pdb
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\bin\Release\Servicios.pdb
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\bin\Release\Newtonsoft.Json.xml
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\obj\Release\DAL_43BO.csproj.AssemblyReference.cache
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\obj\Release\DAL_43BO.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\obj\Release\DAL_43BO.csproj.Up2Date
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\obj\Release\DAL.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\DAL\obj\Release\DAL.pdb

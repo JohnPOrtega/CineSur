@@ -14,7 +14,7 @@ namespace DAL
     {
         private AccesoBD_43BO acceso = new AccesoBD_43BO();
 
-        // nombre de la fila especial que guarda el dv de toda la bd
+        // nombre de la fila especial que gaurda el dv de toda la bd
         public const string NombreTotalBD_43BO = "TOTAL_BD_43BO";
 
         // bandera anti loop: guardar el dv tambien pasa por Escribir_43BO
@@ -42,7 +42,20 @@ namespace DAL
             "AsientoFuncion_14OR",
             "Venta_14OR",
             "Cliente_14OR",
-            "Promocion_14OR"
+            "Promocion_14OR",
+            // modulo compra / candy bar (PN2)
+            "Producto_14OR",
+            "Proveedor_14OR",
+            // venat del candy bar (PN2)
+            "VentaCandy_14OR",
+            "DetalleVentaCandy_14OR",
+            // compra: presupuestos y ordenes (PN2)
+            "Presupuesto_14OR",
+            "DetallePresupuesto_14OR",
+            "OrdenCompra_14OR",
+            "DetalleOrdenCompra_14OR",
+            // bitacora de cambios (historico de peliculas)
+            "Pelicula_C_14OR"
         };
 
         // -------------------- generacion --------------------
@@ -175,7 +188,7 @@ namespace DAL
             new DALdv_43BO().GenerarYPersistirDV_43BO();
         }
 
-        // -------------------- revision --------------------
+        // -------------------- reviison --------------------
 
         // el select de la tabla dv para comparar contra lo calculado
         public List<DV_43BO> ConsultarDV_43BO()
@@ -196,7 +209,7 @@ namespace DAL
             return lista;
         }
 
-        // -------------------- backup / restore --------------------
+        // -------------------- backpu / restore --------------------
 
         // ojo: el .bak lo escribe sql server, no la app, asi que la carpeta
         // tiene que tener permisos para el servicio de sql

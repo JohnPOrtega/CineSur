@@ -12,6 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <ApplicationIcon>Recursos\cinesur.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -81,16 +82,16 @@
     <Compile Include="Admin\BackupBD.Designer.cs">
       <DependentUpon>BackupBD.cs</DependentUpon>
     </Compile>
-    <Compile Include="CambiarIdioma.cs">
+    <Compile Include="Usuario\CambiarIdioma.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CambiarIdioma.Designer.cs">
+    <Compile Include="Usuario\CambiarIdioma.Designer.cs">
       <DependentUpon>CambiarIdioma.cs</DependentUpon>
     </Compile>
-    <Compile Include="CambioContraseña.cs">
+    <Compile Include="Usuario\CambioContraseña.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CambioContraseña.Designer.cs">
+    <Compile Include="Usuario\CambioContraseña.Designer.cs">
       <DependentUpon>CambioContraseña.cs</DependentUpon>
     </Compile>
     <Compile Include="Admin\GestionUs.cs">
@@ -153,6 +154,24 @@
     <Compile Include="Master\Clientes.Designer.cs">
       <DependentUpon>Clientes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Master\AuditoriaCambios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Master\AuditoriaCambios.Designer.cs">
+      <DependentUpon>AuditoriaCambios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Master\Productos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Master\Productos.Designer.cs">
+      <DependentUpon>Productos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Master\Proveedores.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Master\Proveedores.Designer.cs">
+      <DependentUpon>Proveedores.cs</DependentUpon>
+    </Compile>
     <Compile Include="Ventas\Cartelera.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -190,6 +209,24 @@
     <Compile Include="Ventas\ControlAcceso.Designer.cs">
       <DependentUpon>ControlAcceso.cs</DependentUpon>
     </Compile>
+    <Compile Include="Ventas\VentaCandy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ventas\VentaCandy.Designer.cs">
+      <DependentUpon>VentaCandy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Compras\Presupuestos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Compras\Presupuestos.Designer.cs">
+      <DependentUpon>Presupuestos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Compras\OrdenesCompra.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Compras\OrdenesCompra.Designer.cs">
+      <DependentUpon>OrdenesCompra.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reportes\ReporteFunciones.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -208,10 +245,10 @@
     <EmbeddedResource Include="Admin\Auditoria.resx">
       <DependentUpon>Auditoria.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CambiarIdioma.resx">
+    <EmbeddedResource Include="Usuario\CambiarIdioma.resx">
       <DependentUpon>CambiarIdioma.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CambioContraseña.resx">
+    <EmbeddedResource Include="Usuario\CambioContraseña.resx">
       <DependentUpon>CambioContraseña.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Admin\GestionUs.resx">
@@ -234,6 +271,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ventas\ControlAcceso.resx">
       <DependentUpon>ControlAcceso.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ventas\VentaCandy.resx">
+      <DependentUpon>VentaCandy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Compras\Presupuestos.resx">
+      <DependentUpon>Presupuestos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Compras\OrdenesCompra.resx">
+      <DependentUpon>OrdenesCompra.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ReporteFunciones.resx">
       <DependentUpon>ReporteFunciones.cs</DependentUpon>
@@ -265,6 +311,15 @@
     <EmbeddedResource Include="Master\Clientes.resx">
       <DependentUpon>Clientes.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Master\AuditoriaCambios.resx">
+      <DependentUpon>AuditoriaCambios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Master\Productos.resx">
+      <DependentUpon>Productos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Master\Proveedores.resx">
+      <DependentUpon>Proveedores.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MapaButacas_14OR.resx">
       <DependentUpon>MapaButacas_14OR.cs</DependentUpon>
     </EmbeddedResource>
@@ -280,6 +335,15 @@
     <None Include="Idiomas\es.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="Recursos\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Recursos\logo_watermark.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Recursos\cinesur.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="..\EsquemaCompleto_43BO.sql">
       <Link>EsquemaCompleto_43BO.sql</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

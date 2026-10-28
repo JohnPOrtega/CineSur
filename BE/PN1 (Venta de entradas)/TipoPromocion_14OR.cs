@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace BE
 {
-    // tipo de promocion. por ahora dos: un porcentaje de descuento, o el 2x1.
-    // (todas aplican a entradas y son beneficio de socio)
+    //TIPODEPROMOCION por ahroa lodejaca en enum despus veo si conviene hacer una tabla de tipos de promocio
     public enum TipoPromocion_14OR
     {
         Porcentaje,

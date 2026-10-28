@@ -55,15 +55,21 @@
     <Compile Include="BllDV_43BO.cs" />
     <Compile Include="BllPatente_43BO.cs" />
     <Compile Include="BllUser_43BO.cs" />
-    <Compile Include="BllPelicula_14OR.cs" />
-    <Compile Include="BllFuncion_14OR.cs" />
-    <Compile Include="BllSala_14OR.cs" />
-    <Compile Include="BllButaca_14OR.cs" />
-    <Compile Include="BllAsientoFuncion_14OR.cs" />
-    <Compile Include="BllVenta_14OR.cs" />
-    <Compile Include="BllCliente_14OR.cs" />
-    <Compile Include="BllPromocion_14OR.cs" />
-    <Compile Include="BllReporte_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\BllPelicula_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\BllFuncion_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\BllSala_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\BllButaca_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\BllAsientoFuncion_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\BllVenta_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\BllCliente_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\BllPromocion_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\BllReporte_14OR.cs" />
+    <Compile Include="PN2 %28Orden de compra%29\BllProducto_14OR.cs" />
+    <Compile Include="PN2 %28Orden de compra%29\BllProveedor_14OR.cs" />
+    <Compile Include="PN2 %28Orden de compra%29\BllVentaCandy_14OR.cs" />
+    <Compile Include="PN2 %28Orden de compra%29\BllPresupuesto_14OR.cs" />
+    <Compile Include="PN2 %28Orden de compra%29\BllOrdenCompra_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\BllPeliculaCambio_14OR.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -83,5 +89,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -41,18 +41,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormatoFuncion_14OR.cs" />
-    <Compile Include="Pelicula_14OR.cs" />
-    <Compile Include="Funcion_14OR.cs" />
-    <Compile Include="Sala_14OR.cs" />
-    <Compile Include="Butaca_14OR.cs" />
-    <Compile Include="AsientoFuncion_14OR.cs" />
-    <Compile Include="Venta_14OR.cs" />
-    <Compile Include="Cliente_14OR.cs" />
-    <Compile Include="ClientesXml_14OR.cs" />
-    <Compile Include="TipoPromocion_14OR.cs" />
-    <Compile Include="Promocion_14OR.cs" />
-    <Compile Include="ReporteFuncionOcupacion_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\FormatoFuncion_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\Pelicula_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\Funcion_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\Sala_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\Butaca_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\AsientoFuncion_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\Venta_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\Cliente_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\ClientesXml_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\TipoPromocion_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\Promocion_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\ReporteFuncionOcupacion_14OR.cs" />
+    <Compile Include="PN2 %28Orden de compra%29\Producto_14OR.cs" />
+    <Compile Include="PN2 %28Orden de compra%29\Proveedor_14OR.cs" />
+    <Compile Include="PN2 %28Orden de compra%29\VentaCandy_14OR.cs" />
+    <Compile Include="PN2 %28Orden de compra%29\DetalleVentaCandy_14OR.cs" />
+    <Compile Include="PN2 %28Orden de compra%29\Presupuesto_14OR.cs" />
+    <Compile Include="PN2 %28Orden de compra%29\DetallePresupuesto_14OR.cs" />
+    <Compile Include="PN2 %28Orden de compra%29\OrdenCompra_14OR.cs" />
+    <Compile Include="PN2 %28Orden de compra%29\DetalleOrdenCompra_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\PeliculaCambio_14OR.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

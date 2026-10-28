@@ -39,6 +39,9 @@ namespace Proyecto_IngSoftware
 
         private void Menu_Load(object sender, EventArgs e)
         {
+            // logo de CineSur como marca de agua en el fondo + icono de la app
+            CargarBranding_14OR();
+
             try
             {
                 var usuarioLogueado = SessionManager_43BO.Instancia.Usuario;
@@ -233,6 +236,31 @@ namespace Proyecto_IngSoftware
         private string ObtenerTexto(string clave, string porDefecto = null)
             => GestorIdioma_43BO.Instancia.ObtenerTexto_43BO(clave, porDefecto ?? clave);
 
+        // pone el logo tenue de CineSur como marca de agua en el fondo + el icono de la app
+        private void CargarBranding_14OR()
+        {
+            try
+            {
+                string baseDir = System.IO.Path.Combine(Application.StartupPath, "Recursos");
+
+                string wm = System.IO.Path.Combine(baseDir, "logo_watermark.png");
+                if (System.IO.File.Exists(wm))
+                {
+                    using (var fs = new System.IO.FileStream(wm, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                        this.BackgroundImage = System.Drawing.Image.FromStream(fs);
+                    this.BackgroundImageLayout = ImageLayout.Center;
+                }
+
+                string ico = System.IO.Path.Combine(baseDir, "cinesur.ico");
+                if (System.IO.File.Exists(ico))
+                    this.Icon = new System.Drawing.Icon(ico);
+            }
+            catch
+            {
+                // si falta el archivo, el menu funcina igual
+            }
+        }
+
         // control de patente por accion: si el usuario no tiene el permiso, avisa y corta.
         // el nombre de la patente es el mismo del enum Permisos_43BO.
         private bool VerificarPermiso_43BO(string patente)
@@ -348,6 +376,16 @@ namespace Proyecto_IngSoftware
             TraducirFormulario(frm);
         }
 
+        // aber la Auditoria de la bitacora de cambios desde Maestros -> Auditoria de Cambios
+        private void auditoriaCambiosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!VerificarPermiso_43BO("Maestro_AuditoriaCambios_Acceso")) return;
+            AuditoriaCambios frm = new AuditoriaCambios();
+            frm.MdiParent = this;
+            frm.Show();
+            TraducirFormulario(frm);
+        }
+
       
         private void controlAccesoToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -364,6 +402,56 @@ namespace Proyecto_IngSoftware
         {
             if (!VerificarPermiso_43BO("Reporte_FuncionesOcupacion_Acceso")) return;
             ReporteFunciones frm = new ReporteFunciones();
+            frm.MdiParent = this;
+            frm.Show();
+            TraducirFormulario(frm);
+        }
+
+        // abre el abm de productos del Candy Bar edsde Compra -> Productos (PN2)
+        private void productosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!VerificarPermiso_43BO("Compra_Productos_Acceso")) return;
+            Productos frm = new Productos();
+            frm.MdiParent = this;
+            frm.Show();
+            TraducirFormulario(frm);
+        }
+
+        // abre el abm de proveedores desde Compra -> Proveedores (PN2)
+        private void proveedoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!VerificarPermiso_43BO("Compra_Proveedores_Acceso")) return;
+            Proveedores frm = new Proveedores();
+            frm.MdiParent = this;
+            frm.Show();
+            TraducirFormulario(frm);
+        }
+
+        // abre la pantalla de venta del Candy Bar desde Venta -> Candy Bar (PN2)
+        private void candyBarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!VerificarPermiso_43BO("Venta_CandyBar_Acceso")) return;
+            VentaCandy frm = new VentaCandy();
+            frm.MdiParent = this;
+            frm.Show();
+            TraducirFormulario(frm);
+        }
+
+        // abre la pantalla de presupuestos/cotizaciones desde Compra -> Presupuestos (PN2)
+        private void presupuestosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!VerificarPermiso_43BO("Compra_Presupuestos_Acceso")) return;
+            Presupuestos frm = new Presupuestos();
+            frm.MdiParent = this;
+            frm.Show();
+            TraducirFormulario(frm);
+        }
+
+        // abre la lista de ordenes de compra desde Compra -> Ordenes de Compra (PN2)
+        private void ordenesCompraToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!VerificarPermiso_43BO("Compra_OrdenesCompra_Acceso")) return;
+            OrdenesCompra frm = new OrdenesCompra();
             frm.MdiParent = this;
             frm.Show();
             TraducirFormulario(frm);

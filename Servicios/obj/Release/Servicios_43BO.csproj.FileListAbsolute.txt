@@ -9,3 +9,14 @@ C:\Users\ariel\OneDrive\Documentos\PoryectoSoftware\Ingenieria-en-requerimiento-
 C:\Users\ariel\OneDrive\Documentos\PoryectoSoftware\Ingenieria-en-requerimiento-\Servicios\obj\Release\Servicio.5C534A4C.Up2Date
 C:\Users\ariel\OneDrive\Documentos\PoryectoSoftware\Ingenieria-en-requerimiento-\Servicios\obj\Release\Servicios.dll
 C:\Users\ariel\OneDrive\Documentos\PoryectoSoftware\Ingenieria-en-requerimiento-\Servicios\obj\Release\Servicios.pdb
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Servicios\bin\Release\Servicios.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Servicios\bin\Release\Servicios.pdb
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Servicios\bin\Release\BE.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Servicios\bin\Release\Newtonsoft.Json.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Servicios\bin\Release\BE.pdb
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Servicios\bin\Release\Newtonsoft.Json.xml
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Servicios\obj\Release\Servicios_43BO.csproj.AssemblyReference.cache
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Servicios\obj\Release\Servicios_43BO.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Servicios\obj\Release\Servicio.5C534A4C.Up2Date
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Servicios\obj\Release\Servicios.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Servicios\obj\Release\Servicios.pdb

@@ -22,6 +22,40 @@ namespace Proyecto_IngSoftware
                 GestorIdioma_43BO.Instancia.CargarIdioma_43BO("es");
             }
             GestorIdioma_43BO.Instancia.Suscribir_43BO(this);
+
+            CargarBranding_14OR();
+        }
+
+        // carga el logo de CineSur en el panel y el icono de la app (desde la carpeta Recursos)
+        private void CargarBranding_14OR()
+        {
+            try
+            {
+                string baseDir = System.IO.Path.Combine(Application.StartupPath, "Recursos");
+
+                string logo = System.IO.Path.Combine(baseDir, "logo.png");
+                if (System.IO.File.Exists(logo))
+                {
+                    using (var fs = new System.IO.FileStream(logo, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                        pbLogo.Image = System.Drawing.Image.FromStream(fs);
+                }
+
+                string ico = System.IO.Path.Combine(baseDir, "cinesur.ico");
+                if (System.IO.File.Exists(ico))
+                    this.Icon = new System.Drawing.Icon(ico);
+            }
+            catch
+            {
+                // si falta el archvio no pasa nada, el login funciona igual
+            }
+        }
+
+        // el "ojito": muestra u oculta la contraseña
+        private bool verClave_14OR = false;
+        private void btnVerClave_Click(object sender, EventArgs e)
+        {
+            verClave_14OR = !verClave_14OR;
+            txtContra.PasswordChar = verClave_14OR ? '\0' : '●';
         }
 
         public void ActualizarIdioma_43BO(Dictionary<string, string> dic)
@@ -42,9 +76,9 @@ namespace Proyecto_IngSoftware
             if (_diccionario == null) return;
 
             // pongo los textos q van en las label
-            label1.Text = ObtenerTexto("login._lbl_usuario", "UserName:");
-            label2.Text = ObtenerTexto("login._lbl_contrasena", "Contraseña:");
-            btnAceptar.Text = ObtenerTexto("login._aceptar", "Aceptar");
+            label1.Text = ObtenerTexto("login._lbl_usuario", "Usuario");
+            label2.Text = ObtenerTexto("login._lbl_contrasena", "Contraseña");
+            btnAceptar.Text = ObtenerTexto("login._ingresar", "Ingresar");
             this.Text = ObtenerTexto("login._titulo", "Login");
         }
 
@@ -60,13 +94,13 @@ namespace Proyecto_IngSoftware
                     return;
                 }
 
-                // 1) autentico PRIMERO. Si la clave esta mal, VerificarCredenciales tira la
+                // <autetntidfico prmiero ysi la clave esta mal VerificarCredenciales tira la
                 //    excepcion de intentos/bloqueo y la muestra el catch. Asi la contraseña
-                //    incorrecta descuenta intentos aunque el DV este inconsistente, en vez de
+                //    incorrecta descuenta intentos aunque el DV etse inconsistente, en vez de
                 //    tapar todo con el mensaje de "sistema no disponible".
                 User_43BO usuario_43BO = bll_43BO.VerificarCredenciales_43BO(txtUser.Text, txtContra.Text);
 
-                // 2) recien con credenciales validas verifico la integridad de datos (dvh/dvv)
+                //rcien con credenciales validas verifico la integridad de datos (dvh/dvv)
                 BllDV_43BO bllDv_43BO = new BllDV_43BO();
                 List<string> tablasInconsistentes_43BO;
 
@@ -75,7 +109,7 @@ namespace Proyecto_IngSoftware
                     // el admin puede reparar; cualquier otro rol solo recibe el aviso y se sale
                     if (bll_43BO.EsAdmin_43BO(usuario_43BO))
                     {
-                        // le paso el admin autenticado asi el recalculo/restore quedan firmados
+                        // le paso el admin autenticado asi el recalculo/restoer quedan firmados
                         // en la bitacora (en este punto todavia no inicie sesion)
                         using (IntegridadDV_43BO frmDv_43BO = new IntegridadDV_43BO(tablasInconsistentes_43BO, usuario_43BO))
                         {
@@ -98,7 +132,7 @@ namespace Proyecto_IngSoftware
                     return;
                 }
 
-                // 3) DV ok -> arranco la sesion del usuario ya autenticado
+                //si dv dio okarranco la sesion del usuario ya autenticado
                 bll_43BO.CompletarLogin_43BO(usuario_43BO);
 
                 MessageBox.Show(ObtenerTexto("login_msg_exito", "Bienvenido al sistema."),
@@ -126,7 +160,7 @@ namespace Proyecto_IngSoftware
                 }
                 string mensajeError = ex.Message;
 
-                // Si el mensaje tiene un "|" significa que trae parámetros (como los intentos restantes)
+                // Si el mensaje tiene un "|" significa que trea parámetros (como los intentos restantes)
                 if (mensajeError.Contains("|"))
                 {
                     string[] partes = mensajeError.Split('|');

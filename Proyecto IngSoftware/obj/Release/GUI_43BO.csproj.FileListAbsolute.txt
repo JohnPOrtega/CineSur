@@ -1,0 +1,58 @@
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\Recursos\logo.png
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\Recursos\logo_watermark.png
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\Recursos\cinesur.ico
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\Idiomas\es.json
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\EsquemaCompleto_43BO.sql
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\Idiomas\pr.json
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\Idiomas\en.json
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\Proyecto IngSoftware.exe.config
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\Proyecto IngSoftware.exe
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\Proyecto IngSoftware.pdb
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\BE.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\BLL.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\BouncyCastle.Cryptography.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\itextsharp.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\Newtonsoft.Json.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\Servicios.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\DAL.dll
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\BE.pdb
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\BLL.pdb
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\Servicios.pdb
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\BouncyCastle.Cryptography.xml
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\itextsharp.xml
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\Newtonsoft.Json.xml
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Release\DAL.pdb
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\GUI_43BO.csproj.AssemblyReference.cache
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.Auditoria.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.CambiarIdioma.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.CambioContraseña.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.GestionUs.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.Cartelera.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.FuncionesPorPelicula.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.SeleccionButacas.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.Cobro.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.AltaSocio_14OR.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.ControlAcceso.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.VentaCandy.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.Presupuestos.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.OrdenesCompra.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.ReporteFunciones.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.DisenarPasillos_14OR.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.Login.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.Menu.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.GestionPerfiles.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.Peliculas.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.Funciones_14OR.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.Salas.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.Promociones.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.Clientes.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.AuditoriaCambios.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.Productos.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.Proveedores.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.MapaButacas_14OR.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto_IngSoftware.Properties.Resources.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\GUI_43BO.csproj.GenerateResource.cache
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\GUI_43BO.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\GUI_43BO.csproj.Up2Date
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto IngSoftware.exe
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Release\Proyecto IngSoftware.pdb

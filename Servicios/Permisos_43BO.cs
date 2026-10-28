@@ -52,6 +52,20 @@ namespace Servicios
         Venta_ControlAcceso_Acceso = 30,
 
         // --- Reportes ---
-        Reporte_FuncionesOcupacion_Acceso = 31
+        Reporte_FuncionesOcupacion_Acceso = 31,
+
+        // --- Compra / Candy Bar (PN2) ---
+        Compra_Productos_Acceso = 32,
+        Compra_Proveedores_Acceso = 33,
+
+        // --- Venta del Candy Bar (PN2) ---
+        Venta_CandyBar_Acceso = 34,
+
+        // --- Compra: presupuestos y ordenes de compra (PN2) ---
+        Compra_Presupuestos_Acceso = 35,
+        Compra_OrdenesCompra_Acceso = 36,
+
+        // --- Bitacora de cambios (auditoria del historico de peliculas) ---
+        Maestro_AuditoriaCambios_Acceso = 37
     }
 }
