@@ -356,5 +356,18 @@
   "cobro_promo_sin": "No promotion",
   "salas_msg_confirmareliminar": "Are you sure you want to delete the theater? Its seats will also be deleted.",
   "seleccionbutacas_msg_sinbutacas": "This theater has no seats generated. Check it in Master > Theaters.",
-  "clientes_msg_confirmareliminar": "Are you sure you want to delete the selected client?"
+  "clientes_msg_confirmareliminar": "Are you sure you want to delete the selected client?",
+  "ordenescompra_lbltitulo": "PURCHASE ORDERS",
+  "ordenescompra_lbldetalle": "Selected order detail:",
+  "ordenescompra_lblremito": "Delivery note #:",
+  "ordenescompra_btnpagar": "Pay order",
+  "ordenescompra_btnregistrarrecepcion": "Register receipt",
+  "ordenescompra_msg_confirmarpago": "Confirm payment of order {0}?",
+  "ordenescompra_msg_pagada": "Order paid. It is now 'Paid'.",
+  "ordenescompra_msg_faltaremito": "Enter the delivery note number.",
+  "ordenescompra_msg_confirmarrecepcion": "Register receipt of order {0}? This closes the order and adds stock.",
+  "ordenescompra_msg_recibida": "Receipt registered. The order is now 'Closed' and stock was added.",
+  "ordenescompra_msg_errorcargar": "Could not load orders: ",
+  "ordenescompra_msg_errordetalle": "Could not load detail: ",
+  "titulo_listo": "Done"
 }

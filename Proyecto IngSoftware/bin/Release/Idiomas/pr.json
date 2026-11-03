@@ -356,5 +356,18 @@
   "cobro_promo_sin": "Sem promoção",
   "salas_msg_confirmareliminar": "Tem certeza de que deseja excluir a sala? As poltronas também serão excluídas.",
   "seleccionbutacas_msg_sinbutacas": "Esta sala não tem poltronas geradas. Verifique em Master > Salas.",
-  "clientes_msg_confirmareliminar": "Tem certeza de que deseja excluir o cliente selecionado?"
+  "clientes_msg_confirmareliminar": "Tem certeza de que deseja excluir o cliente selecionado?",
+  "ordenescompra_lbltitulo": "ORDENS DE COMPRA",
+  "ordenescompra_lbldetalle": "Detalhe do pedido selecionado:",
+  "ordenescompra_lblremito": "N° remessa:",
+  "ordenescompra_btnpagar": "Pagar pedido",
+  "ordenescompra_btnregistrarrecepcion": "Registrar recebimento",
+  "ordenescompra_msg_confirmarpago": "Confirmar o pagamento do pedido {0}?",
+  "ordenescompra_msg_pagada": "Pedido pago. Ficou no estado 'Pago'.",
+  "ordenescompra_msg_faltaremito": "Informe o número da remessa.",
+  "ordenescompra_msg_confirmarrecepcion": "Registrar o recebimento do pedido {0}? Isso fecha o pedido e soma o estoque.",
+  "ordenescompra_msg_recibida": "Recebimento registrado. O pedido ficou 'Fechado' e o estoque foi somado.",
+  "ordenescompra_msg_errorcargar": "Não consegui carregar os pedidos: ",
+  "ordenescompra_msg_errordetalle": "Não consegui carregar o detalhe: ",
+  "titulo_listo": "Pronto"
 }

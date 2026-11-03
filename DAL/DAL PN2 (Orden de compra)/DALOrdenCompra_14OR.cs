@@ -149,5 +149,79 @@ namespace DAL
 
             return lista;
         }
+
+        // pago la orden: la paso de "Abierta" a "Pagada" y le guardo la fecha de pago.
+        // el AND estado='Abierta' me cubre pa no pagar dos veces la misma orden
+        // devuelve las filas tocadas (0 si no estaba abierta)
+        public int PagarCompra_14OR(int idOrden, DateTime fechaPago)
+        {
+            string query = @"UPDATE OrdenCompra_14OR
+                             SET Estado_14OR = @estado, FechaPago_14OR = @fecha
+                             WHERE IdOrdenCompra_14OR = @id AND Estado_14OR = @abierta";
+
+            SqlParameter[] parametros = {
+                new SqlParameter("@estado", OrdenCompra_14OR.EstadoPagada_14OR),
+                new SqlParameter("@fecha", fechaPago),
+                new SqlParameter("@id", idOrden),
+                new SqlParameter("@abierta", OrdenCompra_14OR.EstadoAbierta_14OR)
+            };
+
+            return acceso.Escribir_43BO(query, parametros);
+        }
+
+        // registro la recepcion de la mercaderia todo junto en una transaccion: paso la orden
+        // de "Pagada" a "Cerrada", le guardo el remito y la fecha, y le sumo el stock a cada
+        // producto que vino. si la orden no estaba pagada no toco anda y aviso. devuelve el id
+        public int RegistrarIngresoMercaderia_14OR(OrdenCompra_14OR orden)
+        {
+            using (SqlConnection con = new SqlConnection(AccesoBD_43BO.ConnectionString))
+            {
+                con.Open();
+                using (SqlTransaction tran = con.BeginTransaction())
+                {
+                    try
+                    {
+                        int filas;
+                        using (SqlCommand cm = new SqlCommand(
+                            @"UPDATE OrdenCompra_14OR
+                                 SET Estado_14OR = @estado, NumeroRemito_14OR = @remito, FechaRecepcion_14OR = @fecha
+                               WHERE IdOrdenCompra_14OR = @id AND Estado_14OR = @pagada", con, tran))
+                        {
+                            cm.Parameters.AddWithValue("@estado", OrdenCompra_14OR.EstadoCerrada_14OR);
+                            cm.Parameters.AddWithValue("@remito", orden.NumeroRemito_14OR ?? "");
+                            cm.Parameters.AddWithValue("@fecha",
+                                orden.FechaRecepcion_14OR.HasValue ? (object)orden.FechaRecepcion_14OR.Value : DateTime.Today);
+                            cm.Parameters.AddWithValue("@id", orden.IdOrdenCompra_14OR);
+                            cm.Parameters.AddWithValue("@pagada", OrdenCompra_14OR.EstadoPagada_14OR);
+                            filas = cm.ExecuteNonQuery();
+                        }
+
+                        if (filas == 0)
+                            throw new Exception("La orden no esta en estado 'Pagada' (no se puede recibir).");
+
+                        foreach (DetalleOrdenCompra_14OR d in orden.Detalles)
+                        {
+                            using (SqlCommand cm = new SqlCommand(
+                                @"UPDATE Producto_14OR SET Stock_14OR = Stock_14OR + @cant
+                                  WHERE IdProducto_14OR = @idprod", con, tran))
+                            {
+                                cm.Parameters.AddWithValue("@cant", d.Cantidad_14OR);
+                                cm.Parameters.AddWithValue("@idprod", d.IdProducto_14OR);
+                                cm.ExecuteNonQuery();
+                            }
+                        }
+
+                        tran.Commit();
+                        DALdv_43BO.RecalcularTrasPersistencia_43BO();
+                        return orden.IdOrdenCompra_14OR;
+                    }
+                    catch
+                    {
+                        try { tran.Rollback(); } catch { }
+                        throw;
+                    }
+                }
+            }
+        }
     }
 }

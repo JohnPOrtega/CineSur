@@ -59,6 +59,45 @@ namespace BLL
             return idOrden;
         }
 
+        // pago la orden que esta abierta, le pongo la fecha de hoy
+        public void PagarCompra_14OR(int idOrden)
+        {
+            if (idOrden <= 0)
+                throw new Exception("No se selecciono ninguna orden para pagar.");
+
+            int filas = dal.PagarCompra_14OR(idOrden, DateTime.Today);
+            if (filas == 0)
+                throw new Exception("Solo se puede pagar una orden en estado 'Abierta'.");
+
+            bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.modificar, 2);
+        }
+
+        // registro el ingreso de la orden pagada: la cierro, guardo el remito y le sumo el stock
+        // a cada producto que entro. devuelve el id de la orden
+        public int RegistrarIngresoMercaderia_14OR(int idOrden, string nroRemito)
+        {
+            if (idOrden <= 0)
+                throw new Exception("No se selecciono ninguna orden.");
+
+            if (string.IsNullOrWhiteSpace(nroRemito))
+                throw new Exception("Ingresa el numero de remito.");
+
+            // me traigo los renglones para saber cuanto sumar al stock de cada producto
+            List<DetalleOrdenCompra_14OR> renglones = dal.ObtenerDetalle_14OR(idOrden);
+            if (renglones.Count == 0)
+                throw new Exception("La orden no tiene renglones.");
+
+            OrdenCompra_14OR orden = new OrdenCompra_14OR();
+            orden.IdOrdenCompra_14OR = idOrden;
+            orden.NumeroRemito_14OR = nroRemito.Trim();
+            orden.FechaRecepcion_14OR = DateTime.Today;
+            orden.Detalles = renglones;
+
+            int id = dal.RegistrarIngresoMercaderia_14OR(orden);
+            bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.Crear, 2);
+            return id;
+        }
+
         public List<OrdenCompra_14OR> Listar_14OR()
         {
             return dal.Listar_14OR();

@@ -14,7 +14,7 @@ namespace DAL
         private AccesoBD_43BO acceso = new AccesoBD_43BO();
 
         // proveedores acitvos
-        public List<Proveedor_14OR> Listar_14OR()
+        public List<Proveedor_14OR> ListarProveedor_14OR()
         {
             List<Proveedor_14OR> lista = new List<Proveedor_14OR>();
 
@@ -33,7 +33,7 @@ namespace DAL
             return lista;
         }
 
-        public int Alta_14OR(Proveedor_14OR pr)
+        public int AltaProveedor_14OR(Proveedor_14OR pr)
         {
             string query = @"INSERT INTO Proveedor_14OR
                                 (Nombre_14OR, Telefono_14OR, Email_14OR, Activo_14OR)
@@ -48,7 +48,7 @@ namespace DAL
             return acceso.Escribir_43BO(query, parametros);
         }
 
-        public int Modificar_14OR(Proveedor_14OR pr)
+        public int ModificarProveedor_14OR(Proveedor_14OR pr)
         {
             string query = @"UPDATE Proveedor_14OR
                              SET Nombre_14OR = @nombre, Telefono_14OR = @tel, Email_14OR = @mail
@@ -65,7 +65,7 @@ namespace DAL
         }
 
         // baja logica, igual que producto
-        public int Baja_14OR(int idProveedor)
+        public int BajaProveedor_14OR(int idProveedor)
         {
             string query = "UPDATE Proveedor_14OR SET Activo_14OR = 0 WHERE IdProveedor_14OR = @id";
 

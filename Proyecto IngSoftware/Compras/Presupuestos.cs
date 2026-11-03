@@ -47,13 +47,13 @@ namespace Proyecto_IngSoftware
         {
             try
             {
-                var proveedores = bllProv.Listar_14OR();
+                var proveedores = bllProv.ListarProveedor_14OR();
                 cboProveedor.DataSource = proveedores;
                 cboProveedor.DisplayMember = "Nombre_14OR";
                 cboProveedor.ValueMember = "IdProveedor_14OR";
                 cboProveedor.SelectedIndex = proveedores.Count > 0 ? 0 : -1;
 
-                productos_14OR = bllProd.Listar_14OR();
+                productos_14OR = bllProd.ListarProducto_14OR();
                 cboProducto.DataSource = productos_14OR;
                 cboProducto.DisplayMember = "Nombre_14OR";
                 cboProducto.ValueMember = "IdProducto_14OR";

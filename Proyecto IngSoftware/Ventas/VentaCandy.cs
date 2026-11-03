@@ -41,7 +41,7 @@ namespace Proyecto_IngSoftware
 
             try
             {
-                List<Producto_14OR> productos = bllProd.Listar_14OR();
+                List<Producto_14OR> productos = bllProd.ListarProducto_14OR();
 
                 if (productos.Count == 0)
                 {

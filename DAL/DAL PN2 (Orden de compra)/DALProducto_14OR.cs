@@ -15,7 +15,7 @@ namespace DAL
         private AccesoBD_43BO acceso = new AccesoBD_43BO();
 
         // traigo los productos activos (los dados de baja logica quedan afuera)
-        public List<Producto_14OR> Listar_14OR()
+        public List<Producto_14OR> ListarProducto_14OR()
         {
             List<Producto_14OR> lista = new List<Producto_14OR>();
 
@@ -57,7 +57,7 @@ namespace DAL
         }
 
         // inserto un producto nuevo. el id lo pone la base (identity)
-        public int Alta_14OR(Producto_14OR p)
+        public int AltaProducto_14OR(Producto_14OR p)
         {
             string query = @"INSERT INTO Producto_14OR
                                 (Nombre_14OR, PrecioVenta_14OR, Stock_14OR, StockCritico_14OR, Activo_14OR, Imagen_14OR, PrecioCosto_14OR)
@@ -77,7 +77,7 @@ namespace DAL
         }
 
         // modifico los datos del producto buscandolo por id
-        public int Modificar_14OR(Producto_14OR p)
+        public int ModificarProducto_14OR(Producto_14OR p)
         {
             string query = @"UPDATE Producto_14OR
                              SET Nombre_14OR = @nombre, PrecioVenta_14OR = @precio,
@@ -100,7 +100,7 @@ namespace DAL
 
         // baja LOGICA: no borro la fila, solo la marco como inactiva.
         // asi no rompo las ordenes de compra que mas adelante van a apuntar al producto.
-        public int Baja_14OR(int idProducto)
+        public int BajaProducto_14OR(int idProducto)
         {
             string query = "UPDATE Producto_14OR SET Activo_14OR = 0 WHERE IdProducto_14OR = @id";
 

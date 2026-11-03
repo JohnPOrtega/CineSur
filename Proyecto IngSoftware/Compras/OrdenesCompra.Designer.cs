@@ -21,6 +21,10 @@ namespace Proyecto_IngSoftware
             this.dgvOrdenes = new System.Windows.Forms.DataGridView();
             this.lblDetalle = new System.Windows.Forms.Label();
             this.dgvDetalleOrden = new System.Windows.Forms.DataGridView();
+            this.btnPagar = new System.Windows.Forms.Button();
+            this.btnRegistrarRecepcion = new System.Windows.Forms.Button();
+            this.lblRemito = new System.Windows.Forms.Label();
+            this.txtRemito = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrdenes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetalleOrden)).BeginInit();
             this.SuspendLayout();
@@ -65,12 +69,53 @@ namespace Proyecto_IngSoftware
             this.dgvDetalleOrden.Size = new System.Drawing.Size(760, 190);
             this.dgvDetalleOrden.TabIndex = 3;
             //
+            // lblRemito
+            //
+            this.lblRemito.AutoSize = true;
+            this.lblRemito.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lblRemito.Location = new System.Drawing.Point(12, 512);
+            this.lblRemito.Name = "lblRemito";
+            this.lblRemito.Size = new System.Drawing.Size(63, 15);
+            this.lblRemito.TabIndex = 4;
+            this.lblRemito.Text = "N° remito:";
+            //
+            // txtRemito
+            //
+            this.txtRemito.Location = new System.Drawing.Point(90, 509);
+            this.txtRemito.Name = "txtRemito";
+            this.txtRemito.Size = new System.Drawing.Size(150, 23);
+            this.txtRemito.TabIndex = 5;
+            //
+            // btnPagar
+            //
+            this.btnPagar.Location = new System.Drawing.Point(260, 507);
+            this.btnPagar.Name = "btnPagar";
+            this.btnPagar.Size = new System.Drawing.Size(130, 27);
+            this.btnPagar.TabIndex = 6;
+            this.btnPagar.Text = "Pagar orden";
+            this.btnPagar.UseVisualStyleBackColor = true;
+            this.btnPagar.Click += new System.EventHandler(this.btnPagar_Click);
+            //
+            // btnRegistrarRecepcion
+            //
+            this.btnRegistrarRecepcion.Location = new System.Drawing.Point(400, 507);
+            this.btnRegistrarRecepcion.Name = "btnRegistrarRecepcion";
+            this.btnRegistrarRecepcion.Size = new System.Drawing.Size(180, 27);
+            this.btnRegistrarRecepcion.TabIndex = 7;
+            this.btnRegistrarRecepcion.Text = "Registrar recepción";
+            this.btnRegistrarRecepcion.UseVisualStyleBackColor = true;
+            this.btnRegistrarRecepcion.Click += new System.EventHandler(this.btnRegistrarRecepcion_Click);
+            //
             // OrdenesCompra
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
-            this.ClientSize = new System.Drawing.Size(790, 520);
+            this.ClientSize = new System.Drawing.Size(790, 545);
+            this.Controls.Add(this.btnRegistrarRecepcion);
+            this.Controls.Add(this.btnPagar);
+            this.Controls.Add(this.txtRemito);
+            this.Controls.Add(this.lblRemito);
             this.Controls.Add(this.dgvDetalleOrden);
             this.Controls.Add(this.lblDetalle);
             this.Controls.Add(this.dgvOrdenes);
@@ -91,5 +136,9 @@ namespace Proyecto_IngSoftware
         private System.Windows.Forms.DataGridView dgvOrdenes;
         private System.Windows.Forms.Label lblDetalle;
         private System.Windows.Forms.DataGridView dgvDetalleOrden;
+        private System.Windows.Forms.Button btnPagar;
+        private System.Windows.Forms.Button btnRegistrarRecepcion;
+        private System.Windows.Forms.Label lblRemito;
+        private System.Windows.Forms.TextBox txtRemito;
     }
 }

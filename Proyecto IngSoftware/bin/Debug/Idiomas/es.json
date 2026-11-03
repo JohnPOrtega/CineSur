@@ -356,5 +356,18 @@
   "cobro_promo_sin": "Sin promoción",
   "salas_msg_confirmareliminar": "¿Seguro que querés eliminar la sala? Se borran también sus butacas.",
   "seleccionbutacas_msg_sinbutacas": "Esta sala no tiene butacas generadas. Revisala en Master > Salas.",
-  "clientes_msg_confirmareliminar": "¿Seguro que querés eliminar el cliente seleccionado?"
+  "clientes_msg_confirmareliminar": "¿Seguro que querés eliminar el cliente seleccionado?",
+  "ordenescompra_lbltitulo": "ÓRDENES DE COMPRA",
+  "ordenescompra_lbldetalle": "Detalle de la orden elegida:",
+  "ordenescompra_lblremito": "N° remito:",
+  "ordenescompra_btnpagar": "Pagar orden",
+  "ordenescompra_btnregistrarrecepcion": "Registrar recepción",
+  "ordenescompra_msg_confirmarpago": "¿Confirmar el pago de la orden {0}?",
+  "ordenescompra_msg_pagada": "Orden pagada. Quedó en estado 'Pagada'.",
+  "ordenescompra_msg_faltaremito": "Ingresá el número de remito.",
+  "ordenescompra_msg_confirmarrecepcion": "¿Registrar la recepción de la orden {0}? Esto cierra la orden y suma el stock.",
+  "ordenescompra_msg_recibida": "Recepción registrada. La orden quedó 'Cerrada' y se sumó el stock.",
+  "ordenescompra_msg_errorcargar": "No pude cargar las órdenes: ",
+  "ordenescompra_msg_errordetalle": "No pude cargar el detalle: ",
+  "titulo_listo": "Listo"
 }

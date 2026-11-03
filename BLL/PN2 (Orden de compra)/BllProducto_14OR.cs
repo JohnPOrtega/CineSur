@@ -15,9 +15,9 @@ namespace BLL
         private BLLBitacora_43BO bllBi = new BLLBitacora_43BO();
 
         // lista para la grilla del abm (solo activos)
-        public List<Producto_14OR> Listar_14OR()
+        public List<Producto_14OR> ListarProducto_14OR()
         {
-            return dal.Listar_14OR();
+            return dal.ListarProducto_14OR();
         }
 
         // productos que llegaron al stock critico, pra avisar que hay que reponer
@@ -26,32 +26,32 @@ namespace BLL
             return dal.ListarEnCritico_14OR();
         }
 
-        public int Alta_14OR(Producto_14OR p)
+        public int AltaProducto_14OR(Producto_14OR p)
         {
             ValidarProducto_14OR(p);
-            int r = dal.Alta_14OR(p);
+            int r = dal.AltaProducto_14OR(p);
             bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.Crear, 2);
             return r;
         }
 
-        public int Modificar_14OR(Producto_14OR p)
+        public int ModificarProducto_14OR(Producto_14OR p)
         {
             if (p.IdProducto_14OR <= 0)
                 throw new Exception("No se selecciono ningun producto para modificar.");
 
             ValidarProducto_14OR(p);
-            int r = dal.Modificar_14OR(p);
+            int r = dal.ModificarProducto_14OR(p);
             bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.modificar, 2);
             return r;
         }
 
         // baja logica: no se borra, se marca inactivo
-        public int Baja_14OR(int idProducto)
+        public int BajaProducto_14OR(int idProducto)
         {
             if (idProducto <= 0)
                 throw new Exception("No se selecciono ningun producto para eliminar.");
 
-            int r = dal.Baja_14OR(idProducto);
+            int r = dal.BajaProducto_14OR(idProducto);
             bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.Desactivar, 3);
             return r;
         }

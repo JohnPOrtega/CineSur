@@ -31,7 +31,7 @@ namespace Proyecto_IngSoftware
         {
             try
             {
-                var lista = bll.Listar_14OR().Select(pr => new
+                var lista = bll.ListarProveedor_14OR().Select(pr => new
                 {
                     pr.IdProveedor_14OR,
                     pr.Nombre_14OR,
@@ -168,13 +168,13 @@ namespace Proyecto_IngSoftware
 
                 if (modo_14OR == "nuevo")
                 {
-                    bll.Alta_14OR(pr);
+                    bll.AltaProveedor_14OR(pr);
                     MessageBox.Show("Proveedor dado de alta.", "Listo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else if (modo_14OR == "modif")
                 {
                     pr.IdProveedor_14OR = idSeleccionado_14OR;
-                    bll.Modificar_14OR(pr);
+                    bll.ModificarProveedor_14OR(pr);
                     MessageBox.Show("Proveedor modificado.", "Listo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
@@ -202,7 +202,7 @@ namespace Proyecto_IngSoftware
             try
             {
                 // baja logica, igual que productos
-                bll.Baja_14OR(idSeleccionado_14OR);
+                bll.BajaProveedor_14OR(idSeleccionado_14OR);
                 CargarGrilla_14OR();
                 ModoInicial_14OR();
             }

@@ -14,36 +14,36 @@ namespace BLL
         private DALProveedor_14OR dal = new DALProveedor_14OR();
         private BLLBitacora_43BO bllBi = new BLLBitacora_43BO();
 
-        public List<Proveedor_14OR> Listar_14OR()
+        public List<Proveedor_14OR> ListarProveedor_14OR()
         {
-            return dal.Listar_14OR();
+            return dal.ListarProveedor_14OR();
         }
 
-        public int Alta_14OR(Proveedor_14OR pr)
+        public int AltaProveedor_14OR(Proveedor_14OR pr)
         {
             ValidarProveedor_14OR(pr);
-            int r = dal.Alta_14OR(pr);
+            int r = dal.AltaProveedor_14OR(pr);
             bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.Crear, 2);
             return r;
         }
 
-        public int Modificar_14OR(Proveedor_14OR pr)
+        public int ModificarProveedor_14OR(Proveedor_14OR pr)
         {
             if (pr.IdProveedor_14OR <= 0)
                 throw new Exception("No se selecciono ningun proveedor para modificar.");
 
             ValidarProveedor_14OR(pr);
-            int r = dal.Modificar_14OR(pr);
+            int r = dal.ModificarProveedor_14OR(pr);
             bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.modificar, 2);
             return r;
         }
 
-        public int Baja_14OR(int idProveedor)
+        public int BajaProveedor_14OR(int idProveedor)
         {
             if (idProveedor <= 0)
                 throw new Exception("No se selecciono ningun proveedor para eliminar.");
 
-            int r = dal.Baja_14OR(idProveedor);
+            int r = dal.BajaProveedor_14OR(idProveedor);
             bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.Desactivar, 3);
             return r;
         }

@@ -42,7 +42,7 @@ namespace Proyecto_IngSoftware
             try
             {
                 // me guardo la lista completa (con la imagen) y proyecto lo que va a la grilla
-                productosActuales_14OR = bll.Listar_14OR();
+                productosActuales_14OR = bll.ListarProducto_14OR();
                 var lista = productosActuales_14OR.Select(p => new
                 {
                     p.IdProducto_14OR,
@@ -199,13 +199,13 @@ namespace Proyecto_IngSoftware
 
                 if (modo_14OR == "nuevo")
                 {
-                    bll.Alta_14OR(p);
+                    bll.AltaProducto_14OR(p);
                     MessageBox.Show("Producto dado de alta.", "Listo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else if (modo_14OR == "modif")
                 {
                     p.IdProducto_14OR = idSeleccionado_14OR;
-                    bll.Modificar_14OR(p);
+                    bll.ModificarProducto_14OR(p);
                     MessageBox.Show("Producto modificado.", "Listo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
@@ -234,7 +234,7 @@ namespace Proyecto_IngSoftware
             try
             {
                 // es baja olgica: el producto queda inactivo pero no se borra de la base
-                bll.Baja_14OR(idSeleccionado_14OR);
+                bll.BajaProducto_14OR(idSeleccionado_14OR);
                 CargarGrilla_14OR();
                 ModoInicial_14OR();
             }
