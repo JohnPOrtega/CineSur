@@ -104,7 +104,7 @@ namespace Proyecto_IngSoftware
             }
         }
 
-        // buscador en vivo: cada letra que escribis vuelve a filtrar (en memoria, via BLL)
+        // buscador en vivo: cada letra que escribis vuelve a filtrar
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             Refrescar_14OR();

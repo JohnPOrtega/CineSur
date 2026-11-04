@@ -42,6 +42,9 @@ namespace Proyecto_IngSoftware
         public Auditoria()
         {
             InitializeComponent();
+            // alto fijo xq el automatico se pisa con las columnas Fill y explota al abrir el form
+            dgvAuditoria.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvAuditoria.ColumnHeadersHeight = 44;
             GestorIdioma_43BO.Instancia.Suscribir_43BO(this);
         }
 

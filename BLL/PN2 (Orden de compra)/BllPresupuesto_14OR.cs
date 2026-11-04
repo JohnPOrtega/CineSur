@@ -38,7 +38,7 @@ namespace BLL
             pre.Detalles = renglones;
 
             int id = dal.PedirPresupuesto_14OR(pre);
-            bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.Crear, 2);
+            bllBi.GuardarLog_43BO(Modulo_43BO.Compras, Evento_43BO.Crear, 2);
             return id;
         }
 
@@ -58,7 +58,7 @@ namespace BLL
             }
 
             dal.CargarCotizacion_14OR(pre);
-            bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.modificar, 2);
+            bllBi.GuardarLog_43BO(Modulo_43BO.Compras, Evento_43BO.modificar, 2);
         }
 
         // Rechaza un presupuesto (no se gneera orden).
@@ -68,7 +68,7 @@ namespace BLL
                 throw new Exception("Presupuesto invalido.");
 
             dal.CambiarEstado_14OR(idPresupuesto, Presupuesto_14OR.EstadoRechazado_14OR);
-            bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.modificar, 2);
+            bllBi.GuardarLog_43BO(Modulo_43BO.Compras, Evento_43BO.modificar, 2);
         }
 
         public List<Presupuesto_14OR> Listar_14OR()

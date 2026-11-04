@@ -24,13 +24,18 @@ namespace Proyecto_IngSoftware
         // carpeta donde se guardan las imagenes de los productos (al lado del exe)
         private const string CARPETA_IMAGENES_14OR = "ProductosCandy";
 
+        // apra no ir a la base mientras se arma el form
+        private bool cargado_14OR = false;
+
         public VentaCandy()
         {
             InitializeComponent();
             GestorIdioma_43BO.Instancia.Suscribir_43BO(this);
+            this.Text = T_14OR("ventacandy_titulo", "Venta Candy Bar");
             CargarProductos_14OR();
             RefrescarPedido_14OR();
             Actualizar_14OR(null, null);
+            cargado_14OR = true;
         }
 
         // ---- tarjetas de productos ----
@@ -46,7 +51,7 @@ namespace Proyecto_IngSoftware
                 if (productos.Count == 0)
                 {
                     Label vacio = new Label();
-                    vacio.Text = "No hay productos cargados. Cargalos desde Compra > Productos.";
+                    vacio.Text = T_14OR("ventacandy_msg_sinproductos", "No hay productos cargados. Cargalos desde Compra > Productos.");
                     vacio.ForeColor = Color.Gainsboro;
                     vacio.Font = new Font("Segoe UI", 11F);
                     vacio.AutoSize = true;
@@ -59,7 +64,7 @@ namespace Proyecto_IngSoftware
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No pude cargar los productos: " + ex.Message, "Error",
+                MessageBox.Show(T_14OR("ventacandy_msg_errorcargar", "No pude cargar los productos: ") + ex.Message, T_14OR("titulo_error", "Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -97,7 +102,7 @@ namespace Proyecto_IngSoftware
             card.Controls.Add(lblPrecio);
 
             Label lblStock = new Label();
-            lblStock.Text = "Stock: " + p.Stock_14OR;
+            lblStock.Text = T_14OR("ventacandy_stock", "Stock: ") + p.Stock_14OR;
             // si esta en o por debajo del critico lo marco en rojo
             lblStock.ForeColor = (p.Stock_14OR <= p.StockCritico_14OR)
                 ? Color.FromArgb(220, 120, 120) : Color.Gainsboro;
@@ -146,7 +151,7 @@ namespace Proyecto_IngSoftware
             // no dejo cargar mas unidades de las que hay en stock
             if (cantidadActual + 1 > p.Stock_14OR)
             {
-                MessageBox.Show("No hay mas stock de " + p.Nombre_14OR + ".", "Atencion",
+                MessageBox.Show(string.Format(T_14OR("ventacandy_msg_sinstock", "No hay mas stock de {0}."), p.Nombre_14OR), T_14OR("titulo_atencion", "Atencion"),
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -182,9 +187,7 @@ namespace Proyecto_IngSoftware
 
             if (dgvPedido.Columns.Count > 0)
             {
-                dgvPedido.Columns["NombreProducto_14OR"].HeaderText = "Producto";
-                dgvPedido.Columns["Cantidad_14OR"].HeaderText = "Cant.";
-                dgvPedido.Columns["Subtotal"].HeaderText = "Subtotal";
+                TraducirColumnas_14OR();
                 dgvPedido.Columns["Cantidad_14OR"].FillWeight = 35;
                 dgvPedido.Columns["Subtotal"].FillWeight = 45;
                 dgvPedido.Columns["Subtotal"].DefaultCellStyle.Format = "0.00";
@@ -233,7 +236,7 @@ namespace Proyecto_IngSoftware
         private void Actualizar_14OR(object sender, EventArgs e)
         {
             double total = TotalPedido_14OR();
-            lblTotal.Text = "Total: $ " + total.ToString("0.00");
+            lblTotal.Text = T_14OR("ventacandy_lbltotal", "Total: $ ") + total.ToString("0.00");
 
             panelEfectivo.Visible = rbEfectivo.Checked;
             panelTarjeta.Visible = rbTarjeta.Checked;
@@ -248,12 +251,12 @@ namespace Proyecto_IngSoftware
             double paga;
             if (double.TryParse(txtPaga.Text, out paga) && paga >= total)
             {
-                lblVuelto.Text = "Vuelto: $ " + (paga - total).ToString("0.00");
+                lblVuelto.Text = T_14OR("ventacandy_lblvuelto", "Vuelto: $ ") + (paga - total).ToString("0.00");
                 lblVuelto.ForeColor = Color.FromArgb(120, 200, 130);
             }
             else
             {
-                lblVuelto.Text = "Vuelto: $ 0.00";
+                lblVuelto.Text = T_14OR("ventacandy_lblvuelto", "Vuelto: $ ") + "0.00";
                 lblVuelto.ForeColor = Color.FromArgb(200, 120, 120);
             }
         }
@@ -264,7 +267,7 @@ namespace Proyecto_IngSoftware
 
             if (carrito.Count == 0)
             {
-                MessageBox.Show("El pedido esta vacio. Agrega productos tocando las tarjetas.", "Atencion",
+                MessageBox.Show(T_14OR("ventacandy_msg_pedidovacio", "El pedido esta vacio. Agrega productos tocando las tarjetas."), T_14OR("titulo_atencion", "Atencion"),
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -277,13 +280,13 @@ namespace Proyecto_IngSoftware
                 double paga;
                 if (!double.TryParse(txtPaga.Text, out paga))
                 {
-                    MessageBox.Show("Ingresa con cuanto paga el cliente.", "Atencion",
+                    MessageBox.Show(T_14OR("ventacandy_msg_faltapaga", "Ingresa con cuanto paga el cliente."), T_14OR("titulo_atencion", "Atencion"),
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 if (paga < total)
                 {
-                    MessageBox.Show("El monto con el que paga no alcanza para cubrir el total.", "Atencion",
+                    MessageBox.Show(T_14OR("ventacandy_msg_noalcanza", "El monto con el que paga no alcanza para cubrir el total."), T_14OR("titulo_atencion", "Atencion"),
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
@@ -294,13 +297,13 @@ namespace Proyecto_IngSoftware
                 try
                 {
                     bllVenta.ValidarTarjeta_14OR(txtNumero.Text, txtVenc.Text, txtCvv.Text);
-                    MessageBox.Show(g.ObtenerTexto_43BO("cobro_msg_tarjetaok", "Pago con tarjeta aprobado."), "Tarjeta",
+                    MessageBox.Show(g.ObtenerTexto_43BO("cobro_msg_tarjetaok", "Pago con tarjeta aprobado."), T_14OR("ventacandy_tit_tarjeta", "Tarjeta"),
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception exCard)
                 {
                     string mensaje = g.ObtenerTexto_43BO(exCard.Message, exCard.Message);
-                    MessageBox.Show(mensaje, "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(mensaje, T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
             }
@@ -313,11 +316,11 @@ namespace Proyecto_IngSoftware
                 if (rbEfectivo.Checked)
                 {
                     double paga = double.Parse(txtPaga.Text);
-                    extra = "\nVuelto: $ " + (paga - total).ToString("0.00");
+                    extra = "\n" + T_14OR("ventacandy_lblvuelto", "Vuelto: $ ") + (paga - total).ToString("0.00");
                 }
 
-                MessageBox.Show("Venta N° " + idVenta + " registrada. Total: $ " + total.ToString("0.00") + "." + extra,
-                    "Venta confirmada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(string.Format(T_14OR("ventacandy_msg_venta", "Venta N° {0} registrada. Total: $ {1}."), idVenta, total.ToString("0.00")) + extra,
+                    T_14OR("ventacandy_tit_venta", "Venta confirmada"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // limpio el pedido y refresco las tarjetas (el stock cambio)
                 carrito.Clear();
@@ -342,7 +345,7 @@ namespace Proyecto_IngSoftware
                 {
                     msg = g.ObtenerTexto_43BO(msg, msg);
                 }
-                MessageBox.Show(msg, "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(msg, T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -352,9 +355,28 @@ namespace Proyecto_IngSoftware
             RefrescarPedido_14OR();
         }
 
+        // atajo pa traducir cn el idioma actual, si falta la clave usa el texto x defecto
+        private string T_14OR(string clave, string porDefecto)
+        {
+            return GestorIdioma_43BO.Instancia.ObtenerTexto_43BO(clave, porDefecto);
+        }
+
+        private void TraducirColumnas_14OR()
+        {
+            dgvPedido.TituloColumna_43BO("NombreProducto_14OR", T_14OR("pn2_col_producto", "Producto"));
+            dgvPedido.TituloColumna_43BO("Cantidad_14OR", T_14OR("pn2_col_cant", "Cant."));
+            dgvPedido.TituloColumna_43BO("Subtotal", T_14OR("pn2_col_subtotal", "Subtotal"));
+        }
+
         public void ActualizarIdioma_43BO(System.Collections.Generic.Dictionary<string, string> dic)
         {
+            if (IsDisposed) return;
             this.TraducirAuto_43BO(dic);
+            this.Text = T_14OR("ventacandy_titulo", "Venta Candy Bar");
+            TraducirColumnas_14OR();
+            if (!cargado_14OR) return;
+            CargarProductos_14OR();
+            Actualizar_14OR(null, null);
         }
     }
 }

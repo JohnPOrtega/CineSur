@@ -55,7 +55,7 @@ namespace BLL
             orden.Importe_14OR = importe;
 
             int idOrden = dal.GenerarDesdePresupuesto_14OR(orden);
-            bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.Crear, 2);
+            bllBi.GuardarLog_43BO(Modulo_43BO.Compras, Evento_43BO.Crear, 2);
             return idOrden;
         }
 
@@ -69,7 +69,7 @@ namespace BLL
             if (filas == 0)
                 throw new Exception("Solo se puede pagar una orden en estado 'Abierta'.");
 
-            bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.modificar, 2);
+            bllBi.GuardarLog_43BO(Modulo_43BO.Compras, Evento_43BO.modificar, 2);
         }
 
         // registro el ingreso de la orden pagada: la cierro, guardo el remito y le sumo el stock
@@ -94,7 +94,7 @@ namespace BLL
             orden.Detalles = renglones;
 
             int id = dal.RegistrarIngresoMercaderia_14OR(orden);
-            bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.Crear, 2);
+            bllBi.GuardarLog_43BO(Modulo_43BO.Compras, Evento_43BO.Crear, 2);
             return id;
         }
 

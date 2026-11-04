@@ -21,11 +21,20 @@ namespace BE
 
         private string _nombre;
 
-        // razon social o nombre del proveedor
+        // razon social del proveedor
         public string Nombre_14OR
         {
             get { return _nombre; }
             set { _nombre = value; }
+        }
+
+        private string _cuit;
+
+        // cuit sin guiones, 11 digitos. Los proveedores viejos pueden venir vacio
+        public string Cuit_14OR
+        {
+            get { return _cuit; }
+            set { _cuit = value; }
         }
 
         private string _telefono;

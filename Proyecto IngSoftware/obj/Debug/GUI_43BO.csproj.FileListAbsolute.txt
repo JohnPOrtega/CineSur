@@ -1,3 +1,6 @@
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Debug\Recursos\logo.png
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Debug\Recursos\logo_watermark.png
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Debug\Recursos\cinesur.ico
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Debug\Idiomas\es.json
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Debug\EsquemaCompleto_43BO.sql
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Debug\Idiomas\pr.json
@@ -30,6 +33,9 @@ C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto In
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.Cobro.resources
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.AltaSocio_14OR.resources
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.ControlAcceso.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.VentaCandy.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.Presupuestos.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.OrdenesCompra.resources
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.ReporteFunciones.resources
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.DisenarPasillos_14OR.resources
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.Login.resources
@@ -40,6 +46,9 @@ C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto In
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.Salas.resources
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.Promociones.resources
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.Clientes.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.AuditoriaCambios.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.Productos.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.Proveedores.resources
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.MapaButacas_14OR.resources
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.Properties.Resources.resources
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\GUI_43BO.csproj.GenerateResource.cache
@@ -47,12 +56,3 @@ C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto In
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\GUI_43BO.csproj.Up2Date
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto IngSoftware.exe
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto IngSoftware.pdb
-C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.Productos.resources
-C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.Proveedores.resources
-C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.VentaCandy.resources
-C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.Presupuestos.resources
-C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.OrdenesCompra.resources
-C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.AuditoriaCambios.resources
-C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Debug\Recursos\logo.png
-C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Debug\Recursos\logo_watermark.png
-C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Debug\Recursos\cinesur.ico

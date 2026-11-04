@@ -23,6 +23,12 @@ namespace Proyecto_IngSoftware
             }
         }
 
+        // pongo el titulo de la columna solo si la grila ya la tiene, puede estar vacia al cambiar el idioma
+        public static void TituloColumna_43BO(this DataGridView dgv, string columna, string texto)
+        {
+            if (dgv.Columns.Contains(columna)) dgv.Columns[columna].HeaderText = texto;
+        }
+
         // Traduccion automatica de un formulario completo.
         public static void TraducirAuto_43BO(this Form form, Dictionary<string, string> dic)
         {

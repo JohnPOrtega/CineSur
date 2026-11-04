@@ -18,9 +18,11 @@ namespace Proyecto_IngSoftware
         private void InitializeComponent()
         {
             this.lblNombre = new System.Windows.Forms.Label();
+            this.lblCuit = new System.Windows.Forms.Label();
             this.lblTelefono = new System.Windows.Forms.Label();
             this.lblEmail = new System.Windows.Forms.Label();
             this.txtNombre = new System.Windows.Forms.TextBox();
+            this.txtCuit = new System.Windows.Forms.TextBox();
             this.txtTelefono = new System.Windows.Forms.TextBox();
             this.txtEmail = new System.Windows.Forms.TextBox();
             this.btnNuevo = new System.Windows.Forms.Button();
@@ -41,13 +43,23 @@ namespace Proyecto_IngSoftware
             this.lblNombre.Name = "lblNombre";
             this.lblNombre.Size = new System.Drawing.Size(60, 15);
             this.lblNombre.TabIndex = 0;
-            this.lblNombre.Text = "Proveedor:";
+            this.lblNombre.Text = "Razon social:";
+            //
+            // lblCuit
+            //
+            this.lblCuit.AutoSize = true;
+            this.lblCuit.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lblCuit.Location = new System.Drawing.Point(24, 87);
+            this.lblCuit.Name = "lblCuit";
+            this.lblCuit.Size = new System.Drawing.Size(34, 15);
+            this.lblCuit.TabIndex = 14;
+            this.lblCuit.Text = "CUIT:";
             //
             // lblTelefono
             //
             this.lblTelefono.AutoSize = true;
             this.lblTelefono.ForeColor = System.Drawing.Color.Gainsboro;
-            this.lblTelefono.Location = new System.Drawing.Point(24, 87);
+            this.lblTelefono.Location = new System.Drawing.Point(24, 131);
             this.lblTelefono.Name = "lblTelefono";
             this.lblTelefono.Size = new System.Drawing.Size(56, 15);
             this.lblTelefono.TabIndex = 1;
@@ -57,7 +69,7 @@ namespace Proyecto_IngSoftware
             //
             this.lblEmail.AutoSize = true;
             this.lblEmail.ForeColor = System.Drawing.Color.Gainsboro;
-            this.lblEmail.Location = new System.Drawing.Point(24, 131);
+            this.lblEmail.Location = new System.Drawing.Point(24, 175);
             this.lblEmail.Name = "lblEmail";
             this.lblEmail.Size = new System.Drawing.Size(39, 15);
             this.lblEmail.TabIndex = 2;
@@ -78,20 +90,31 @@ namespace Proyecto_IngSoftware
             this.txtTelefono.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
             this.txtTelefono.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtTelefono.ForeColor = System.Drawing.Color.White;
-            this.txtTelefono.Location = new System.Drawing.Point(170, 84);
+            this.txtTelefono.Location = new System.Drawing.Point(170, 128);
             this.txtTelefono.Name = "txtTelefono";
             this.txtTelefono.Size = new System.Drawing.Size(185, 23);
-            this.txtTelefono.TabIndex = 4;
+            this.txtTelefono.TabIndex = 5;
+            //
+            // txtCuit
+            //
+            this.txtCuit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+            this.txtCuit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtCuit.ForeColor = System.Drawing.Color.White;
+            this.txtCuit.Location = new System.Drawing.Point(170, 84);
+            this.txtCuit.MaxLength = 13;
+            this.txtCuit.Name = "txtCuit";
+            this.txtCuit.Size = new System.Drawing.Size(185, 23);
+            this.txtCuit.TabIndex = 4;
             //
             // txtEmail
             //
             this.txtEmail.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
             this.txtEmail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtEmail.ForeColor = System.Drawing.Color.White;
-            this.txtEmail.Location = new System.Drawing.Point(170, 128);
+            this.txtEmail.Location = new System.Drawing.Point(170, 172);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(185, 23);
-            this.txtEmail.TabIndex = 5;
+            this.txtEmail.TabIndex = 6;
             //
             // btnNuevo
             //
@@ -100,10 +123,10 @@ namespace Proyecto_IngSoftware
             this.btnNuevo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNuevo.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnNuevo.ForeColor = System.Drawing.Color.White;
-            this.btnNuevo.Location = new System.Drawing.Point(27, 180);
+            this.btnNuevo.Location = new System.Drawing.Point(27, 224);
             this.btnNuevo.Name = "btnNuevo";
             this.btnNuevo.Size = new System.Drawing.Size(160, 44);
-            this.btnNuevo.TabIndex = 6;
+            this.btnNuevo.TabIndex = 7;
             this.btnNuevo.Text = "NUEVO";
             this.btnNuevo.UseVisualStyleBackColor = false;
             this.btnNuevo.Click += new System.EventHandler(this.btnNuevo_Click);
@@ -115,10 +138,10 @@ namespace Proyecto_IngSoftware
             this.btnModificar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnModificar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnModificar.ForeColor = System.Drawing.Color.White;
-            this.btnModificar.Location = new System.Drawing.Point(195, 180);
+            this.btnModificar.Location = new System.Drawing.Point(195, 224);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(160, 44);
-            this.btnModificar.TabIndex = 7;
+            this.btnModificar.TabIndex = 8;
             this.btnModificar.Text = "MODIFICAR";
             this.btnModificar.UseVisualStyleBackColor = false;
             this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
@@ -130,10 +153,10 @@ namespace Proyecto_IngSoftware
             this.btnEliminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEliminar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnEliminar.ForeColor = System.Drawing.Color.White;
-            this.btnEliminar.Location = new System.Drawing.Point(27, 230);
+            this.btnEliminar.Location = new System.Drawing.Point(27, 274);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(160, 44);
-            this.btnEliminar.TabIndex = 8;
+            this.btnEliminar.TabIndex = 9;
             this.btnEliminar.Text = "ELIMINAR";
             this.btnEliminar.UseVisualStyleBackColor = false;
             this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
@@ -145,10 +168,10 @@ namespace Proyecto_IngSoftware
             this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGuardar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnGuardar.ForeColor = System.Drawing.Color.White;
-            this.btnGuardar.Location = new System.Drawing.Point(195, 230);
+            this.btnGuardar.Location = new System.Drawing.Point(195, 274);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(160, 44);
-            this.btnGuardar.TabIndex = 9;
+            this.btnGuardar.TabIndex = 10;
             this.btnGuardar.Text = "GUARDAR";
             this.btnGuardar.UseVisualStyleBackColor = false;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
@@ -160,10 +183,10 @@ namespace Proyecto_IngSoftware
             this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCancelar.ForeColor = System.Drawing.Color.White;
-            this.btnCancelar.Location = new System.Drawing.Point(111, 280);
+            this.btnCancelar.Location = new System.Drawing.Point(111, 324);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(160, 44);
-            this.btnCancelar.TabIndex = 10;
+            this.btnCancelar.TabIndex = 11;
             this.btnCancelar.Text = "CANCELAR";
             this.btnCancelar.UseVisualStyleBackColor = false;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
@@ -172,11 +195,11 @@ namespace Proyecto_IngSoftware
             //
             this.lblEstado.AutoSize = true;
             this.lblEstado.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.lblEstado.Location = new System.Drawing.Point(24, 340);
+            this.lblEstado.Location = new System.Drawing.Point(24, 384);
             this.lblEstado.MaximumSize = new System.Drawing.Size(340, 0);
             this.lblEstado.Name = "lblEstado";
             this.lblEstado.Size = new System.Drawing.Size(0, 15);
-            this.lblEstado.TabIndex = 11;
+            this.lblEstado.TabIndex = 12;
             //
             // dgvProveedores
             //
@@ -188,7 +211,7 @@ namespace Proyecto_IngSoftware
             this.dgvProveedores.ReadOnly = true;
             this.dgvProveedores.RowHeadersVisible = false;
             this.dgvProveedores.Size = new System.Drawing.Size(420, 464);
-            this.dgvProveedores.TabIndex = 12;
+            this.dgvProveedores.TabIndex = 13;
             this.dgvProveedores.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProveedores_CellClick);
             //
             // Proveedores
@@ -206,9 +229,11 @@ namespace Proyecto_IngSoftware
             this.Controls.Add(this.btnNuevo);
             this.Controls.Add(this.txtEmail);
             this.Controls.Add(this.txtTelefono);
+            this.Controls.Add(this.txtCuit);
             this.Controls.Add(this.txtNombre);
             this.Controls.Add(this.lblEmail);
             this.Controls.Add(this.lblTelefono);
+            this.Controls.Add(this.lblCuit);
             this.Controls.Add(this.lblNombre);
             this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.Name = "Proveedores";
@@ -222,9 +247,11 @@ namespace Proyecto_IngSoftware
         #endregion
 
         private System.Windows.Forms.Label lblNombre;
+        private System.Windows.Forms.Label lblCuit;
         private System.Windows.Forms.Label lblTelefono;
         private System.Windows.Forms.Label lblEmail;
         private System.Windows.Forms.TextBox txtNombre;
+        private System.Windows.Forms.TextBox txtCuit;
         private System.Windows.Forms.TextBox txtTelefono;
         private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.Button btnNuevo;

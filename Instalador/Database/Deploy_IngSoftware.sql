@@ -456,6 +456,19 @@ CREATE TABLE [dbo].[Proveedor_14OR](
 ) ON [PRIMARY]
 END
 GO
+/* PN2 - CUIT del proveedor (CUN-009). Tambien sirve si la base ya existia */
+IF COL_LENGTH(N'dbo.Proveedor_14OR', N'Cuit_14OR') IS NULL
+    ALTER TABLE [dbo].[Proveedor_14OR] ADD [Cuit_14OR] [varchar](11) NULL
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'UX_Proveedor_Cuit_Activo' AND object_id = OBJECT_ID(N'[dbo].[Proveedor_14OR]'))
+    CREATE UNIQUE NONCLUSTERED INDEX [UX_Proveedor_Cuit_Activo]
+        ON [dbo].[Proveedor_14OR] ([Cuit_14OR])
+        WHERE [Cuit_14OR] IS NOT NULL AND [Activo_14OR] = 1
+GO
 /****** Objeto: Table [dbo].[Rol_43BO] Fecha de script: 27/10/2026 18:42:37 ******/
 SET ANSI_NULLS ON
 GO

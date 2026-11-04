@@ -1,1 +1,5 @@
-.vs/ 
+.vs/
+obj/
+**/bin/Release/
+**/bin/Debug/*
+!Proyecto IngSoftware/bin/Debug/Posters/

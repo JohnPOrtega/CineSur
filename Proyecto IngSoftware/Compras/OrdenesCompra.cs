@@ -23,6 +23,8 @@ namespace Proyecto_IngSoftware
         {
             InitializeComponent();
             GestorIdioma_43BO.Instancia.Suscribir_43BO(this);
+            this.Text = T_14OR("ordenescompra_titulo", "Ordenes de Compra");
+            dgvOrdenes.CellFormatting += Estado_CellFormatting_14OR;
             EstiloGrillas_14OR();
             CargarOrdenes_14OR();
             ActualizarBotones_14OR();
@@ -53,11 +55,7 @@ namespace Proyecto_IngSoftware
                 if (dgvOrdenes.Columns.Count > 0)
                 {
                     dgvOrdenes.Columns["IdOrdenCompra_14OR"].Visible = false;
-                    dgvOrdenes.Columns["NumeroOrden_14OR"].HeaderText = "N°";
-                    dgvOrdenes.Columns["NombreProveedor_14OR"].HeaderText = "Proveedor";
-                    dgvOrdenes.Columns["Fecha"].HeaderText = "Emision";
-                    dgvOrdenes.Columns["Estado_14OR"].HeaderText = "Estado";
-                    dgvOrdenes.Columns["Importe"].HeaderText = "Importe";
+                    TraducirColumnas_14OR();
                     dgvOrdenes.Columns["Importe"].DefaultCellStyle.Format = "0.00";
                     dgvOrdenes.Columns["NumeroOrden_14OR"].FillWeight = 25;
                 }
@@ -93,11 +91,8 @@ namespace Proyecto_IngSoftware
 
                 if (dgvDetalleOrden.Columns.Count > 0)
                 {
-                    dgvDetalleOrden.Columns["NombreProducto_14OR"].HeaderText = "Producto";
-                    dgvDetalleOrden.Columns["Cantidad_14OR"].HeaderText = "Cantidad";
-                    dgvDetalleOrden.Columns["PrecioCosto"].HeaderText = "Precio costo";
+                    TraducirColumnas_14OR();
                     dgvDetalleOrden.Columns["PrecioCosto"].DefaultCellStyle.Format = "0.00";
-                    dgvDetalleOrden.Columns["Subtotal"].HeaderText = "Subtotal";
                     dgvDetalleOrden.Columns["Subtotal"].DefaultCellStyle.Format = "0.00";
                 }
             }
@@ -143,7 +138,7 @@ namespace Proyecto_IngSoftware
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(T_14OR(ex.Message, ex.Message), T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -173,7 +168,7 @@ namespace Proyecto_IngSoftware
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(T_14OR(ex.Message, ex.Message), T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -201,9 +196,37 @@ namespace Proyecto_IngSoftware
             }
         }
 
+        // muestro el estado traducido en la grila pero el valor real de la celda no lo toco
+        private void Estado_CellFormatting_14OR(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            DataGridView dgv = (DataGridView)sender;
+            if (e.RowIndex < 0 || e.Value == null) return;
+            if (dgv.Columns[e.ColumnIndex].Name != "Estado_14OR") return;
+            string estado = e.Value.ToString();
+            e.Value = T_14OR("estado_" + estado.ToLower(), estado);
+            e.FormattingApplied = true;
+        }
+
+        private void TraducirColumnas_14OR()
+        {
+            dgvOrdenes.TituloColumna_43BO("NumeroOrden_14OR", T_14OR("pn2_col_numero", "N°"));
+            dgvOrdenes.TituloColumna_43BO("NombreProveedor_14OR", T_14OR("pn2_col_proveedor", "Proveedor"));
+            dgvOrdenes.TituloColumna_43BO("Fecha", T_14OR("pn2_col_emision", "Emision"));
+            dgvOrdenes.TituloColumna_43BO("Estado_14OR", T_14OR("pn2_col_estado", "Estado"));
+            dgvOrdenes.TituloColumna_43BO("Importe", T_14OR("pn2_col_importe", "Importe"));
+            dgvDetalleOrden.TituloColumna_43BO("NombreProducto_14OR", T_14OR("pn2_col_producto", "Producto"));
+            dgvDetalleOrden.TituloColumna_43BO("Cantidad_14OR", T_14OR("pn2_col_cantidad", "Cantidad"));
+            dgvDetalleOrden.TituloColumna_43BO("PrecioCosto", T_14OR("pn2_col_preciocosto", "Precio costo"));
+            dgvDetalleOrden.TituloColumna_43BO("Subtotal", T_14OR("pn2_col_subtotal", "Subtotal"));
+        }
+
         public void ActualizarIdioma_43BO(System.Collections.Generic.Dictionary<string, string> dic)
         {
+            if (IsDisposed) return;
             this.TraducirAuto_43BO(dic);
+            this.Text = T_14OR("ordenescompra_titulo", "Ordenes de Compra");
+            TraducirColumnas_14OR();
+            dgvOrdenes.Invalidate();
         }
     }
 }

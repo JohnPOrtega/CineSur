@@ -10,16 +10,23 @@ namespace Proyecto_IngSoftware
 {
     // ABM de proveedores del Candy Bar (a quienes el Supervisor de compras les pide
     // presupuesto y les compra los insumos). Mismo patron que el resto de los maestros.
-    public partial class Proveedores : Form
+    public partial class Proveedores : Form, Servicios.IidiomaObserver.IdiomaObserver_43BO
     {
         private BllProveedor_14OR bll = new BllProveedor_14OR();
 
         private int idSeleccionado_14OR = 0;
         private string modo_14OR = "";
 
+        // me guardo el ultimo estado apra volver a traducirlo si cambian el idioma
+        private string estadoClave_14OR = null;
+        private string estadoDefecto_14OR = "";
+        private int estadoNumero_14OR = 0;
+
         public Proveedores()
         {
             InitializeComponent();
+            GestorIdioma_43BO.Instancia.Suscribir_43BO(this);
+            this.Text = T_14OR("proveedores_titulo", "Proveedores");
             EstiloGrilla_14OR();
             CargarGrilla_14OR();
             ModoInicial_14OR();
@@ -35,6 +42,7 @@ namespace Proyecto_IngSoftware
                 {
                     pr.IdProveedor_14OR,
                     pr.Nombre_14OR,
+                    pr.Cuit_14OR,
                     pr.Telefono_14OR,
                     pr.Email_14OR
                 }).ToList();
@@ -43,16 +51,13 @@ namespace Proyecto_IngSoftware
 
                 if (dgvProveedores.Columns.Count > 0)
                 {
-                    dgvProveedores.Columns["IdProveedor_14OR"].HeaderText = "ID";
-                    dgvProveedores.Columns["Nombre_14OR"].HeaderText = "Proveedor";
-                    dgvProveedores.Columns["Telefono_14OR"].HeaderText = "Telefono";
-                    dgvProveedores.Columns["Email_14OR"].HeaderText = "Email";
+                    TraducirColumnas_14OR();
                     dgvProveedores.Columns["IdProveedor_14OR"].FillWeight = 30;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No pude cargar los proveedores: " + ex.Message, "Error",
+                MessageBox.Show(T_14OR("proveedores_msg_errorcargar", "No pude cargar los proveedores: ") + ex.Message, T_14OR("titulo_error", "Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -67,7 +72,9 @@ namespace Proyecto_IngSoftware
             dgvProveedores.MultiSelect = false;
             dgvProveedores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvProveedores.RowTemplate.Height = 28;
-            dgvProveedores.ColumnHeadersHeight = 30;
+            // alto fijo xq el automatico se pisa con las columnas Fill
+            dgvProveedores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvProveedores.ColumnHeadersHeight = 44;
 
             dgvProveedores.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(46, 46, 46);
             dgvProveedores.ColumnHeadersDefaultCellStyle.ForeColor = Color.Gainsboro;
@@ -93,12 +100,13 @@ namespace Proyecto_IngSoftware
             btnModificar.Enabled = false;
             btnEliminar.Enabled = false;
             btnGuardar.Enabled = false;
-            lblEstado.Text = "Selecciona una fila de la grilla, o toca NUEVO para cargar un proveedor.";
+            MostrarEstado_14OR("proveedores_estado_inicial", "Selecciona una fila de la grilla, o toca NUEVO para cargar un proveedor.");
         }
 
         private void LimpiarCampos_14OR()
         {
             txtNombre.Clear();
+            txtCuit.Clear();
             txtTelefono.Clear();
             txtEmail.Clear();
         }
@@ -106,6 +114,7 @@ namespace Proyecto_IngSoftware
         private void BloquearCampos_14OR(bool bloquear)
         {
             txtNombre.Enabled = !bloquear;
+            txtCuit.Enabled = !bloquear;
             txtTelefono.Enabled = !bloquear;
             txtEmail.Enabled = !bloquear;
         }
@@ -119,6 +128,7 @@ namespace Proyecto_IngSoftware
             idSeleccionado_14OR = Convert.ToInt32(dgvProveedores.CurrentRow.Cells["IdProveedor_14OR"].Value);
 
             txtNombre.Text = dgvProveedores.CurrentRow.Cells["Nombre_14OR"].Value.ToString();
+            txtCuit.Text = Convert.ToString(dgvProveedores.CurrentRow.Cells["Cuit_14OR"].Value);
             txtTelefono.Text = dgvProveedores.CurrentRow.Cells["Telefono_14OR"].Value.ToString();
             txtEmail.Text = dgvProveedores.CurrentRow.Cells["Email_14OR"].Value.ToString();
 
@@ -128,7 +138,7 @@ namespace Proyecto_IngSoftware
             btnEliminar.Enabled = true;
             btnGuardar.Enabled = false;
             btnNuevo.Enabled = true;
-            lblEstado.Text = "Proveedor " + idSeleccionado_14OR + " seleccionado. Podes MODIFICAR o ELIMINAR.";
+            MostrarEstado_14OR("proveedores_estado_seleccionado", "Proveedor {0} seleccionado. Podes MODIFICAR o ELIMINAR.", idSeleccionado_14OR);
         }
 
         private void btnNuevo_Click(object sender, EventArgs e)
@@ -140,7 +150,7 @@ namespace Proyecto_IngSoftware
             btnGuardar.Enabled = true;
             btnModificar.Enabled = false;
             btnEliminar.Enabled = false;
-            lblEstado.Text = "Modo ALTA: carga los datos y toca GUARDAR.";
+            MostrarEstado_14OR("pn2_estado_alta", "Modo ALTA: carga los datos y toca GUARDAR.");
             txtNombre.Focus();
         }
 
@@ -153,7 +163,7 @@ namespace Proyecto_IngSoftware
             btnGuardar.Enabled = true;
             btnNuevo.Enabled = false;
             btnEliminar.Enabled = false;
-            lblEstado.Text = "Modo MODIFICACION del proveedor " + idSeleccionado_14OR + ". Cambia lo que quieras y toca GUARDAR.";
+            MostrarEstado_14OR("proveedores_estado_modif", "Modo MODIFICACION del proveedor {0}. Cambia lo que quieras y toca GUARDAR.", idSeleccionado_14OR);
             txtNombre.Focus();
         }
 
@@ -163,19 +173,20 @@ namespace Proyecto_IngSoftware
             {
                 Proveedor_14OR pr = new Proveedor_14OR();
                 pr.Nombre_14OR = txtNombre.Text.Trim();
+                pr.Cuit_14OR = txtCuit.Text.Trim();
                 pr.Telefono_14OR = txtTelefono.Text.Trim();
                 pr.Email_14OR = txtEmail.Text.Trim();
 
                 if (modo_14OR == "nuevo")
                 {
                     bll.AltaProveedor_14OR(pr);
-                    MessageBox.Show("Proveedor dado de alta.", "Listo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(T_14OR("proveedores_msg_alta", "Proveedor dado de alta."), T_14OR("titulo_listo", "Listo"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else if (modo_14OR == "modif")
                 {
                     pr.IdProveedor_14OR = idSeleccionado_14OR;
                     bll.ModificarProveedor_14OR(pr);
-                    MessageBox.Show("Proveedor modificado.", "Listo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(T_14OR("proveedores_msg_modificado", "Proveedor modificado."), T_14OR("titulo_listo", "Listo"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
@@ -187,7 +198,7 @@ namespace Proyecto_IngSoftware
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(T_14OR(ex.Message, ex.Message), T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -195,26 +206,61 @@ namespace Proyecto_IngSoftware
         {
             if (idSeleccionado_14OR <= 0) return;
 
-            DialogResult r = MessageBox.Show("Seguro que queres eliminar el proveedor " + idSeleccionado_14OR + "?",
-                "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult r = MessageBox.Show(string.Format(T_14OR("proveedores_msg_confirmareliminar", "Seguro que queres eliminar el proveedor {0}?"), idSeleccionado_14OR),
+                T_14OR("titulo_confirmar", "Confirmar"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (r != DialogResult.Yes) return;
 
             try
             {
                 // baja logica, igual que productos
                 bll.BajaProveedor_14OR(idSeleccionado_14OR);
+                MessageBox.Show(T_14OR("proveedores_msg_baja", "Proveedor dado de baja."), T_14OR("titulo_listo", "Listo"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 CargarGrilla_14OR();
                 ModoInicial_14OR();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(T_14OR(ex.Message, ex.Message), T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             ModoInicial_14OR();
+        }
+
+        // atajo pa traducir cn el idioma actual, si falta la clave usa el texto x defecto
+        private string T_14OR(string clave, string porDefecto)
+        {
+            return GestorIdioma_43BO.Instancia.ObtenerTexto_43BO(clave, porDefecto);
+        }
+
+        // muestro el estado del abm y me lo acuerdo x si cambian de idioma
+        private void MostrarEstado_14OR(string clave, string porDefecto, int numero = 0)
+        {
+            estadoClave_14OR = clave;
+            estadoDefecto_14OR = porDefecto;
+            estadoNumero_14OR = numero;
+            lblEstado.Text = string.Format(T_14OR(clave, porDefecto), numero);
+        }
+
+        private void TraducirColumnas_14OR()
+        {
+            dgvProveedores.TituloColumna_43BO("IdProveedor_14OR", T_14OR("pn2_col_id", "ID"));
+            dgvProveedores.TituloColumna_43BO("Nombre_14OR", T_14OR("pn2_col_razonsocial", "Razon social"));
+            dgvProveedores.TituloColumna_43BO("Cuit_14OR", T_14OR("pn2_col_cuit", "CUIT"));
+            dgvProveedores.TituloColumna_43BO("Telefono_14OR", T_14OR("pn2_col_telefono", "Telefono"));
+            dgvProveedores.TituloColumna_43BO("Email_14OR", T_14OR("pn2_col_email", "Email"));
+        }
+
+        public void ActualizarIdioma_43BO(System.Collections.Generic.Dictionary<string, string> dic)
+        {
+            if (IsDisposed) return;
+            this.TraducirAuto_43BO(dic);
+            this.Text = T_14OR("proveedores_titulo", "Proveedores");
+            TraducirColumnas_14OR();
+            if (estadoClave_14OR != null)
+                lblEstado.Text = string.Format(T_14OR(estadoClave_14OR, estadoDefecto_14OR), estadoNumero_14OR);
         }
     }
 }

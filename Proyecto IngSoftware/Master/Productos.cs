@@ -10,13 +10,18 @@ namespace Proyecto_IngSoftware
 {
     // ABM de los productos del Candy Bar (pochoclos, gaseosas, combos).
     // Mismo patorn que el maestro de Peliculas: grilla + campos + Nuevo/Modificar/Eliminar/Guardar.
-    public partial class Productos : Form
+    public partial class Productos : Form, Servicios.IidiomaObserver.IdiomaObserver_43BO
     {
         // la gui solo habla con la bll
         private BllProducto_14OR bll = new BllProducto_14OR();
 
         private int idSeleccionado_14OR = 0;
         private string modo_14OR = "";
+
+        // me guardo el ultimo estado apra volver a traducirlo si cambian el idioma
+        private string estadoClave_14OR = null;
+        private string estadoDefecto_14OR = "";
+        private int estadoNumero_14OR = 0;
 
         // me guardo la lista completa para poder sacar la imagen del producto elegido
         private List<Producto_14OR> productosActuales_14OR = new List<Producto_14OR>();
@@ -30,6 +35,8 @@ namespace Proyecto_IngSoftware
         public Productos()
         {
             InitializeComponent();
+            GestorIdioma_43BO.Instancia.Suscribir_43BO(this);
+            this.Text = T_14OR("productos_titulo", "Productos (Candy Bar)");
             EstiloGrilla_14OR();
             CargarGrilla_14OR();
             ModoInicial_14OR();
@@ -56,17 +63,13 @@ namespace Proyecto_IngSoftware
 
                 if (dgvProductos.Columns.Count > 0)
                 {
-                    dgvProductos.Columns["IdProducto_14OR"].HeaderText = "ID";
-                    dgvProductos.Columns["Nombre_14OR"].HeaderText = "Producto";
-                    dgvProductos.Columns["PrecioVenta_14OR"].HeaderText = "Precio";
-                    dgvProductos.Columns["Stock_14OR"].HeaderText = "Stock";
-                    dgvProductos.Columns["StockCritico_14OR"].HeaderText = "Stock critico";
+                    TraducirColumnas_14OR();
                     dgvProductos.Columns["IdProducto_14OR"].FillWeight = 30;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No pude cargar los productos: " + ex.Message, "Error",
+                MessageBox.Show(T_14OR("productos_msg_errorcargar", "No pude cargar los productos: ") + ex.Message, T_14OR("titulo_error", "Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -107,7 +110,7 @@ namespace Proyecto_IngSoftware
             btnModificar.Enabled = false;
             btnEliminar.Enabled = false;
             btnGuardar.Enabled = false;
-            lblEstado.Text = "Selecciona una fila de la grilla, o toca NUEVO para cargar un producto.";
+            MostrarEstado_14OR("productos_estado_inicial", "Selecciona una fila de la grilla, o toca NUEVO para cargar un producto.");
         }
 
         private void LimpiarCampos_14OR()
@@ -156,7 +159,7 @@ namespace Proyecto_IngSoftware
             btnEliminar.Enabled = true;
             btnGuardar.Enabled = false;
             btnNuevo.Enabled = true;
-            lblEstado.Text = "Producto " + idSeleccionado_14OR + " seleccionado. Podes MODIFICAR o ELIMINAR.";
+            MostrarEstado_14OR("productos_estado_seleccionado", "Producto {0} seleccionado. Podes MODIFICAR o ELIMINAR.", idSeleccionado_14OR);
         }
 
         private void btnNuevo_Click(object sender, EventArgs e)
@@ -168,7 +171,7 @@ namespace Proyecto_IngSoftware
             btnGuardar.Enabled = true;
             btnModificar.Enabled = false;
             btnEliminar.Enabled = false;
-            lblEstado.Text = "Modo ALTA: carga los datos y toca GUARDAR.";
+            MostrarEstado_14OR("pn2_estado_alta", "Modo ALTA: carga los datos y toca GUARDAR.");
             txtNombre.Focus();
         }
 
@@ -181,7 +184,7 @@ namespace Proyecto_IngSoftware
             btnGuardar.Enabled = true;
             btnNuevo.Enabled = false;
             btnEliminar.Enabled = false;
-            lblEstado.Text = "Modo MODIFICACION del producto " + idSeleccionado_14OR + ". Cambia lo que quieras y toca GUARDAR.";
+            MostrarEstado_14OR("productos_estado_modif", "Modo MODIFICACION del producto {0}. Cambia lo que quieras y toca GUARDAR.", idSeleccionado_14OR);
             txtNombre.Focus();
         }
 
@@ -200,13 +203,13 @@ namespace Proyecto_IngSoftware
                 if (modo_14OR == "nuevo")
                 {
                     bll.AltaProducto_14OR(p);
-                    MessageBox.Show("Producto dado de alta.", "Listo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(T_14OR("productos_msg_alta", "Producto dado de alta."), T_14OR("titulo_listo", "Listo"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else if (modo_14OR == "modif")
                 {
                     p.IdProducto_14OR = idSeleccionado_14OR;
                     bll.ModificarProducto_14OR(p);
-                    MessageBox.Show("Producto modificado.", "Listo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(T_14OR("productos_msg_modificado", "Producto modificado."), T_14OR("titulo_listo", "Listo"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
@@ -219,7 +222,7 @@ namespace Proyecto_IngSoftware
             catch (Exception ex)
             {
                 // los mensajes de validacion de la bll caen aca
-                MessageBox.Show(ex.Message, "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(T_14OR(ex.Message, ex.Message), T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -227,8 +230,8 @@ namespace Proyecto_IngSoftware
         {
             if (idSeleccionado_14OR <= 0) return;
 
-            DialogResult r = MessageBox.Show("Seguro que queres eliminar el producto " + idSeleccionado_14OR + "?",
-                "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult r = MessageBox.Show(string.Format(T_14OR("productos_msg_confirmareliminar", "Seguro que queres eliminar el producto {0}?"), idSeleccionado_14OR),
+                T_14OR("titulo_confirmar", "Confirmar"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (r != DialogResult.Yes) return;
 
             try
@@ -240,7 +243,7 @@ namespace Proyecto_IngSoftware
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(T_14OR(ex.Message, ex.Message), T_14OR("titulo_error", "Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -270,7 +273,7 @@ namespace Proyecto_IngSoftware
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No pude copiar la imagen: " + ex.Message, "Error",
+                MessageBox.Show(T_14OR("productos_msg_errorimagen", "No pude copiar la imagen: ") + ex.Message, T_14OR("titulo_error", "Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -295,6 +298,40 @@ namespace Proyecto_IngSoftware
             string carpeta = System.IO.Path.Combine(Application.StartupPath, CARPETA_IMAGENES_14OR);
             if (!System.IO.Directory.Exists(carpeta)) System.IO.Directory.CreateDirectory(carpeta);
             return carpeta;
+        }
+
+        // atajo pa traducir cn el idioma actual, si falta la clave usa el texto x defecto
+        private string T_14OR(string clave, string porDefecto)
+        {
+            return GestorIdioma_43BO.Instancia.ObtenerTexto_43BO(clave, porDefecto);
+        }
+
+        // muestro el estado del abm y me lo acuerdo x si cambian de idioma
+        private void MostrarEstado_14OR(string clave, string porDefecto, int numero = 0)
+        {
+            estadoClave_14OR = clave;
+            estadoDefecto_14OR = porDefecto;
+            estadoNumero_14OR = numero;
+            lblEstado.Text = string.Format(T_14OR(clave, porDefecto), numero);
+        }
+
+        private void TraducirColumnas_14OR()
+        {
+            dgvProductos.TituloColumna_43BO("IdProducto_14OR", T_14OR("pn2_col_id", "ID"));
+            dgvProductos.TituloColumna_43BO("Nombre_14OR", T_14OR("pn2_col_producto", "Producto"));
+            dgvProductos.TituloColumna_43BO("PrecioVenta_14OR", T_14OR("pn2_col_precio", "Precio"));
+            dgvProductos.TituloColumna_43BO("Stock_14OR", T_14OR("pn2_col_stock", "Stock"));
+            dgvProductos.TituloColumna_43BO("StockCritico_14OR", T_14OR("pn2_col_stockcritico", "Stock critico"));
+        }
+
+        public void ActualizarIdioma_43BO(System.Collections.Generic.Dictionary<string, string> dic)
+        {
+            if (IsDisposed) return;
+            this.TraducirAuto_43BO(dic);
+            this.Text = T_14OR("productos_titulo", "Productos (Candy Bar)");
+            TraducirColumnas_14OR();
+            if (estadoClave_14OR != null)
+                lblEstado.Text = string.Format(T_14OR(estadoClave_14OR, estadoDefecto_14OR), estadoNumero_14OR);
         }
     }
 }

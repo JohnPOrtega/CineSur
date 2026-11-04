@@ -20,6 +20,7 @@ namespace Proyecto_IngSoftware
             this.lblNuevoTitulo = new System.Windows.Forms.Label();
             this.lblProveedor = new System.Windows.Forms.Label();
             this.cboProveedor = new System.Windows.Forms.ComboBox();
+            this.btnNuevoProveedor = new System.Windows.Forms.Button();
             this.lblProducto = new System.Windows.Forms.Label();
             this.cboProducto = new System.Windows.Forms.ComboBox();
             this.lblCantidad = new System.Windows.Forms.Label();
@@ -69,8 +70,21 @@ namespace Proyecto_IngSoftware
             this.cboProveedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboProveedor.Location = new System.Drawing.Point(110, 48);
             this.cboProveedor.Name = "cboProveedor";
-            this.cboProveedor.Size = new System.Drawing.Size(230, 23);
+            this.cboProveedor.Size = new System.Drawing.Size(155, 23);
             this.cboProveedor.TabIndex = 2;
+            //
+            // btnNuevoProveedor
+            //
+            this.btnNuevoProveedor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(114)))), ((int)(((byte)(176)))));
+            this.btnNuevoProveedor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNuevoProveedor.ForeColor = System.Drawing.Color.White;
+            this.btnNuevoProveedor.Location = new System.Drawing.Point(271, 46);
+            this.btnNuevoProveedor.Name = "btnNuevoProveedor";
+            this.btnNuevoProveedor.Size = new System.Drawing.Size(81, 27);
+            this.btnNuevoProveedor.TabIndex = 3;
+            this.btnNuevoProveedor.Text = "Nuevo";
+            this.btnNuevoProveedor.UseVisualStyleBackColor = false;
+            this.btnNuevoProveedor.Click += new System.EventHandler(this.btnNuevoProveedor_Click);
             //
             // lblProducto
             //
@@ -79,7 +93,7 @@ namespace Proyecto_IngSoftware
             this.lblProducto.Location = new System.Drawing.Point(12, 86);
             this.lblProducto.Name = "lblProducto";
             this.lblProducto.Size = new System.Drawing.Size(58, 15);
-            this.lblProducto.TabIndex = 3;
+            this.lblProducto.TabIndex = 4;
             this.lblProducto.Text = "Producto:";
             //
             // cboProducto
@@ -88,7 +102,7 @@ namespace Proyecto_IngSoftware
             this.cboProducto.Location = new System.Drawing.Point(110, 83);
             this.cboProducto.Name = "cboProducto";
             this.cboProducto.Size = new System.Drawing.Size(230, 23);
-            this.cboProducto.TabIndex = 4;
+            this.cboProducto.TabIndex = 5;
             //
             // lblCantidad
             //
@@ -97,7 +111,7 @@ namespace Proyecto_IngSoftware
             this.lblCantidad.Location = new System.Drawing.Point(12, 121);
             this.lblCantidad.Name = "lblCantidad";
             this.lblCantidad.Size = new System.Drawing.Size(58, 15);
-            this.lblCantidad.TabIndex = 5;
+            this.lblCantidad.TabIndex = 6;
             this.lblCantidad.Text = "Cantidad:";
             //
             // numCantidad
@@ -118,7 +132,7 @@ namespace Proyecto_IngSoftware
             0});
             this.numCantidad.Name = "numCantidad";
             this.numCantidad.Size = new System.Drawing.Size(70, 23);
-            this.numCantidad.TabIndex = 6;
+            this.numCantidad.TabIndex = 7;
             this.numCantidad.Value = new decimal(new int[] {
             1,
             0,
@@ -133,7 +147,7 @@ namespace Proyecto_IngSoftware
             this.btnAgregarItem.Location = new System.Drawing.Point(190, 116);
             this.btnAgregarItem.Name = "btnAgregarItem";
             this.btnAgregarItem.Size = new System.Drawing.Size(150, 28);
-            this.btnAgregarItem.TabIndex = 7;
+            this.btnAgregarItem.TabIndex = 8;
             this.btnAgregarItem.Text = "Agregar al pedido";
             this.btnAgregarItem.UseVisualStyleBackColor = false;
             this.btnAgregarItem.Click += new System.EventHandler(this.btnAgregarItem_Click);
@@ -144,7 +158,7 @@ namespace Proyecto_IngSoftware
             this.dgvNuevoDetalle.Location = new System.Drawing.Point(12, 155);
             this.dgvNuevoDetalle.Name = "dgvNuevoDetalle";
             this.dgvNuevoDetalle.Size = new System.Drawing.Size(340, 150);
-            this.dgvNuevoDetalle.TabIndex = 8;
+            this.dgvNuevoDetalle.TabIndex = 9;
             //
             // btnQuitarItem
             //
@@ -154,7 +168,7 @@ namespace Proyecto_IngSoftware
             this.btnQuitarItem.Location = new System.Drawing.Point(12, 312);
             this.btnQuitarItem.Name = "btnQuitarItem";
             this.btnQuitarItem.Size = new System.Drawing.Size(150, 32);
-            this.btnQuitarItem.TabIndex = 9;
+            this.btnQuitarItem.TabIndex = 10;
             this.btnQuitarItem.Text = "Quitar item";
             this.btnQuitarItem.UseVisualStyleBackColor = false;
             this.btnQuitarItem.Click += new System.EventHandler(this.btnQuitarItem_Click);
@@ -168,7 +182,7 @@ namespace Proyecto_IngSoftware
             this.btnPedir.Location = new System.Drawing.Point(172, 312);
             this.btnPedir.Name = "btnPedir";
             this.btnPedir.Size = new System.Drawing.Size(180, 32);
-            this.btnPedir.TabIndex = 10;
+            this.btnPedir.TabIndex = 11;
             this.btnPedir.Text = "PEDIR PRESUPUESTO";
             this.btnPedir.UseVisualStyleBackColor = false;
             this.btnPedir.Click += new System.EventHandler(this.btnPedir_Click);
@@ -179,7 +193,7 @@ namespace Proyecto_IngSoftware
             this.lblCriticos.Location = new System.Drawing.Point(12, 356);
             this.lblCriticos.Name = "lblCriticos";
             this.lblCriticos.Size = new System.Drawing.Size(340, 70);
-            this.lblCriticos.TabIndex = 11;
+            this.lblCriticos.TabIndex = 12;
             this.lblCriticos.Text = "";
             //
             // lblListaTitulo
@@ -190,7 +204,7 @@ namespace Proyecto_IngSoftware
             this.lblListaTitulo.Location = new System.Drawing.Point(370, 12);
             this.lblListaTitulo.Name = "lblListaTitulo";
             this.lblListaTitulo.Size = new System.Drawing.Size(123, 20);
-            this.lblListaTitulo.TabIndex = 12;
+            this.lblListaTitulo.TabIndex = 13;
             this.lblListaTitulo.Text = "PRESUPUESTOS";
             //
             // dgvPresupuestos
@@ -200,7 +214,7 @@ namespace Proyecto_IngSoftware
             this.dgvPresupuestos.Name = "dgvPresupuestos";
             this.dgvPresupuestos.ReadOnly = true;
             this.dgvPresupuestos.Size = new System.Drawing.Size(598, 170);
-            this.dgvPresupuestos.TabIndex = 13;
+            this.dgvPresupuestos.TabIndex = 14;
             this.dgvPresupuestos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPresupuestos_CellClick);
             //
             // lblDetalleTitulo
@@ -210,7 +224,7 @@ namespace Proyecto_IngSoftware
             this.lblDetalleTitulo.Location = new System.Drawing.Point(370, 221);
             this.lblDetalleTitulo.Name = "lblDetalleTitulo";
             this.lblDetalleTitulo.Size = new System.Drawing.Size(230, 15);
-            this.lblDetalleTitulo.TabIndex = 14;
+            this.lblDetalleTitulo.TabIndex = 15;
             this.lblDetalleTitulo.Text = "Detalle / precios cotizados (editar precio):";
             //
             // dgvDetalle
@@ -219,7 +233,7 @@ namespace Proyecto_IngSoftware
             this.dgvDetalle.Location = new System.Drawing.Point(370, 242);
             this.dgvDetalle.Name = "dgvDetalle";
             this.dgvDetalle.Size = new System.Drawing.Size(598, 150);
-            this.dgvDetalle.TabIndex = 15;
+            this.dgvDetalle.TabIndex = 16;
             this.dgvDetalle.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDetalle_CellEndEdit);
             //
             // lblTotalPresu
@@ -230,7 +244,7 @@ namespace Proyecto_IngSoftware
             this.lblTotalPresu.Location = new System.Drawing.Point(370, 398);
             this.lblTotalPresu.Name = "lblTotalPresu";
             this.lblTotalPresu.Size = new System.Drawing.Size(143, 19);
-            this.lblTotalPresu.TabIndex = 16;
+            this.lblTotalPresu.TabIndex = 17;
             this.lblTotalPresu.Text = "Total cotizado: $ 0.00";
             //
             // btnCargarPrecios
@@ -242,7 +256,7 @@ namespace Proyecto_IngSoftware
             this.btnCargarPrecios.Location = new System.Drawing.Point(370, 428);
             this.btnCargarPrecios.Name = "btnCargarPrecios";
             this.btnCargarPrecios.Size = new System.Drawing.Size(190, 36);
-            this.btnCargarPrecios.TabIndex = 17;
+            this.btnCargarPrecios.TabIndex = 18;
             this.btnCargarPrecios.Text = "Guardar precios (Recibido)";
             this.btnCargarPrecios.UseVisualStyleBackColor = false;
             this.btnCargarPrecios.Click += new System.EventHandler(this.btnCargarPrecios_Click);
@@ -256,7 +270,7 @@ namespace Proyecto_IngSoftware
             this.btnAceptar.Location = new System.Drawing.Point(570, 428);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(200, 36);
-            this.btnAceptar.TabIndex = 18;
+            this.btnAceptar.TabIndex = 19;
             this.btnAceptar.Text = "Aceptar y generar orden";
             this.btnAceptar.UseVisualStyleBackColor = false;
             this.btnAceptar.Click += new System.EventHandler(this.btnAceptar_Click);
@@ -270,7 +284,7 @@ namespace Proyecto_IngSoftware
             this.btnRechazar.Location = new System.Drawing.Point(778, 428);
             this.btnRechazar.Name = "btnRechazar";
             this.btnRechazar.Size = new System.Drawing.Size(120, 36);
-            this.btnRechazar.TabIndex = 19;
+            this.btnRechazar.TabIndex = 20;
             this.btnRechazar.Text = "Rechazar";
             this.btnRechazar.UseVisualStyleBackColor = false;
             this.btnRechazar.Click += new System.EventHandler(this.btnRechazar_Click);
@@ -298,6 +312,7 @@ namespace Proyecto_IngSoftware
             this.Controls.Add(this.lblCantidad);
             this.Controls.Add(this.cboProducto);
             this.Controls.Add(this.lblProducto);
+            this.Controls.Add(this.btnNuevoProveedor);
             this.Controls.Add(this.cboProveedor);
             this.Controls.Add(this.lblProveedor);
             this.Controls.Add(this.lblNuevoTitulo);
@@ -318,6 +333,7 @@ namespace Proyecto_IngSoftware
         private System.Windows.Forms.Label lblNuevoTitulo;
         private System.Windows.Forms.Label lblProveedor;
         private System.Windows.Forms.ComboBox cboProveedor;
+        private System.Windows.Forms.Button btnNuevoProveedor;
         private System.Windows.Forms.Label lblProducto;
         private System.Windows.Forms.ComboBox cboProducto;
         private System.Windows.Forms.Label lblCantidad;

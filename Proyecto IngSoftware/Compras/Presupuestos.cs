@@ -29,16 +29,23 @@ namespace Proyecto_IngSoftware
         private Presupuesto_14OR presuSeleccionado_14OR = null;
         private List<DetallePresupuesto_14OR> detalleActual_14OR = new List<DetallePresupuesto_14OR>();
 
+        // apra no ir a la base mientras se arma el form
+        private bool cargado_14OR = false;
+
         public Presupuestos()
         {
             InitializeComponent();
             GestorIdioma_43BO.Instancia.Suscribir_43BO(this);
+            this.Text = T_14OR("presupuestos_titulo", "Presupuestos / Cotizaciones");
+            dgvPresupuestos.CellFormatting += Estado_CellFormatting_14OR;
             EstiloGrillas_14OR();
             CargarCombos_14OR();
             MostrarCriticos_14OR();
             CargarPresupuestos_14OR();
             RefrescarNuevoDetalle_14OR();
             ActualizarBotones_14OR();
+            ActualizarTotal_14OR();
+            cargado_14OR = true;
         }
 
         // ---- carga inicial ----
@@ -61,7 +68,7 @@ namespace Proyecto_IngSoftware
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No pude cargar proveedores/productos: " + ex.Message, "Error",
+                MessageBox.Show(T_14OR("presupuestos_msg_errorcombos", "No pude cargar proveedores/productos: ") + ex.Message, T_14OR("titulo_error", "Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -74,11 +81,11 @@ namespace Proyecto_IngSoftware
                 var criticos = bllProd.ListarEnCritico_14OR();
                 if (criticos.Count == 0)
                 {
-                    lblCriticos.Text = "No hay productos en stock critico ahora mismo.";
+                    lblCriticos.Text = T_14OR("presupuestos_msg_sincriticos", "No hay productos en stock critico ahora mismo.");
                 }
                 else
                 {
-                    lblCriticos.Text = "Conviene reponer (stock critico): " +
+                    lblCriticos.Text = T_14OR("presupuestos_msg_criticos", "Conviene reponer (stock critico): ") +
                         string.Join(", ", criticos.Select(p => p.Nombre_14OR + " (" + p.Stock_14OR + ")"));
                 }
             }
@@ -106,21 +113,40 @@ namespace Proyecto_IngSoftware
                 if (dgvPresupuestos.Columns.Count > 0)
                 {
                     dgvPresupuestos.Columns["IdPresupuesto_14OR"].Visible = false;
-                    dgvPresupuestos.Columns["NumeroPresupuesto_14OR"].HeaderText = "N°";
-                    dgvPresupuestos.Columns["NombreProveedor_14OR"].HeaderText = "Proveedor";
-                    dgvPresupuestos.Columns["Fecha"].HeaderText = "Fecha";
-                    dgvPresupuestos.Columns["Estado_14OR"].HeaderText = "Estado";
+                    TraducirColumnas_14OR();
                     dgvPresupuestos.Columns["NumeroPresupuesto_14OR"].FillWeight = 25;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No pude cargar los presupuestos: " + ex.Message, "Error",
+                MessageBox.Show(T_14OR("presupuestos_msg_errorcargar", "No pude cargar los presupuestos: ") + ex.Message, T_14OR("titulo_error", "Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         // ---- nuevo pedido (izquierda) ----
+
+        // extension del CUN-006: si el proveedor no existe lo das de alta aca mismo (CUN-009).
+        // pide la misma patente que el menu Compra -> Proveedores
+        private void btnNuevoProveedor_Click(object sender, EventArgs e)
+        {
+            if (Servicios.SessionManager_43BO.Instancia.Permisos == null ||
+                !Servicios.SessionManager_43BO.Instancia.Permisos.Contains("Compra_Proveedores_Acceso"))
+            {
+                MessageBox.Show(T_14OR("menu.msg_acceso_denegado", "Acceso denegado"), T_14OR("titulo_error", "Error"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using (Proveedores frm = new Proveedores())
+            {
+                frm.StartPosition = FormStartPosition.CenterParent;
+                frm.ShowDialog(this);
+            }
+
+            // recargo xq puede haber agregado o dado de baja alguno
+            CargarCombos_14OR();
+        }
 
         private void btnAgregarItem_Click(object sender, EventArgs e)
         {
@@ -173,8 +199,7 @@ namespace Proyecto_IngSoftware
 
             if (dgvNuevoDetalle.Columns.Count > 0)
             {
-                dgvNuevoDetalle.Columns["NombreProducto_14OR"].HeaderText = "Producto";
-                dgvNuevoDetalle.Columns["Cantidad_14OR"].HeaderText = "Cantidad";
+                TraducirColumnas_14OR();
             }
         }
 
@@ -182,12 +207,12 @@ namespace Proyecto_IngSoftware
         {
             if (cboProveedor.SelectedValue == null)
             {
-                MessageBox.Show("Elegi un proveedor.", "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(T_14OR("Elegi un proveedor.", "Elegi un proveedor."), T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             if (nuevoDetalle_14OR.Count == 0)
             {
-                MessageBox.Show("Agrega al menos un producto para cotizar.", "Atencion",
+                MessageBox.Show(T_14OR("Agrega al menos un producto para cotizar.", "Agrega al menos un producto para cotizar."), T_14OR("titulo_atencion", "Atencion"),
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -209,8 +234,7 @@ namespace Proyecto_IngSoftware
 
                 int id = bllPre.PedirPresupuesto_14OR(idProv, copia);
 
-                MessageBox.Show("Presupuesto N° " + id + " pedido al proveedor. Cuando te pase los precios, " +
-                    "selecciónalo en la lista y cargalos.", "Listo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(string.Format(T_14OR("presupuestos_msg_pedido", "Presupuesto N° {0} pedido al proveedor. Cuando te pase los precios, selecciónalo en la lista y cargalos."), id), T_14OR("titulo_listo", "Listo"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 nuevoDetalle_14OR.Clear();
                 RefrescarNuevoDetalle_14OR();
@@ -218,7 +242,7 @@ namespace Proyecto_IngSoftware
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(T_14OR(ex.Message, ex.Message), T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -263,11 +287,9 @@ namespace Proyecto_IngSoftware
                 dgvDetalle.Columns["IdPresupuesto_14OR"].Visible = false;
                 dgvDetalle.Columns["IdProducto_14OR"].Visible = false;
                 dgvDetalle.Columns["Subtotal_14OR"].Visible = false;
-                dgvDetalle.Columns["NombreProducto_14OR"].HeaderText = "Producto";
+                TraducirColumnas_14OR();
                 dgvDetalle.Columns["NombreProducto_14OR"].ReadOnly = true;
-                dgvDetalle.Columns["Cantidad_14OR"].HeaderText = "Cantidad";
                 dgvDetalle.Columns["Cantidad_14OR"].ReadOnly = true;
-                dgvDetalle.Columns["PrecioCotizado_14OR"].HeaderText = "Precio cotizado";
                 dgvDetalle.Columns["PrecioCotizado_14OR"].DefaultCellStyle.Format = "0.00";
                 // el precio solo se puede editar si el presupuesto todavia no fue aceptado/rechazado
                 bool editable = presuSeleccionado_14OR != null &&
@@ -282,7 +304,7 @@ namespace Proyecto_IngSoftware
         private void ActualizarTotal_14OR()
         {
             double total = detalleActual_14OR.Sum(d => d.Subtotal_14OR);
-            lblTotalPresu.Text = "Total cotizado: $ " + total.ToString("0.00");
+            lblTotalPresu.Text = T_14OR("presupuestos_lbltotal", "Total cotizado: $ ") + total.ToString("0.00");
         }
 
         private void dgvDetalle_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -303,8 +325,8 @@ namespace Proyecto_IngSoftware
                 presuSeleccionado_14OR.Detalles = detalleActual_14OR;
                 bllPre.CargarCotizacion_14OR(presuSeleccionado_14OR);
 
-                MessageBox.Show("Precios cargados. El presupuesto quedo en 'Recibido' y ya se puede aceptar.",
-                    "Listo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(T_14OR("presupuestos_msg_precios", "Precios cargados. El presupuesto quedo en 'Recibido' y ya se puede aceptar."),
+                    T_14OR("titulo_listo", "Listo"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 presuSeleccionado_14OR.Estado_14OR = Presupuesto_14OR.EstadoRecibido_14OR;
                 CargarPresupuestos_14OR();
@@ -313,7 +335,7 @@ namespace Proyecto_IngSoftware
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(T_14OR(ex.Message, ex.Message), T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -321,28 +343,27 @@ namespace Proyecto_IngSoftware
         {
             if (presuSeleccionado_14OR == null) return;
 
-            if (MessageBox.Show("Aceptar este presupuesto y generar la orden de compra?",
-                "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+            if (MessageBox.Show(T_14OR("presupuestos_msg_confirmaraceptar", "Aceptar este presupuesto y generar la orden de compra?"),
+                T_14OR("titulo_confirmar", "Confirmar"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
 
             try
             {
                 int idOrden = bllOrden.GenerarDesdePresupuesto_14OR(presuSeleccionado_14OR);
 
-                MessageBox.Show("Orden de compra N° " + idOrden + " generada en estado 'Abierta'.\n" +
-                    "La podes ver y pagar desde Compra > Ordenes de Compra.",
-                    "Orden generada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(string.Format(T_14OR("presupuestos_msg_ordengenerada", "Orden de compra N° {0} generada en estado 'Abierta'.\nLa podes ver y pagar desde Compra > Ordenes de Compra."), idOrden),
+                    T_14OR("presupuestos_tit_ordengenerada", "Orden generada"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 CargarPresupuestos_14OR();
                 detalleActual_14OR = new List<DetallePresupuesto_14OR>();
                 presuSeleccionado_14OR = null;
                 dgvDetalle.DataSource = null;
-                lblTotalPresu.Text = "Total cotizado: $ 0.00";
+                ActualizarTotal_14OR();
                 ActualizarBotones_14OR();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(T_14OR(ex.Message, ex.Message), T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -350,8 +371,8 @@ namespace Proyecto_IngSoftware
         {
             if (presuSeleccionado_14OR == null) return;
 
-            if (MessageBox.Show("Rechazar este presupuesto?",
-                "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+            if (MessageBox.Show(T_14OR("presupuestos_msg_confirmarrechazar", "Rechazar este presupuesto?"),
+                T_14OR("titulo_confirmar", "Confirmar"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
 
             try
@@ -361,12 +382,12 @@ namespace Proyecto_IngSoftware
                 detalleActual_14OR = new List<DetallePresupuesto_14OR>();
                 presuSeleccionado_14OR = null;
                 dgvDetalle.DataSource = null;
-                lblTotalPresu.Text = "Total cotizado: $ 0.00";
+                ActualizarTotal_14OR();
                 ActualizarBotones_14OR();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(T_14OR(ex.Message, ex.Message), T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -408,9 +429,46 @@ namespace Proyecto_IngSoftware
             dgvDetalle.ReadOnly = false;
         }
 
+        // atajo pa traducir cn el idioma actual, si falta la clave usa el texto x defecto
+        private string T_14OR(string clave, string porDefecto)
+        {
+            return GestorIdioma_43BO.Instancia.ObtenerTexto_43BO(clave, porDefecto);
+        }
+
+        // muestro el estado traducido en la grila pero el valor real de la celda no lo toco
+        private void Estado_CellFormatting_14OR(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            DataGridView dgv = (DataGridView)sender;
+            if (e.RowIndex < 0 || e.Value == null) return;
+            if (dgv.Columns[e.ColumnIndex].Name != "Estado_14OR") return;
+            string estado = e.Value.ToString();
+            e.Value = T_14OR("estado_" + estado.ToLower(), estado);
+            e.FormattingApplied = true;
+        }
+
+        private void TraducirColumnas_14OR()
+        {
+            dgvPresupuestos.TituloColumna_43BO("NumeroPresupuesto_14OR", T_14OR("pn2_col_numero", "N°"));
+            dgvPresupuestos.TituloColumna_43BO("NombreProveedor_14OR", T_14OR("pn2_col_proveedor", "Proveedor"));
+            dgvPresupuestos.TituloColumna_43BO("Fecha", T_14OR("pn2_col_fecha", "Fecha"));
+            dgvPresupuestos.TituloColumna_43BO("Estado_14OR", T_14OR("pn2_col_estado", "Estado"));
+            dgvNuevoDetalle.TituloColumna_43BO("NombreProducto_14OR", T_14OR("pn2_col_producto", "Producto"));
+            dgvNuevoDetalle.TituloColumna_43BO("Cantidad_14OR", T_14OR("pn2_col_cantidad", "Cantidad"));
+            dgvDetalle.TituloColumna_43BO("NombreProducto_14OR", T_14OR("pn2_col_producto", "Producto"));
+            dgvDetalle.TituloColumna_43BO("Cantidad_14OR", T_14OR("pn2_col_cantidad", "Cantidad"));
+            dgvDetalle.TituloColumna_43BO("PrecioCotizado_14OR", T_14OR("pn2_col_preciocotizado", "Precio cotizado"));
+        }
+
         public void ActualizarIdioma_43BO(System.Collections.Generic.Dictionary<string, string> dic)
         {
+            if (IsDisposed) return;
             this.TraducirAuto_43BO(dic);
+            this.Text = T_14OR("presupuestos_titulo", "Presupuestos / Cotizaciones");
+            TraducirColumnas_14OR();
+            dgvPresupuestos.Invalidate();
+            if (!cargado_14OR) return;
+            MostrarCriticos_14OR();
+            ActualizarTotal_14OR();
         }
     }
 }
