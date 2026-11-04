@@ -103,6 +103,7 @@ namespace Proyecto_IngSoftware
                 {
                     p.IdPresupuesto_14OR,
                     p.NumeroPresupuesto_14OR,
+                    p.IdProveedor_14OR,
                     p.NombreProveedor_14OR,
                     Fecha = p.FechaPedido_14OR.ToString("dd/MM/yyyy"),
                     p.Estado_14OR
@@ -113,14 +114,31 @@ namespace Proyecto_IngSoftware
                 if (dgvPresupuestos.Columns.Count > 0)
                 {
                     dgvPresupuestos.Columns["IdPresupuesto_14OR"].Visible = false;
+                    dgvPresupuestos.Columns["IdProveedor_14OR"].Visible = false;
                     TraducirColumnas_14OR();
                     dgvPresupuestos.Columns["NumeroPresupuesto_14OR"].FillWeight = 25;
+                    SeleccionarPresupuesto_14OR();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(T_14OR("presupuestos_msg_errorcargar", "No pude cargar los presupuestos: ") + ex.Message, T_14OR("titulo_error", "Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // al recargar la grilla vuelve a la primer fila, asi que marco de nuevo el que estaba elegido
+        private void SeleccionarPresupuesto_14OR()
+        {
+            if (presuSeleccionado_14OR == null) return;
+
+            foreach (DataGridViewRow fila in dgvPresupuestos.Rows)
+            {
+                if (Convert.ToInt32(fila.Cells["IdPresupuesto_14OR"].Value) == presuSeleccionado_14OR.IdPresupuesto_14OR)
+                {
+                    dgvPresupuestos.CurrentCell = fila.Cells["NumeroPresupuesto_14OR"];
+                    return;
+                }
             }
         }
 
@@ -269,6 +287,8 @@ namespace Proyecto_IngSoftware
 
             presuSeleccionado_14OR = new Presupuesto_14OR();
             presuSeleccionado_14OR.IdPresupuesto_14OR = id;
+            // sin esto la orden se generaba cn proveedor 0 y saltaba la FK
+            presuSeleccionado_14OR.IdProveedor_14OR = Convert.ToInt32(dgvPresupuestos.CurrentRow.Cells["IdProveedor_14OR"].Value);
             presuSeleccionado_14OR.Estado_14OR = estado;
 
             detalleActual_14OR = bllPre.ObtenerDetalle_14OR(id);

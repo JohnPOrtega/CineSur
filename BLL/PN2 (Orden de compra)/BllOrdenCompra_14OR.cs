@@ -32,7 +32,8 @@ namespace BLL
                 throw new Exception("El presupuesto no tiene renglones.");
 
             OrdenCompra_14OR orden = new OrdenCompra_14OR();
-            orden.IdProveedor_14OR = pre.IdProveedor_14OR;
+            // el proveedor lo saco de la base, asi no depende de lo que mande la pantalla
+            orden.IdProveedor_14OR = dalPre.ObtenerIdProveedor_14OR(pre.IdPresupuesto_14OR);
             orden.IdPresupuesto_14OR = pre.IdPresupuesto_14OR;
             orden.FechaEmision_14OR = DateTime.Today;
             orden.Estado_14OR = OrdenCompra_14OR.EstadoAbierta_14OR;

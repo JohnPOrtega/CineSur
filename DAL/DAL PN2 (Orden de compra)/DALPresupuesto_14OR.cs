@@ -153,6 +153,15 @@ namespace DAL
             return lista;
         }
 
+        public int ObtenerIdProveedor_14OR(int idPresupuesto)
+        {
+            SqlParameter[] p = { new SqlParameter("@id", idPresupuesto) };
+            DataTable tabla = acceso.Leer_43BO(
+                "SELECT IdProveedor_14OR FROM Presupuesto_14OR WHERE IdPresupuesto_14OR = @id", p);
+
+            return tabla.Rows.Count > 0 ? Convert.ToInt32(tabla.Rows[0][0]) : 0;
+        }
+
         // renglones de un presupuesto
         public List<DetallePresupuesto_14OR> ObtenerDetalle_14OR(int idPresupuesto)
         {
