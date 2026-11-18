@@ -35,6 +35,9 @@ namespace Proyecto_IngSoftware
         {
             InitializeComponent();
             GestorIdioma_43BO.Instancia.Suscribir_43BO(this);
+
+            // Ayuda del menu = ayuda de la pantalla que este activa (no hay ayuda general)
+            ayudaToolStripMenuItem.Click += (s, e) => AyudaContextual_43BO.Mostrar_43BO(this);
         }
 
         private void Menu_Load(object sender, EventArgs e)
@@ -402,6 +405,26 @@ namespace Proyecto_IngSoftware
         {
             if (!VerificarPermiso_43BO("Reporte_FuncionesOcupacion_Acceso")) return;
             ReporteFunciones frm = new ReporteFunciones();
+            frm.MdiParent = this;
+            frm.Show();
+            TraducirFormulario(frm);
+        }
+
+        // abre el reporte RF2 (detalle de ordenes de compra y recepcion) desde Reporte -> Reporte de Compras
+        private void reporteDeComprasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!VerificarPermiso_43BO("Reporte_FuncionesOcupacion_Acceso")) return;
+            ReporteOrdenesCompra frm = new ReporteOrdenesCompra();
+            frm.MdiParent = this;
+            frm.Show();
+            TraducirFormulario(frm);
+        }
+
+        // abre el reporte inteligente (dashboard) desde Reporte -> Panel Inteligente
+        private void panelInteligenteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!VerificarPermiso_43BO("Reporte_FuncionesOcupacion_Acceso")) return;
+            PanelInteligente frm = new PanelInteligente();
             frm.MdiParent = this;
             frm.Show();
             TraducirFormulario(frm);

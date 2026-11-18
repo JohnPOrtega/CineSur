@@ -1,0 +1,8 @@
+body{font-family:Segoe UI,Arial,sans-serif;font-size:10pt;margin:16px 22px;color:#222}
+h1{font-size:15pt;color:#1f3a68;border-bottom:2px solid #c8102e;padding-bottom:4px;margin-bottom:6px}
+.menu{color:#666;font-size:9pt;margin-bottom:12px}
+h2{font-size:11pt;color:#1f3a68;margin:16px 0 6px}
+table{border-collapse:collapse;width:100%}td{border:1px solid #ccd;padding:4px 6px;vertical-align:top}
+td.c{width:30%;background:#f2f5fa;font-weight:bold}
+.nota{background:#fff8e0;border-left:4px solid #e0a800;padding:6px 10px;margin:4px 0}
+.pie{margin-top:22px;color:#888;font-size:8pt;border-top:1px solid #ddd;padding-top:4px}

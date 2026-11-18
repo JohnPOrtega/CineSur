@@ -25,6 +25,7 @@ namespace Proyecto_IngSoftware
             this.btnRegistrarRecepcion = new System.Windows.Forms.Button();
             this.lblRemito = new System.Windows.Forms.Label();
             this.txtRemito = new System.Windows.Forms.TextBox();
+            this.lblProximoPaso = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrdenes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetalleOrden)).BeginInit();
             this.SuspendLayout();
@@ -106,12 +107,22 @@ namespace Proyecto_IngSoftware
             this.btnRegistrarRecepcion.UseVisualStyleBackColor = true;
             this.btnRegistrarRecepcion.Click += new System.EventHandler(this.btnRegistrarRecepcion_Click);
             //
+            // lblProximoPaso
+            //
+            this.lblProximoPaso.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(170)))), ((int)(((byte)(230)))));
+            this.lblProximoPaso.Location = new System.Drawing.Point(12, 545);
+            this.lblProximoPaso.Name = "lblProximoPaso";
+            this.lblProximoPaso.Size = new System.Drawing.Size(760, 45);
+            this.lblProximoPaso.TabIndex = 8;
+            this.lblProximoPaso.Text = "";
+            //
             // OrdenesCompra
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
-            this.ClientSize = new System.Drawing.Size(790, 545);
+            this.ClientSize = new System.Drawing.Size(790, 600);
+            this.Controls.Add(this.lblProximoPaso);
             this.Controls.Add(this.btnRegistrarRecepcion);
             this.Controls.Add(this.btnPagar);
             this.Controls.Add(this.txtRemito);
@@ -140,5 +151,6 @@ namespace Proyecto_IngSoftware
         private System.Windows.Forms.Button btnRegistrarRecepcion;
         private System.Windows.Forms.Label lblRemito;
         private System.Windows.Forms.TextBox txtRemito;
+        private System.Windows.Forms.Label lblProximoPaso;
     }
 }

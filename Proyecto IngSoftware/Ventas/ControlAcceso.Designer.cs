@@ -51,16 +51,21 @@ namespace Proyecto_IngSoftware
             //
             // cmbFuncion
             //
-            this.cmbFuncion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+            this.cmbFuncion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(37)))), ((int)(((byte)(48)))));
+            this.cmbFuncion.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbFuncion.ItemHeight = 26;
+            this.cmbFuncion.MaxDropDownItems = 10;
+            this.cmbFuncion.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cmbFuncion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbFuncion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmbFuncion.ForeColor = System.Drawing.Color.White;
             this.cmbFuncion.FormattingEnabled = true;
             this.cmbFuncion.Location = new System.Drawing.Point(90, 57);
             this.cmbFuncion.Name = "cmbFuncion";
-            this.cmbFuncion.Size = new System.Drawing.Size(430, 23);
+            this.cmbFuncion.Size = new System.Drawing.Size(520, 32);
             this.cmbFuncion.TabIndex = 2;
             this.cmbFuncion.SelectedIndexChanged += new System.EventHandler(this.cmbFuncion_SelectedIndexChanged);
+            this.cmbFuncion.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbFuncion_DrawItem);
             //
             // btnActualizar
             //
@@ -69,9 +74,9 @@ namespace Proyecto_IngSoftware
             this.btnActualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnActualizar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnActualizar.ForeColor = System.Drawing.Color.White;
-            this.btnActualizar.Location = new System.Drawing.Point(540, 56);
+            this.btnActualizar.Location = new System.Drawing.Point(624, 57);
             this.btnActualizar.Name = "btnActualizar";
-            this.btnActualizar.Size = new System.Drawing.Size(110, 27);
+            this.btnActualizar.Size = new System.Drawing.Size(110, 30);
             this.btnActualizar.TabIndex = 3;
             this.btnActualizar.Text = "Actualizar";
             this.btnActualizar.UseVisualStyleBackColor = false;
@@ -83,9 +88,9 @@ namespace Proyecto_IngSoftware
             this.lblLeyenda.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
             this.lblLeyenda.Location = new System.Drawing.Point(24, 92);
             this.lblLeyenda.Name = "lblLeyenda";
-            this.lblLeyenda.Size = new System.Drawing.Size(520, 15);
+            this.lblLeyenda.Size = new System.Drawing.Size(760, 15);
             this.lblLeyenda.TabIndex = 4;
-            this.lblLeyenda.Text = "Rojo = vendida (click para registrar ingreso)   |   Violeta = ya ingreso   |   Verde = libre";
+            this.lblLeyenda.Text = "Rojo oscuro = vendida (click para registrar ingreso)   |   Rojo claro = reservada sin pagar   |   Violeta = ya ingreso   |   Verde = libre";
             //
             // lblContadores
             //

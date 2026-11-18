@@ -32,6 +32,9 @@ namespace Proyecto_IngSoftware
                 return;
             }
 
+            // F1 en cualquier pantalla abre la ayuda de esa pantalla
+            AyudaContextual_43BO.Activar_43BO();
+
             Application.Run(new Login());
         }
     }

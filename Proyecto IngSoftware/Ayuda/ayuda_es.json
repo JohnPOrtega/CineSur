@@ -1,0 +1,594 @@
+﻿{
+  "secciones": [
+    {
+      "titulo": "Usuario",
+      "permiso": "",
+      "pantallas": [
+        {
+          "form": "login",
+          "titulo": "Iniciar sesión",
+          "permiso": "",
+          "donde": "Primera pantalla al abrir CineSur.",
+          "descripcion": "Acá entrás al sistema con tu usuario y contraseña. Según tu perfil se habilitan las opciones del menú.",
+          "pasos": [
+            "Escribí tu usuario y tu contraseña.",
+            "Tocá Ingresar (o Enter).",
+            "Si todavía tenés la contraseña de fábrica, el sistema te pide cambiarla antes de seguir."
+          ],
+          "campos": [
+            {
+              "nombre": "UserName",
+              "texto": "El usuario que te dio el administrador.",
+              "permiso": ""
+            },
+            {
+              "nombre": "Contraseña",
+              "texto": "Distingue mayúsculas y minúsculas.",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "Con 3 intentos fallidos el usuario se bloquea y lo tiene que desbloquear un administrador."
+          ]
+        },
+        {
+          "form": "menu",
+          "titulo": "Menú principal",
+          "permiso": "",
+          "donde": "Se abre después de iniciar sesión.",
+          "descripcion": "Desde la barra de arriba abrís cada pantalla del sistema; se abren adentro de esta ventana. Solo ves las opciones que tu perfil tiene habilitadas.",
+          "pasos": [
+            "Elegí una sección de la barra y después la opción que necesitás.",
+            "En cualquier pantalla podés tocar F1 (o Ayuda) para ver la ayuda de esa pantalla."
+          ],
+          "campos": [
+            {
+              "nombre": "Usuario",
+              "texto": "Cambiar contraseña, cambiar idioma, cerrar sesión y re-login.",
+              "permiso": ""
+            },
+            {
+              "nombre": "Admin",
+              "texto": "Usuarios, perfiles, bitácora y backup de la base.",
+              "permiso": "Menu_SeccionAdmin"
+            },
+            {
+              "nombre": "Master",
+              "texto": "Películas, funciones, salas, promociones, clientes y auditoría de cambios.",
+              "permiso": "Menu_SeccionMaster"
+            },
+            {
+              "nombre": "Venta",
+              "texto": "Venta de entradas, control de acceso y candy bar.",
+              "permiso": "Menu_SeccionVenta"
+            },
+            {
+              "nombre": "Compra",
+              "texto": "Productos, proveedores, cotizaciones y órdenes de compra.",
+              "permiso": "Menu_SeccionCompra"
+            },
+            {
+              "nombre": "Reporte",
+              "texto": "Reportes y panel de control.",
+              "permiso": "Menu_SeccionReporte"
+            }
+          ],
+          "notas": []
+        },
+        {
+          "form": "cambiocontraseña",
+          "titulo": "Cambiar contraseña",
+          "permiso": "Usuario_CambioContraseña",
+          "donde": "Usuario > Cambiar Contraseña.",
+          "descripcion": "Para reemplazar tu contraseña por una nueva.",
+          "pasos": [
+            "Escribí la contraseña actual.",
+            "Escribí la nueva dos veces (tienen que coincidir).",
+            "Tocá Aceptar. Se cierra la sesión y entrás de nuevo con la contraseña nueva."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "cambiaridioma",
+          "titulo": "Cambiar idioma",
+          "permiso": "Usuario_CambioIdioma",
+          "donde": "Usuario > Cambiar Idioma.",
+          "descripcion": "Cambia el idioma de todas las pantallas (español, inglés o portugués).",
+          "pasos": [
+            "Elegí el idioma y tocá Aceptar. Las pantallas abiertas se traducen en el momento."
+          ],
+          "campos": [],
+          "notas": [
+            "El idioma queda guardado en tu usuario para la próxima vez."
+          ]
+        }
+      ]
+    },
+    {
+      "titulo": "Admin",
+      "permiso": "Menu_SeccionAdmin",
+      "pantallas": [
+        {
+          "form": "gestionus",
+          "titulo": "Gestión de usuarios",
+          "permiso": "GestionUsuarios_Acceso",
+          "donde": "Admin > Gestión Usuarios.",
+          "descripcion": "Alta, modificación, activación y desbloqueo de los usuarios del sistema.",
+          "pasos": [
+            "Filtrá la grilla con Activos, Todos o Bloqueados.",
+            "Crear: tocá Crear, cargá DNI, nombre, apellido, email y rol, y tocá Aplicar.",
+            "Modificar: elegí el usuario, tocá Modificar, cambiá lo que haga falta y tocá Aplicar.",
+            "Activar/Desactivar o Desbloquear: elegí el usuario y tocá el botón."
+          ],
+          "campos": [
+            {
+              "nombre": "DNI",
+              "texto": "No se puede repetir.",
+              "permiso": ""
+            },
+            {
+              "nombre": "Rol",
+              "texto": "El perfil de permisos que va a tener.",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "Al desbloquear, la contraseña vuelve a la de fábrica."
+          ]
+        },
+        {
+          "form": "gestionperfiles",
+          "titulo": "Gestión de perfiles",
+          "permiso": "GestionPerfiles_Acceso",
+          "donde": "Admin > Gestión Perfiles.",
+          "descripcion": "Para armar los roles y las familias de permisos.",
+          "pasos": [
+            "Con Cambiar Modo elegís si trabajás sobre roles o familias.",
+            "Crear arma uno nuevo; Modificar le cambia el nombre.",
+            "Con el rol o familia elegido, pasá permisos con -->> y sacalos con <<---.",
+            "Tocá Finalizar Edición para guardar."
+          ],
+          "campos": [],
+          "notas": [
+            "Los cambios se ven la próxima vez que el usuario inicia sesión."
+          ]
+        },
+        {
+          "form": "auditoria",
+          "titulo": "Bitácora",
+          "permiso": "Auditoria_Acceso",
+          "donde": "Admin > Bitácora / Auditoría.",
+          "descripcion": "Muestra lo que pasó en el sistema: inicios de sesión, altas, modificaciones, bajas, cobros, etc.",
+          "pasos": [
+            "Elegí fechas, usuario, módulo, evento o criticidad.",
+            "Tocá Filtrar.",
+            "Imprimir lo pasa a PDF."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "backupbd_43bo",
+          "titulo": "Backup de la base",
+          "permiso": "Admin_Backup",
+          "donde": "Admin > Backup BD.",
+          "descripcion": "Genera una copia completa de la base de datos.",
+          "pasos": [
+            "Revisá la carpeta (por defecto C:\\Backups43BO) o cambiala con Cambiar carpeta...",
+            "Tocá Generar Backup."
+          ],
+          "campos": [],
+          "notas": [
+            "Conviene guardar una copia también fuera de la PC."
+          ]
+        },
+        {
+          "form": "restorebd_43bo",
+          "titulo": "Restore de la base",
+          "permiso": "Admin_Restore",
+          "donde": "Integridad de datos > RESTORE BD.",
+          "descripcion": "Vuelve la base al estado de un backup.",
+          "pasos": [
+            "Elegí el backup (el más nuevo pierde menos datos) o buscá otro con Buscar otro...",
+            "Tocá Restaurar y confirmá.",
+            "Iniciá sesión de nuevo."
+          ],
+          "campos": [],
+          "notas": [
+            "Se pierde lo que se cargó después de ese backup."
+          ]
+        },
+        {
+          "form": "integridaddv_43bo",
+          "titulo": "Integridad de datos",
+          "permiso": "Admin_RecalcularDV",
+          "donde": "Aparece sola al iniciar sesión si se tocaron datos por fuera del sistema.",
+          "descripcion": "Avisa qué tablas no coinciden con su dígito verificador.",
+          "pasos": [
+            "Si los cambios son válidos, tocá RECALCULAR EL DV.",
+            "Si alguien alteró los datos, tocá RESTORE BD y elegí un backup anterior."
+          ],
+          "campos": [],
+          "notas": [
+            "Mientras no se corrija, los usuarios que no son administradores no pueden entrar."
+          ]
+        }
+      ]
+    },
+    {
+      "titulo": "Master",
+      "permiso": "Menu_SeccionMaster",
+      "pantallas": [
+        {
+          "form": "peliculas",
+          "titulo": "Películas",
+          "permiso": "Master_Peliculas_Acceso",
+          "donde": "Master > Películas.",
+          "descripcion": "Alta, modificación y baja de las películas, con su afiche.",
+          "pasos": [
+            "NUEVO: cargá título, género y duración, elegí el afiche y tocá GUARDAR.",
+            "Para modificar o eliminar, elegí la película en la grilla y tocá MODIFICAR o ELIMINAR."
+          ],
+          "campos": [
+            {
+              "nombre": "Duración (min)",
+              "texto": "Se usa para armar los horarios de las funciones.",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "Cada cambio queda guardado en Auditoría de Cambios."
+          ]
+        },
+        {
+          "form": "auditoriacambios",
+          "titulo": "Auditoría de cambios",
+          "permiso": "Maestro_AuditoriaCambios_Acceso",
+          "donde": "Master > Auditoría de Cambios.",
+          "descripcion": "Histórico de cambios de las películas: la versión vigente y la anterior.",
+          "pasos": [
+            "Escribí parte del título para filtrar; si querés, acotá por fechas y tocá Aplicar.",
+            "Para volver atrás un cambio, elegí la versión anterior y tocá Activar."
+          ],
+          "campos": [],
+          "notas": [
+            "Si la película estaba borrada, Activar la vuelve a crear."
+          ]
+        },
+        {
+          "form": "salas",
+          "titulo": "Salas",
+          "permiso": "Master_Salas_Acceso",
+          "donde": "Master > Salas.",
+          "descripcion": "Las salas del cine con sus filas y asientos.",
+          "pasos": [
+            "NUEVO: cargá número de sala, filas y asientos por fila y tocá GUARDAR (la capacidad se calcula sola).",
+            "Ver distribución muestra cómo queda; Definir pasillos marca los pasillos."
+          ],
+          "campos": [
+            {
+              "nombre": "Filas / Asientos",
+              "texto": "Hasta 12 filas y 20 asientos por fila.",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "Si eliminás una sala se borran sus butacas."
+          ]
+        },
+        {
+          "form": "disenarpasillos_14or",
+          "titulo": "Definir pasillos",
+          "permiso": "Master_Salas_Acceso",
+          "donde": "Master > Salas > Definir pasillos.",
+          "descripcion": "Indica entre qué columnas hay pasillo.",
+          "pasos": [
+            "Hacé clic en una butaca para poner un pasillo después de esa columna (otro clic lo saca).",
+            "Tocá Guardar y después GUARDAR en la sala."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "funciones_14or",
+          "titulo": "Funciones",
+          "permiso": "Master_Funciones_Acceso",
+          "donde": "Master > Funciones.",
+          "descripcion": "Qué película se da, en qué sala, qué día y a qué hora.",
+          "pasos": [
+            "NUEVO: elegí película, sala, fecha, horario, formato, idioma y precio, y tocá GUARDAR.",
+            "Para modificar o eliminar, elegí la función en la grilla."
+          ],
+          "campos": [],
+          "notas": [
+            "Solo se ven las funciones de hoy en adelante.",
+            "Si la función ya tiene entradas vendidas no se le puede cambiar fecha, horario ni sala: creá una nueva."
+          ]
+        },
+        {
+          "form": "promociones",
+          "titulo": "Promociones",
+          "permiso": "Master_Promociones_Acceso",
+          "donde": "Master > Promociones.",
+          "descripcion": "Descuentos que se aplican al cobrar las entradas.",
+          "pasos": [
+            "NUEVO: nombre, tipo, porcentaje y fechas de vigencia; marcá Activa y tocá GUARDAR."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "clientes",
+          "titulo": "Clientes",
+          "permiso": "Master_Clientes_Acceso",
+          "donde": "Master > Clientes.",
+          "descripcion": "Clientes y socios del cine.",
+          "pasos": [
+            "NUEVO: DNI, nombre, apellido, email y teléfono; marcá Es socio si corresponde y tocá GUARDAR.",
+            "SERIALIZAR XML guarda los clientes en un archivo; DES-SERIALIZAR los lee."
+          ],
+          "campos": [],
+          "notas": [
+            "Los socios tienen descuento en las entradas."
+          ]
+        }
+      ]
+    },
+    {
+      "titulo": "Venta",
+      "permiso": "Menu_SeccionVenta",
+      "pantallas": [
+        {
+          "form": "cartelera",
+          "titulo": "Cartelera",
+          "permiso": "Venta_ReservarButacas_Acceso",
+          "donde": "Venta > Reservar Butacas.",
+          "descripcion": "Las películas en cartel. Es el primer paso para vender entradas.",
+          "pasos": [
+            "Tocá el afiche de la película y se abren sus funciones."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "funcionesporpelicula",
+          "titulo": "Funciones de la película",
+          "permiso": "Venta_ReservarButacas_Acceso",
+          "donde": "Venta > Reservar Butacas > película.",
+          "descripcion": "Las funciones de la película elegida.",
+          "pasos": [
+            "Elegí la función y se abre el mapa de la sala."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "seleccionbutacas",
+          "titulo": "Elegir butacas",
+          "permiso": "Venta_ReservarButacas_Acceso",
+          "donde": "Venta > Reservar Butacas > película > función.",
+          "descripcion": "El mapa de la sala para elegir las butacas.",
+          "pasos": [
+            "Tocá las butacas verdes que quiere el cliente (quedan amarillas).",
+            "Tocá Reservar butacas para ir al cobro."
+          ],
+          "campos": [
+            {
+              "nombre": "Verde",
+              "texto": "Libre",
+              "permiso": ""
+            },
+            {
+              "nombre": "Amarillo",
+              "texto": "Elegida",
+              "permiso": ""
+            },
+            {
+              "nombre": "Rojo",
+              "texto": "Reservada u ocupada",
+              "permiso": ""
+            },
+            {
+              "nombre": "Azul",
+              "texto": "Accesible",
+              "permiso": ""
+            }
+          ],
+          "notas": []
+        },
+        {
+          "form": "cobro",
+          "titulo": "Cobro",
+          "permiso": "Venta_ReservarButacas_Acceso",
+          "donde": "Se abre al reservar las butacas.",
+          "descripcion": "Identifica al cliente, aplica descuentos y cobra.",
+          "pasos": [
+            "Escribí el DNI y tocá Buscar (sin DNI va como consumidor final).",
+            "Si no existe, podés hacerlo socio con Hacer socio.",
+            "Elegí Efectivo (con cuánto paga) o Tarjeta y tocá Confirmar venta."
+          ],
+          "campos": [],
+          "notas": [
+            "Si se hace socio en esta compra, el descuento aplica desde la próxima.",
+            "Cancelar libera las butacas."
+          ]
+        },
+        {
+          "form": "altasocio_14or",
+          "titulo": "Alta de socio",
+          "permiso": "Venta_ReservarButacas_Acceso",
+          "donde": "Cobro > Hacer socio.",
+          "descripcion": "Alta rápida de un socio durante la venta.",
+          "pasos": [
+            "Cargá DNI, nombre, apellido, email y teléfono y tocá Aceptar."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "controlacceso",
+          "titulo": "Control de acceso",
+          "permiso": "Venta_ControlAcceso_Acceso",
+          "donde": "Venta > Control de Acceso.",
+          "descripcion": "Para registrar quién entra a la sala.",
+          "pasos": [
+            "Elegí la función (aparece la próxima de hoy).",
+            "Cuando llega el espectador, tocá su butaca roja."
+          ],
+          "campos": [
+            {
+              "nombre": "Rojo",
+              "texto": "Vendida: clic para registrar el ingreso",
+              "permiso": ""
+            },
+            {
+              "nombre": "Violeta",
+              "texto": "Ya ingresó",
+              "permiso": ""
+            },
+            {
+              "nombre": "Verde",
+              "texto": "Libre",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "Una butaca reservada sin pagar no puede ingresar: el cliente tiene que pasar por boletería."
+          ]
+        },
+        {
+          "form": "ventacandy",
+          "titulo": "Candy bar",
+          "permiso": "Venta_CandyBar_Acceso",
+          "donde": "Venta > Candy Bar.",
+          "descripcion": "Venta de productos del candy bar.",
+          "pasos": [
+            "Tocá las tarjetas para armar el pedido (QUITAR UNO / ELIMINAR para corregir).",
+            "Elegí Efectivo o Tarjeta y tocá COBRAR."
+          ],
+          "campos": [],
+          "notas": [
+            "No deja vender más que el stock."
+          ]
+        }
+      ]
+    },
+    {
+      "titulo": "Compra",
+      "permiso": "Menu_SeccionCompra",
+      "pantallas": [
+        {
+          "form": "productos",
+          "titulo": "Productos",
+          "permiso": "Compra_Productos_Acceso",
+          "donde": "Compra > Productos.",
+          "descripcion": "Los productos del candy bar con su stock.",
+          "pasos": [
+            "NUEVO: nombre, precios, stock y stock crítico; elegí la imagen y tocá GUARDAR."
+          ],
+          "campos": [
+            {
+              "nombre": "Stock crítico",
+              "texto": "Por debajo de esto el sistema sugiere reponer.",
+              "permiso": ""
+            }
+          ],
+          "notas": []
+        },
+        {
+          "form": "proveedores",
+          "titulo": "Proveedores",
+          "permiso": "Compra_Proveedores_Acceso",
+          "donde": "Compra > Proveedores.",
+          "descripcion": "Los proveedores a los que se les piden cotizaciones.",
+          "pasos": [
+            "NUEVO: razón social, CUIT, teléfono y email, y tocá GUARDAR."
+          ],
+          "campos": [
+            {
+              "nombre": "CUIT",
+              "texto": "11 dígitos, válido y sin repetir.",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "No se puede dar de baja un proveedor con cotizaciones u órdenes abiertas."
+          ]
+        },
+        {
+          "form": "presupuestos",
+          "titulo": "Cotizaciones",
+          "permiso": "Compra_Presupuestos_Acceso",
+          "donde": "Compra > Cotizaciones.",
+          "descripcion": "Pedir precios a los proveedores y comprar.",
+          "pasos": [
+            "Elegí el proveedor, agregá productos y cantidades y tocá SOLICITAR COTIZACIÓN.",
+            "Cuando responde, elegí la cotización, cargá los precios y tocá Registrar cotización.",
+            "Si conviene, Comprar insumos genera la orden de compra; si no, Rechazar."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "ordenescompra",
+          "titulo": "Órdenes de compra",
+          "permiso": "Compra_OrdenesCompra_Acceso",
+          "donde": "Compra > Órdenes de Compra.",
+          "descripcion": "Pago de las órdenes y recepción de la mercadería.",
+          "pasos": [
+            "Elegí la orden y tocá Pagar orden.",
+            "Cuando llega la mercadería, cargá el remito y lo recibido y tocá Registrar recepción."
+          ],
+          "campos": [],
+          "notas": [
+            "Si lo recibido coincide con la orden, se cierra y se suma el stock."
+          ]
+        }
+      ]
+    },
+    {
+      "titulo": "Reporte",
+      "permiso": "Menu_SeccionReporte",
+      "pantallas": [
+        {
+          "form": "reportefunciones",
+          "titulo": "Reporte de funciones",
+          "permiso": "Reporte_FuncionesOcupacion_Acceso",
+          "donde": "Reporte > Reporte de Funciones.",
+          "descripcion": "Funciones con su ocupación de sala.",
+          "pasos": [
+            "Tocá Actualizar; Exportar PDF lo guarda."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "reporteordenescompra",
+          "titulo": "Reporte de compras",
+          "permiso": "Reporte_FuncionesOcupacion_Acceso",
+          "donde": "Reporte > Reporte de Compras.",
+          "descripcion": "Detalle de cada orden de compra y lo recibido.",
+          "pasos": [
+            "Elegí una orden para ver su detalle; Exportar PDF lo guarda."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "panelinteligente",
+          "titulo": "Panel de control",
+          "permiso": "Reporte_FuncionesOcupacion_Acceso",
+          "donde": "Reporte > Panel de Control.",
+          "descripcion": "Resumen del período (ingresos, ocupación, candy y compras) con recomendaciones.",
+          "pasos": [
+            "Elegí el período y tocá Actualizar.",
+            "Exportar PDF guarda el panel."
+          ],
+          "campos": [],
+          "notas": []
+        }
+      ]
+    }
+  ]
+}

@@ -14,7 +14,8 @@ namespace BLL
     //  NoExiste     = la butaca no pertenece a la funcion (ticket invalido).
     //  NoVendida    = la butaca no fue vendida (Libre/Reservada/Accesible) -> no hay entrada que validar.
     //  YaUtilizada  = la entrada ya habia ingresado antes.
-    public enum ResultadoIngreso_14OR { Ok, NoExiste, NoVendida, YaUtilizada }
+    //  ReservadaSinPagar = la butaca esta bloqueada por una venta que nunca se cobro.
+    public enum ResultadoIngreso_14OR { Ok, NoExiste, NoVendida, YaUtilizada, ReservadaSinPagar }
 
     public class BllAsientoFuncion_14OR
     {
@@ -34,6 +35,12 @@ namespace BLL
             // es idempotente (solo inserta los que falten), asi se auto-repara si la sala cambio
             // sus butacas y el mapa no queda vacio.
             dal.GenerarParaFuncion_14OR(idFuncion, idSala);
+
+            // una reserva es un bloqueo temporal mientras se cobra. Si la app se cerro en el medio del
+            // cobro, la butaca queda 'Reservada' para siempre (roja pero sin venta). Si la funcion ya
+            // paso, esa reserva no tiene sentido: la libero. Solo escribo si hay algo que liberar.
+            if (dal.ContarReservasVencidas_14OR(idFuncion) > 0)
+                dal.LiberarReservasVencidas_14OR(idFuncion);
 
             return dal.ObtenerMapa_14OR(idFuncion);
         }
@@ -71,6 +78,10 @@ namespace BLL
             // ya ingreso antes (Ingreso=1 o Estado=Utilizada)
             if (af.Ingreso_14OR || af.Estado_14OR == "Utilizada")
                 return ResultadoIngreso_14OR.YaUtilizada;
+
+            // reservada = la venta se empezo pero nunca se cobro: no hay entrada que validar
+            if (af.Estado_14OR == "Reservada")
+                return ResultadoIngreso_14OR.ReservadaSinPagar;
 
             // solo se puede validar ingreso de una entrada VENDIDA (Ocupada)
             if (af.Estado_14OR != "Ocupada")

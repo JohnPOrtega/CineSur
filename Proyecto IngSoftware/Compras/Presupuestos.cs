@@ -8,10 +8,12 @@ using System.Windows.Forms;
 
 namespace Proyecto_IngSoftware
 {
-    // Pantalla de presupuestos (cotizaciones) del PN2.
-    // Izquierda: armar un nuevo pedido de cotizacion a un proveedor (productos + cantidades)
-    // Derecha: lista de presupuestos; al elegir uno se cargan los precios que cotizo el proveedor
-    // ("Recibido") y despues se acepta (genera la Orden de Compra "Abierta") o se rechaza.
+    // Pantalla de cotizaciones del PN2 (en la base la tabla sigue llamandose Presupuesto).
+    // Izquierda: solicitar cotizacion a un proveedor (productos + cantidades) -> queda "Solicitada"
+    // Derecha: lista de cotizaciones (Pendientes / Historial). Al elegir una se cargan los precios
+    // que paso el proveedor ("Registrar cotizacion" -> "Cotizada") y despues se compra
+    // ("Comprar insumos" genera la Orden de Compra "Abierta") o se rechaza.
+    // Abajo un cartel dice cual es el proximo paso segun el estado de la cotizacion elegida.
     public partial class Presupuestos : Form, Servicios.IidiomaObserver.IdiomaObserver_43BO
     {
         private BllProveedor_14OR bllProv = new BllProveedor_14OR();
@@ -36,8 +38,14 @@ namespace Proyecto_IngSoftware
         {
             InitializeComponent();
             GestorIdioma_43BO.Instancia.Suscribir_43BO(this);
-            this.Text = T_14OR("presupuestos_titulo", "Presupuestos / Cotizaciones");
+            this.Text = T_14OR("presupuestos_titulo", "Cotizaciones");
             dgvPresupuestos.CellFormatting += Estado_CellFormatting_14OR;
+            // eventos del detalle: que no reviente si escriben cualquier cosa en el precio
+            dgvDetalle.DataError += Detalle_DataError_14OR;
+            dgvDetalle.CellParsing += Detalle_CellParsing_14OR;
+            dgvDetalle.CellFormatting += Detalle_CellFormatting_14OR;
+            // al cargar la grilla windows marca sola la primer fila, la desmarco si no elegi nada
+            dgvPresupuestos.DataBindingComplete += (o, ev) => { if (presuSeleccionado_14OR == null) { dgvPresupuestos.ClearSelection(); dgvPresupuestos.CurrentCell = null; } };
             EstiloGrillas_14OR();
             CargarCombos_14OR();
             MostrarCriticos_14OR();
@@ -99,7 +107,8 @@ namespace Proyecto_IngSoftware
         {
             try
             {
-                var lista = bllPre.Listar_14OR().Select(p => new
+                // pendientes = solicitadas y cotizadas; historial = compradas y rechazadas
+                var lista = bllPre.ListarPorVista_14OR(rbPendientes.Checked).Select(p => new
                 {
                     p.IdPresupuesto_14OR,
                     p.NumeroPresupuesto_14OR,
@@ -127,19 +136,57 @@ namespace Proyecto_IngSoftware
             }
         }
 
-        // al recargar la grilla vuelve a la primer fila, asi que marco de nuevo el que estaba elegido
+        // al recargar la grilla vuelve a la primer fila, asi que marco de nuevo el que estaba elegido.
+        // si no habia ninguno elegido (o ya no esta en esta vista) no dejo nada marcado, asi no
+        // parece que hay una cotizacion seleccionada cuando en realidad no
         private void SeleccionarPresupuesto_14OR()
         {
-            if (presuSeleccionado_14OR == null) return;
+            if (presuSeleccionado_14OR != null)
+            {
+                foreach (DataGridViewRow fila in dgvPresupuestos.Rows)
+                {
+                    if (Convert.ToInt32(fila.Cells["IdPresupuesto_14OR"].Value) == presuSeleccionado_14OR.IdPresupuesto_14OR)
+                    {
+                        dgvPresupuestos.CurrentCell = fila.Cells["NumeroPresupuesto_14OR"];
+                        return;
+                    }
+                }
+            }
 
+            dgvPresupuestos.ClearSelection();
+            dgvPresupuestos.CurrentCell = null;
+            LimpiarSeleccion_14OR();
+        }
+
+        private void LimpiarSeleccion_14OR()
+        {
+            presuSeleccionado_14OR = null;
+            detalleActual_14OR = new List<DetallePresupuesto_14OR>();
+            dgvDetalle.DataSource = null;
+            ActualizarTotal_14OR();
+            ActualizarBotones_14OR();
+        }
+
+        // marca y muestra una cotizacion puntual (la uso despues de solicitar una nueva)
+        private void ElegirPresupuesto_14OR(int id)
+        {
             foreach (DataGridViewRow fila in dgvPresupuestos.Rows)
             {
-                if (Convert.ToInt32(fila.Cells["IdPresupuesto_14OR"].Value) == presuSeleccionado_14OR.IdPresupuesto_14OR)
+                if (Convert.ToInt32(fila.Cells["IdPresupuesto_14OR"].Value) == id)
                 {
                     dgvPresupuestos.CurrentCell = fila.Cells["NumeroPresupuesto_14OR"];
+                    dgvPresupuestos_CellClick(dgvPresupuestos, new DataGridViewCellEventArgs(0, fila.Index));
                     return;
                 }
             }
+        }
+
+        // cambio entre Pendientes e Historial
+        private void rbFiltro_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!cargado_14OR || !((RadioButton)sender).Checked) return;
+            presuSeleccionado_14OR = null;
+            CargarPresupuestos_14OR();
         }
 
         // ---- nuevo pedido (izquierda) ----
@@ -239,41 +286,31 @@ namespace Proyecto_IngSoftware
             {
                 int idProv = (int)cboProveedor.SelectedValue;
                 // le paso una copia de los renglones (asi no comparto la lista que despues limpio).
-                // autocompleto el precoi cotizado con el costo de referencia del producto + una
-                // pequena variacion segun el proveedor, asi la cotizacion arranca con un valor con
-                // sentido (en vez de 0) y distintos proveedores cotizan un poco distinto. Es editable.
+                // el precio arranca vacio: lo carga el supervisor cuando el proveedor le pasa la cotizacion
                 List<DetallePresupuesto_14OR> copia = nuevoDetalle_14OR.Select(d => new DetallePresupuesto_14OR
                 {
                     IdProducto_14OR = d.IdProducto_14OR,
                     NombreProducto_14OR = d.NombreProducto_14OR,
                     Cantidad_14OR = d.Cantidad_14OR,
-                    PrecioCotizado_14OR = SugerirPrecio_14OR(d.IdProducto_14OR, idProv)
+                    PrecioCotizado_14OR = 0
                 }).ToList();
 
                 int id = bllPre.PedirPresupuesto_14OR(idProv, copia);
 
-                MessageBox.Show(string.Format(T_14OR("presupuestos_msg_pedido", "Presupuesto N° {0} pedido al proveedor. Cuando te pase los precios, selecciónalo en la lista y cargalos."), id), T_14OR("titulo_listo", "Listo"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(string.Format(T_14OR("presupuestos_msg_pedido", "Solicitud de cotizacion N° {0} registrada. Cuando el proveedor te pase los precios, cargalos en el detalle y toca 'Registrar cotizacion'."), id), T_14OR("titulo_listo", "Listo"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 nuevoDetalle_14OR.Clear();
                 RefrescarNuevoDetalle_14OR();
-                CargarPresupuestos_14OR();
+
+                // la dejo elegida en Pendientes pa que se vea el siguiente paso
+                presuSeleccionado_14OR = null;
+                if (!rbPendientes.Checked) rbPendientes.Checked = true; else CargarPresupuestos_14OR();
+                ElegirPresupuesto_14OR(id);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(T_14OR(ex.Message, ex.Message), T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-        }
-
-        // precio cotizado suegrido: costo de referencia del producto + un recargo chico segun el
-        // proveedor (0% a 19%, estable para el mismo proveedor). Si el producto no tiene costo
-        // cargado devuelve 0, y el vendedor lo completa a mano.
-        private double SugerirPrecio_14OR(int idProducto, int idProveedor)
-        {
-            Producto_14OR prod = productos_14OR.FirstOrDefault(x => x.IdProducto_14OR == idProducto);
-            if (prod == null || prod.PrecioCosto_14OR <= 0) return 0;
-
-            double recargo = 1.0 + ((idProveedor * 7) % 20) / 100.0; // entre 1.00 y 1.19
-            return Math.Round(prod.PrecioCosto_14OR * recargo, 2);
         }
 
         // ---- presupuesto seleccionado (derecha) ----
@@ -316,9 +353,53 @@ namespace Proyecto_IngSoftware
                     (presuSeleccionado_14OR.Estado_14OR == Presupuesto_14OR.EstadoPedido_14OR ||
                      presuSeleccionado_14OR.Estado_14OR == Presupuesto_14OR.EstadoRecibido_14OR);
                 dgvDetalle.Columns["PrecioCotizado_14OR"].ReadOnly = !editable;
+
+                // la columna donde se escribe el precio la marco distinta y con un titulo que lo diga
+                DataGridViewColumn colPrecio = dgvDetalle.Columns["PrecioCotizado_14OR"];
+                colPrecio.DefaultCellStyle.BackColor = editable ? Color.FromArgb(52, 58, 72) : Color.FromArgb(36, 36, 36);
+                colPrecio.DefaultCellStyle.ForeColor = editable ? Color.White : Color.Gainsboro;
+                colPrecio.HeaderText = editable
+                    ? T_14OR("presupuestos_col_precioeditable", "Precio que pasó el proveedor (escribilo acá)")
+                    : T_14OR("pn2_col_preciocotizado", "Precio cotizado");
+
+                // si todavia no tiene precios dejo el cursor parado en el primer precio pa escribir directo
+                if (editable && dgvDetalle.Rows.Count > 0)
+                    dgvDetalle.CurrentCell = dgvDetalle.Rows[0].Cells["PrecioCotizado_14OR"];
             }
 
             ActualizarTotal_14OR();
+        }
+
+        // si escriben letras o simbolos en el precio aviso en criollo en vez del cartel feo de windows
+        private void Detalle_DataError_14OR(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            MessageBox.Show(T_14OR("presupuestos_msg_precioinvalido", "En el precio escribí solo números, por ejemplo 1500 o 1500,50."),
+                T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            e.Cancel = true;
+        }
+
+        // si dejan el precio vacio lo tomo como 0 (despues la bll avisa que falta)
+        private void Detalle_CellParsing_14OR(object sender, DataGridViewCellParsingEventArgs e)
+        {
+            if (dgvDetalle.Columns[e.ColumnIndex].Name != "PrecioCotizado_14OR") return;
+            if (e.Value == null || string.IsNullOrWhiteSpace(e.Value.ToString()))
+            {
+                e.Value = 0.0;
+                e.ParsingApplied = true;
+            }
+        }
+
+        // un precio en 0 lo muestro vacio, asi se nota que falta cargarlo
+        private void Detalle_CellFormatting_14OR(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.Value == null) return;
+            if (dgvDetalle.Columns[e.ColumnIndex].Name != "PrecioCotizado_14OR") return;
+            double v;
+            if (double.TryParse(e.Value.ToString(), out v) && v == 0)
+            {
+                e.Value = "";
+                e.FormattingApplied = true;
+            }
         }
 
         private void ActualizarTotal_14OR()
@@ -345,7 +426,7 @@ namespace Proyecto_IngSoftware
                 presuSeleccionado_14OR.Detalles = detalleActual_14OR;
                 bllPre.CargarCotizacion_14OR(presuSeleccionado_14OR);
 
-                MessageBox.Show(T_14OR("presupuestos_msg_precios", "Precios cargados. El presupuesto quedo en 'Recibido' y ya se puede aceptar."),
+                MessageBox.Show(T_14OR("presupuestos_msg_precios", "Cotizacion registrada. Ahora podes comprar los insumos (genera la orden de compra) o rechazarla."),
                     T_14OR("titulo_listo", "Listo"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 presuSeleccionado_14OR.Estado_14OR = Presupuesto_14OR.EstadoRecibido_14OR;
@@ -363,7 +444,7 @@ namespace Proyecto_IngSoftware
         {
             if (presuSeleccionado_14OR == null) return;
 
-            if (MessageBox.Show(T_14OR("presupuestos_msg_confirmaraceptar", "Aceptar este presupuesto y generar la orden de compra?"),
+            if (MessageBox.Show(T_14OR("presupuestos_msg_confirmaraceptar", "Comprar los insumos de esta cotizacion? Se genera la orden de compra."),
                 T_14OR("titulo_confirmar", "Confirmar"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
 
@@ -374,12 +455,9 @@ namespace Proyecto_IngSoftware
                 MessageBox.Show(string.Format(T_14OR("presupuestos_msg_ordengenerada", "Orden de compra N° {0} generada en estado 'Abierta'.\nLa podes ver y pagar desde Compra > Ordenes de Compra."), idOrden),
                     T_14OR("presupuestos_tit_ordengenerada", "Orden generada"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                CargarPresupuestos_14OR();
-                detalleActual_14OR = new List<DetallePresupuesto_14OR>();
+                // ya no esta pendiente: sale de la lista (queda en Historial)
                 presuSeleccionado_14OR = null;
-                dgvDetalle.DataSource = null;
-                ActualizarTotal_14OR();
-                ActualizarBotones_14OR();
+                CargarPresupuestos_14OR();
             }
             catch (Exception ex)
             {
@@ -391,19 +469,18 @@ namespace Proyecto_IngSoftware
         {
             if (presuSeleccionado_14OR == null) return;
 
-            if (MessageBox.Show(T_14OR("presupuestos_msg_confirmarrechazar", "Rechazar este presupuesto?"),
+            if (MessageBox.Show(T_14OR("presupuestos_msg_confirmarrechazar", "Rechazar esta cotizacion? No se genera orden de compra."),
                 T_14OR("titulo_confirmar", "Confirmar"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
 
             try
             {
                 bllPre.Rechazar_14OR(presuSeleccionado_14OR.IdPresupuesto_14OR);
-                CargarPresupuestos_14OR();
-                detalleActual_14OR = new List<DetallePresupuesto_14OR>();
+                MessageBox.Show(T_14OR("presupuestos_msg_rechazada", "Cotizacion rechazada. Ya no aparece en Pendientes; la podes ver en Historial."),
+                    T_14OR("titulo_listo", "Listo"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 presuSeleccionado_14OR = null;
-                dgvDetalle.DataSource = null;
-                ActualizarTotal_14OR();
-                ActualizarBotones_14OR();
+                CargarPresupuestos_14OR();
             }
             catch (Exception ex)
             {
@@ -420,6 +497,24 @@ namespace Proyecto_IngSoftware
             btnCargarPrecios.Enabled = hay && (est == Presupuesto_14OR.EstadoPedido_14OR || est == Presupuesto_14OR.EstadoRecibido_14OR);
             btnAceptar.Enabled = hay && est == Presupuesto_14OR.EstadoRecibido_14OR;
             btnRechazar.Enabled = hay && (est == Presupuesto_14OR.EstadoPedido_14OR || est == Presupuesto_14OR.EstadoRecibido_14OR);
+            ActualizarProximoPaso_14OR();
+        }
+
+        // cartel que explica que hay que hacer con la cotizacion elegida
+        private void ActualizarProximoPaso_14OR()
+        {
+            string est = presuSeleccionado_14OR != null ? presuSeleccionado_14OR.Estado_14OR : "";
+
+            if (est == Presupuesto_14OR.EstadoPedido_14OR)
+                lblProximoPaso.Text = T_14OR("presupuestos_paso_pedido", "Proximo paso: cuando el proveedor te pase los precios, escribi el precio unitario de cada producto en el detalle y toca 'Registrar cotizacion'.");
+            else if (est == Presupuesto_14OR.EstadoRecibido_14OR)
+                lblProximoPaso.Text = T_14OR("presupuestos_paso_recibido", "Proximo paso: revisa los precios. Si te conviene toca 'Comprar insumos' (genera la orden de compra); si no, 'Rechazar'.");
+            else if (est == Presupuesto_14OR.EstadoAceptado_14OR)
+                lblProximoPaso.Text = T_14OR("presupuestos_paso_aceptado", "Esta cotizacion ya genero su orden de compra. Segui en Compra > Ordenes de Compra (pagar y recibir la mercaderia).");
+            else if (est == Presupuesto_14OR.EstadoRechazado_14OR)
+                lblProximoPaso.Text = T_14OR("presupuestos_paso_rechazado", "Esta cotizacion fue rechazada, no genero orden de compra. Queda solo como registro.");
+            else
+                lblProximoPaso.Text = T_14OR("presupuestos_paso_ninguno", "Elegi una cotizacion de la lista para ver su detalle y el proximo paso, o arma una nueva solicitud a la izquierda.");
         }
 
         private void EstiloGrillas_14OR()
@@ -462,6 +557,13 @@ namespace Proyecto_IngSoftware
             if (e.RowIndex < 0 || e.Value == null) return;
             if (dgv.Columns[e.ColumnIndex].Name != "Estado_14OR") return;
             string estado = e.Value.ToString();
+
+            // cada estado con su color pa ubicarlo de un vistazo
+            if (estado == Presupuesto_14OR.EstadoPedido_14OR) e.CellStyle.ForeColor = Color.FromArgb(231, 168, 26);
+            else if (estado == Presupuesto_14OR.EstadoRecibido_14OR) e.CellStyle.ForeColor = Color.FromArgb(120, 170, 230);
+            else if (estado == Presupuesto_14OR.EstadoAceptado_14OR) e.CellStyle.ForeColor = Color.FromArgb(90, 190, 120);
+            else if (estado == Presupuesto_14OR.EstadoRechazado_14OR) e.CellStyle.ForeColor = Color.FromArgb(220, 90, 90);
+
             e.Value = T_14OR("estado_" + estado.ToLower(), estado);
             e.FormattingApplied = true;
         }
@@ -483,12 +585,13 @@ namespace Proyecto_IngSoftware
         {
             if (IsDisposed) return;
             this.TraducirAuto_43BO(dic);
-            this.Text = T_14OR("presupuestos_titulo", "Presupuestos / Cotizaciones");
+            this.Text = T_14OR("presupuestos_titulo", "Cotizaciones");
             TraducirColumnas_14OR();
             dgvPresupuestos.Invalidate();
             if (!cargado_14OR) return;
             MostrarCriticos_14OR();
             ActualizarTotal_14OR();
+            ActualizarProximoPaso_14OR();
         }
     }
 }

@@ -131,7 +131,7 @@ namespace DAL
             SqlParameter[] p = { new SqlParameter("@id", idOrden) };
             DataTable tabla = acceso.Leer_43BO(
                 @"SELECT IdDetalleOrdenCompra_14OR, IdOrdenCompra_14OR, IdProducto_14OR,
-                         NombreProducto_14OR, Cantidad_14OR, PrecioCosto_14OR
+                         NombreProducto_14OR, Cantidad_14OR, PrecioCosto_14OR, CantidadRecibida_14OR
                   FROM DetalleOrdenCompra_14OR
                   WHERE IdOrdenCompra_14OR = @id", p);
 
@@ -144,6 +144,7 @@ namespace DAL
                 d.NombreProducto_14OR = f["NombreProducto_14OR"].ToString();
                 d.Cantidad_14OR = Convert.ToInt32(f["Cantidad_14OR"]);
                 d.PrecioCosto_14OR = Convert.ToDouble(f["PrecioCosto_14OR"]);
+                d.CantidadRecibida_14OR = f["CantidadRecibida_14OR"] != DBNull.Value ? (int?)Convert.ToInt32(f["CantidadRecibida_14OR"]) : null;
                 lista.Add(d);
             }
 
@@ -170,8 +171,9 @@ namespace DAL
         }
 
         // registro la recepcion de la mercaderia todo junto en una transaccion: paso la orden
-        // de "Pagada" a "Cerrada", le guardo el remito y la fecha, y le sumo el stock a cada
-        // producto que vino. si la orden no estaba pagada no toco anda y aviso. devuelve el id
+        // de "Pagada" a "Cerrada", le guardo el remito y la fecha, a cada renglon le guardo la
+        // cantidad recibida y le sumo esa cantidad al stock del producto.
+        // si la orden no estaba pagada no toco anda y aviso. devuelve el id
         public int RegistrarIngresoMercaderia_14OR(OrdenCompra_14OR orden)
         {
             using (SqlConnection con = new SqlConnection(AccesoBD_43BO.ConnectionString))
@@ -201,11 +203,23 @@ namespace DAL
 
                         foreach (DetalleOrdenCompra_14OR d in orden.Detalles)
                         {
+                            // si no viene la recibida (no deberia, la valida la bll) uso la pedida
+                            int recibida = d.CantidadRecibida_14OR ?? d.Cantidad_14OR;
+
+                            using (SqlCommand cm = new SqlCommand(
+                                @"UPDATE DetalleOrdenCompra_14OR SET CantidadRecibida_14OR = @recibida
+                                  WHERE IdDetalleOrdenCompra_14OR = @iddet", con, tran))
+                            {
+                                cm.Parameters.AddWithValue("@recibida", recibida);
+                                cm.Parameters.AddWithValue("@iddet", d.IdDetalleOrdenCompra_14OR);
+                                cm.ExecuteNonQuery();
+                            }
+
                             using (SqlCommand cm = new SqlCommand(
                                 @"UPDATE Producto_14OR SET Stock_14OR = Stock_14OR + @cant
                                   WHERE IdProducto_14OR = @idprod", con, tran))
                             {
-                                cm.Parameters.AddWithValue("@cant", d.Cantidad_14OR);
+                                cm.Parameters.AddWithValue("@cant", recibida);
                                 cm.Parameters.AddWithValue("@idprod", d.IdProducto_14OR);
                                 cm.ExecuteNonQuery();
                             }

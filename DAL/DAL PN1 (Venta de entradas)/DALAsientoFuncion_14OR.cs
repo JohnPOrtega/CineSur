@@ -195,6 +195,43 @@ namespace DAL
             return acceso.Escribir_43BO(query, p);
         }
 
+        // cuantas entradas se vendieron de esta funcion (Ocupada = vendida, Utilizada = ya ingreso)
+        public int ContarVendidas_14OR(int idFuncion)
+        {
+            string query = @"SELECT COUNT(*) FROM AsientoFuncion_14OR
+                             WHERE IdFuncion_14OR = @f AND Estado_14OR IN ('Ocupada','Utilizada')";
+            SqlParameter[] p = { new SqlParameter("@f", idFuncion) };
+            DataTable t = acceso.Leer_43BO(query, p);
+            return t.Rows.Count > 0 ? Convert.ToInt32(t.Rows[0][0]) : 0;
+        }
+
+        // cuantas butacas quedaron 'Reservada' (bloqueo temporal de una venta que nunca se cobro)
+        // en esta funcion si la funcion ya paso. Lo cuento con un Leer pa no recalcular el DV al pedo.
+        public int ContarReservasVencidas_14OR(int idFuncion)
+        {
+            string query = @"SELECT COUNT(*) FROM AsientoFuncion_14OR AF
+                             INNER JOIN Funcion_14OR F ON F.IdFuncion_14OR = AF.IdFuncion_14OR
+                             WHERE AF.IdFuncion_14OR = @f
+                               AND AF.Estado_14OR = 'Reservada'
+                               AND CAST(F.Fecha_14OR AS date) < CAST(GETDATE() AS date)";
+            SqlParameter[] p = { new SqlParameter("@f", idFuncion) };
+            DataTable t = acceso.Leer_43BO(query, p);
+            return t.Rows.Count > 0 ? Convert.ToInt32(t.Rows[0][0]) : 0;
+        }
+
+        // las libera: vuelven a Libre (nadie las pago y la funcion ya termino)
+        public int LiberarReservasVencidas_14OR(int idFuncion)
+        {
+            string query = @"UPDATE AF SET AF.Estado_14OR = 'Libre', AF.IdVenta_14OR = NULL
+                             FROM AsientoFuncion_14OR AF
+                             INNER JOIN Funcion_14OR F ON F.IdFuncion_14OR = AF.IdFuncion_14OR
+                             WHERE AF.IdFuncion_14OR = @f
+                               AND AF.Estado_14OR = 'Reservada'
+                               AND CAST(F.Fecha_14OR AS date) < CAST(GETDATE() AS date)";
+            SqlParameter[] p = { new SqlParameter("@f", idFuncion) };
+            return acceso.Escribir_43BO(query, p);
+        }
+
         // si el vendedor cancela el cobro, largo la reserva: las butacas vuelven a Libre.
         // solo suelto las que siguen reservado si no otra vez va a liberar las que ya estban venidasds
         public int LiberarReserva_14OR(int idFuncion, List<int> idsButacas)

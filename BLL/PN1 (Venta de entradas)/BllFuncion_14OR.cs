@@ -29,6 +29,17 @@ namespace BLL
             return dal.Listar_14OR();
         }
 
+        // las que se pueden administrar: de hoy en adelante. Las que ya pasaron quedan guardadas
+        // (con sus ventas, pa los reportes) pero no se muestran en Master > Funciones, asi no se
+        // pueden modificar ni "reciclar" cambiandoles la fecha.
+        public List<Funcion_14OR> ListarVigentes_14OR()
+        {
+            return dal.Listar_14OR()
+                      .Where(f => f.Fecha_14OR.Date >= DateTime.Today)
+                      .OrderBy(f => f.Fecha_14OR).ThenBy(f => f.Horario_14OR.TimeOfDay)
+                      .ToList();
+        }
+
         // funciones futuras de una peli, para la pantalla de horarios 
         public List<Funcion_14OR> ListarPorPelicula_14OR(int idPelicula)
         {
@@ -57,7 +68,34 @@ namespace BLL
             // aca me salteo la propia funcion asi no se choca consigo misma
             ValidarMantenimiento_14OR(f, f.IdFuncion_14OR);
 
+            // las butacas (vendidas, reservadas, ingresadas) son de ESA funcion: de esa sala, ese dia
+            // y esa hora. Si le cambio la fecha, el horario o la sala es otra funcion distinta:
+            //  - si ya vendio entradas, no la dejo mover (esas entradas son para la fecha original);
+            //    se puede cambiar precio, formato o idioma, y pa otra fecha se da de alta una nueva.
+            //  - si no vendio nada, la muevo y le borro el mapa viejo: se vuelve a armar todo Libre
+            //    (con las butacas de la sala nueva) la proxima vez que se abra.
+            Funcion_14OR anterior = dal.Listar_14OR().FirstOrDefault(x => x.IdFuncion_14OR == f.IdFuncion_14OR);
+            bool cambiaCuando = anterior != null &&
+                (anterior.Fecha_14OR.Date != f.Fecha_14OR.Date ||
+                 anterior.Horario_14OR.TimeOfDay.Hours != f.Horario_14OR.TimeOfDay.Hours ||
+                 anterior.Horario_14OR.TimeOfDay.Minutes != f.Horario_14OR.TimeOfDay.Minutes ||
+                 anterior.Sala.IdSala_14OR != f.Sala.IdSala_14OR);
+
+            if (cambiaCuando)
+            {
+                int vendidas = dalAsiento.ContarVendidas_14OR(f.IdFuncion_14OR);
+                if (vendidas > 0)
+                    throw new Exception("Esta funcion ya tiene " + vendidas + " entradas vendidas, asi que no se le puede " +
+                        "cambiar la fecha, el horario ni la sala (esas entradas son para la funcion original). " +
+                        "Para otra fecha, crea una funcion nueva con NUEVO.");
+            }
+
             int r = dal.Modificar_14OR(f);
+
+            // la movi sin ventas: el mapa viejo (con reservas colgadas o de otra sala) ya no sirve
+            if (cambiaCuando)
+                dalAsiento.EliminarPorFuncion_14OR(f.IdFuncion_14OR);
+
             bllBi.GuardarLog_43BO(Modulo_43BO.Maestro, Evento_43BO.modificar, 2);
             return r;
         }

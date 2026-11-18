@@ -58,6 +58,8 @@
             this.reporteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ayudaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reporteDeVentasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reporteDeComprasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panelInteligenteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -292,7 +294,9 @@
             // reporteToolStripMenuItem
             // 
             this.reporteToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.reporteDeVentasToolStripMenuItem});
+            this.reporteDeVentasToolStripMenuItem,
+            this.reporteDeComprasToolStripMenuItem,
+            this.panelInteligenteToolStripMenuItem});
             this.reporteToolStripMenuItem.Name = "reporteToolStripMenuItem";
             this.reporteToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
             this.reporteToolStripMenuItem.Text = "Reporte";
@@ -309,6 +313,20 @@
             this.reporteDeVentasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.reporteDeVentasToolStripMenuItem.Text = "Reporte de Ventas";
             this.reporteDeVentasToolStripMenuItem.Click += new System.EventHandler(this.reporteDeVentasToolStripMenuItem_Click);
+            //
+            // reporteDeComprasToolStripMenuItem
+            //
+            this.reporteDeComprasToolStripMenuItem.Name = "reporteDeComprasToolStripMenuItem";
+            this.reporteDeComprasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.reporteDeComprasToolStripMenuItem.Text = "Reporte de Compras";
+            this.reporteDeComprasToolStripMenuItem.Click += new System.EventHandler(this.reporteDeComprasToolStripMenuItem_Click);
+            //
+            // panelInteligenteToolStripMenuItem
+            //
+            this.panelInteligenteToolStripMenuItem.Name = "panelInteligenteToolStripMenuItem";
+            this.panelInteligenteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.panelInteligenteToolStripMenuItem.Text = "Panel de Control";
+            this.panelInteligenteToolStripMenuItem.Click += new System.EventHandler(this.panelInteligenteToolStripMenuItem_Click);
             // 
             // Menu
             // 
@@ -358,6 +376,8 @@
         private System.Windows.Forms.ToolStripMenuItem controlDeAccesoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem candyBarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reporteDeVentasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reporteDeComprasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem panelInteligenteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem productosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem proveedoresToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem presupuestosToolStripMenuItem;

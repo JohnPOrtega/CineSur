@@ -65,7 +65,8 @@ namespace Proyecto_IngSoftware
         {
             try
             {
-                funcionesActuales_14OR = bll.Listar_14OR();
+                // solo las de hoy en adelante: las que ya pasaron no se tocan (quedan pa los reportes)
+                funcionesActuales_14OR = bll.ListarVigentes_14OR();
 
                 // proyecto a algo lindo para mostrar (titulo en vez de idpeli, etc)
                 var lista = funcionesActuales_14OR.Select(f => new

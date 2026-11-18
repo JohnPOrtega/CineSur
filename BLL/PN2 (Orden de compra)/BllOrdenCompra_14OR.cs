@@ -73,9 +73,11 @@ namespace BLL
             bllBi.GuardarLog_43BO(Modulo_43BO.Compras, Evento_43BO.modificar, 2);
         }
 
-        // registro el ingreso de la orden pagada: la cierro, guardo el remito y le sumo el stock
-        // a cada producto que entro. devuelve el id de la orden
-        public int RegistrarIngresoMercaderia_14OR(int idOrden, string nroRemito)
+        // registro el ingreso de la orden pagada: comparo lo que llego contra lo pedido, y si
+        // coincide la cierro, guardo el remito y le sumo el stock a cada producto que entro.
+        // recibidos = los renglones con la cantidad recibida que cargo el supervisor
+        // devuelve el id de la orden
+        public int RegistrarIngresoMercaderia_14OR(int idOrden, string nroRemito, List<DetalleOrdenCompra_14OR> recibidos)
         {
             if (idOrden <= 0)
                 throw new Exception("No se selecciono ninguna orden.");
@@ -83,10 +85,16 @@ namespace BLL
             if (string.IsNullOrWhiteSpace(nroRemito))
                 throw new Exception("Ingresa el numero de remito.");
 
-            // me traigo los renglones para saber cuanto sumar al stock de cada producto
+            // los renglones pedidos los saco de la base, no de la pantalla (fuente de verdad)
             List<DetalleOrdenCompra_14OR> renglones = dal.ObtenerDetalle_14OR(idOrden);
             if (renglones.Count == 0)
                 throw new Exception("La orden no tiene renglones.");
+
+            // aca comparo lo recibido contra la orden, si algo no cierra no registro nada
+            List<string> diferencias = ValidarRecepcion_14OR(renglones, recibidos);
+            if (diferencias.Count > 0)
+                throw new Exception("Lo recibido no coincide con la orden de compra. Revisa:\n- "
+                    + string.Join("\n- ", diferencias));
 
             OrdenCompra_14OR orden = new OrdenCompra_14OR();
             orden.IdOrdenCompra_14OR = idOrden;
@@ -97,6 +105,40 @@ namespace BLL
             int id = dal.RegistrarIngresoMercaderia_14OR(orden);
             bllBi.GuardarLog_43BO(Modulo_43BO.Compras, Evento_43BO.Crear, 2);
             return id;
+        }
+
+        // compara renglon por renglon la cantidad pedida contra la recibida.
+        // devuelve la lista de diferencias (vacia = todo coincide). de paso le copio la
+        // cantidad recibida a los renglones pedidos asi el dal guarda esa
+        public List<string> ValidarRecepcion_14OR(List<DetalleOrdenCompra_14OR> pedidos, List<DetalleOrdenCompra_14OR> recibidos)
+        {
+            List<string> diferencias = new List<string>();
+            if (recibidos == null) recibidos = new List<DetalleOrdenCompra_14OR>();
+
+            foreach (DetalleOrdenCompra_14OR p in pedidos)
+            {
+                DetalleOrdenCompra_14OR r = recibidos.FirstOrDefault(x => x.IdDetalleOrdenCompra_14OR == p.IdDetalleOrdenCompra_14OR);
+
+                if (r == null || !r.CantidadRecibida_14OR.HasValue)
+                {
+                    diferencias.Add(p.NombreProducto_14OR + ": falta cargar la cantidad recibida");
+                    continue;
+                }
+
+                int recibida = r.CantidadRecibida_14OR.Value;
+                if (recibida < 0)
+                {
+                    diferencias.Add(p.NombreProducto_14OR + ": la cantidad recibida no puede ser negativa");
+                    continue;
+                }
+
+                if (recibida != p.Cantidad_14OR)
+                    diferencias.Add(string.Format("{0}: pedido {1}, recibido {2}", p.NombreProducto_14OR, p.Cantidad_14OR, recibida));
+
+                p.CantidadRecibida_14OR = recibida;
+            }
+
+            return diferencias;
         }
 
         public List<OrdenCompra_14OR> Listar_14OR()

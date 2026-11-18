@@ -1,5 +1,22 @@
 ; ============================================================================
-;  INSTALADOR CineSur  -  Inno Setup 6  (ISCC.exe)
+;  INSTALADOR CineSur  -  Inno Setup 6  (ISCC.exe)   -   VERSION 3
+;
+;  Novedades de la v3:
+;   - Instalacion nueva con base VACIA: solo estructura, roles/patentes y un usuario
+;     (Sassaroli, Administrador, con contrasenia de fabrica DNI+Apellido: el sistema
+;     le pide cambiarla al entrar).
+;   - Los datos de prueba se pasaron a Database\Datos_Prueba.sql (se copia junto al
+;     Deploy pero NO se corre solo). Despues de correrlo, el admin recalcula el DV
+;     desde la pantalla de Integridad DV que aparece al loguearse.
+;   - Actualizar sobre una base v2 no cambia: conserva todos los datos cargados.
+;
+;  Novedades de la v2:
+;   - Tres caminos: Instalar (primera vez), Actualizar (reinstalar sin perder datos,
+;     con copia de seguridad antes) o Restaurar (reinstalar volviendo la base a un .bak).
+;   - La copia de seguridad previa queda en C:\Backups43BO, la misma carpeta que usa la app,
+;     asi despues se puede restaurar tambien desde Admin > Restore.
+;   - Despues de restaurar se corre igual el Deploy_IngSoftware.sql: si el .bak era de una
+;     version vieja, las MIGRACIONES le agregan lo que falte (ej. CantidadRecibida_14OR).
 ;
 ;  Este instalador copia la app compilada a Archivos de programa (sin los .pdb
 ;  ni los .xml que no hacen falta) y despues deja que el usuario elija la
@@ -18,7 +35,7 @@
 ; ============================================================================
 
 #define AppNombre       "CineSur"
-#define AppVersion      "1.0.0"
+#define AppVersion      "3.0.0"
 #define AppPublisher    "CineSur"
 #define AppExe          "Proyecto IngSoftware.exe"
 
@@ -28,6 +45,11 @@
 
 ; Script SQL de deploy (el que esta en esta misma carpeta, en Database\).
 #define DeploySql       "Database\Deploy_IngSoftware.sql"
+; Datos de prueba opcionales (v3): se copian pero no se ejecutan.
+#define DatosPruebaSql  "Database\Datos_Prueba.sql"
+
+; Carpeta de copias de seguridad (la misma que usa la app en Admin > Backup / Restore).
+#define CarpetaBackup   "C:\Backups43BO"
 
 ; Icono del instalador (se toma de los recursos de la app).
 #define IcoFile         SourceBin + "\Recursos\cinesur.ico"
@@ -75,15 +97,22 @@ Source: "{#SourceBin}\{#AppExe}.config";     DestDir: "{app}"; Flags: ignorevers
 Source: "{#SourceBin}\*.dll";                DestDir: "{app}"; Flags: ignoreversion
 ; --- Carpetas que la app necesita en runtime ---
 Source: "{#SourceBin}\Recursos\*";           DestDir: "{app}\Recursos"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#SourceBin}\Ayuda\*.json";       DestDir: "{app}\Ayuda";    Flags: ignoreversion
 Source: "{#SourceBin}\Idiomas\*";            DestDir: "{app}\Idiomas";  Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#SourceBin}\Posters\*";            DestDir: "{app}\Posters";  Flags: ignoreversion recursesubdirs createallsubdirs skipifsourcedoesntexist
 ; --- Script de base de datos ---
 Source: "{#DeploySql}";                      DestDir: "{app}\Database"; Flags: ignoreversion
+Source: "{#DatosPruebaSql}";                 DestDir: "{app}\Database"; Flags: ignoreversion
 
 [Dirs]
-; carpetas que la app escribe en runtime (entradas/reportes generados)
-Name: "{app}\Entradas"; Flags: uninsneveruninstall
-Name: "{app}\Reportes"; Flags: uninsneveruninstall
+; La app escribe al lado del .exe: RutaBackup_43BO.txt (Admin > Backup), los PDF de Reportes,
+; los tickets de Entradas y los afiches que se cargan en Master > Peliculas (Posters).
+; En Archivos de programa un usuario comun no puede escribir, asi que le doy permiso de
+; modificar a los usuarios del equipo sobre la carpeta del programa (lo heredan las subcarpetas).
+Name: "{app}"; Permissions: users-modify
+Name: "{app}\Posters"; Permissions: users-modify
+Name: "{app}\Entradas"; Permissions: users-modify; Flags: uninsneveruninstall
+Name: "{app}\Reportes"; Permissions: users-modify; Flags: uninsneveruninstall
 
 [Icons]
 Name: "{group}\{#AppNombre}";               Filename: "{app}\{#AppExe}"; IconFilename: "{app}\Recursos\cinesur.ico"
@@ -97,6 +126,7 @@ Name: "desktopicon"; Description: "Crear un acceso directo en el Escritorio"; Gr
 Root: HKLM; Subkey: "Software\{#AppNombre}"; ValueType: string; ValueName: "InstallPath"; ValueData: "{app}";       Flags: uninsdeletekey
 Root: HKLM; Subkey: "Software\{#AppNombre}"; ValueType: string; ValueName: "Version";     ValueData: "{#AppVersion}"
 Root: HKLM; Subkey: "Software\{#AppNombre}"; ValueType: string; ValueName: "SqlInstance"; ValueData: "{code:InstanciaElegida}"
+Root: HKLM; Subkey: "Software\{#AppNombre}"; ValueType: string; ValueName: "TipoInstalacion"; ValueData: "{code:TipoElegido}"
 
 [Run]
 Filename: "{app}\{#AppExe}"; Description: "Iniciar {#AppNombre}"; Flags: nowait postinstall skipifsilent
@@ -112,8 +142,10 @@ var
   lblEstado: TNewStaticText;
   { pagina de tipo de instalacion (instalar / reinstalar) }
   PageTipo: TWizardPage;
-  rbInstalar, rbReinstalar: TNewRadioButton;
+  rbInstalar, rbReinstalar, rbRestaurar: TNewRadioButton;
   chkBackup: TNewCheckBox;
+  txtBak: TNewEdit;
+  btnBak: TNewButton;
   lblPrevia: TNewStaticText;
   HayPrevia: Boolean;
   CarpetaPrevia, VersionPrevia: String;
@@ -164,6 +196,46 @@ begin
   end;
 end;
 
+{ habilita lo que corresponde segun el camino elegido }
+procedure ActualizarTipo;
+begin
+  chkBackup.Enabled := rbReinstalar.Enabled and rbReinstalar.Checked;
+  txtBak.Enabled := rbRestaurar.Enabled and rbRestaurar.Checked;
+  btnBak.Enabled := txtBak.Enabled;
+end;
+
+procedure TipoClick(Sender: TObject);
+begin
+  ActualizarTipo;
+end;
+
+{ elegir el .bak (arranca en la carpeta de backups de la app) }
+procedure BtnBakClick(Sender: TObject);
+var
+  archivo: String;
+begin
+  archivo := txtBak.Text;
+  if GetOpenFileName('Elegi la copia de seguridad a restaurar', archivo, '{#CarpetaBackup}',
+                     'Copias de seguridad (*.bak)|*.bak|Todos los archivos (*.*)|*.*', 'bak') then
+    txtBak.Text := archivo;
+end;
+
+function EsRestaurar: Boolean;
+begin
+  Result := (rbRestaurar <> nil) and rbRestaurar.Checked;
+end;
+
+{ lo guardo en el registro pa saber como se instalo la ultima vez }
+function TipoElegido(Param: String): String;
+begin
+  if EsRestaurar then
+    Result := 'Restaurar'
+  else if (rbReinstalar <> nil) and rbReinstalar.Checked then
+    Result := 'Actualizar'
+  else
+    Result := 'Instalar';
+end;
+
 procedure InitializeWizard;
 var
   lbl: TNewStaticText;
@@ -181,27 +253,53 @@ begin
   rbInstalar.Left := 0;
   rbInstalar.Top := ScaleY(4);
   rbInstalar.Width := PageTipo.SurfaceWidth;
-  rbInstalar.Caption := 'Instalar (desde cero): crea la base si no existe; si ya esta, no la toca.';
+  rbInstalar.Caption := 'Instalar (primera vez): copia el sistema y crea la base con los datos iniciales.';
+  rbInstalar.OnClick := @TipoClick;
 
   rbReinstalar := TNewRadioButton.Create(WizardForm);
   rbReinstalar.Parent := PageTipo.Surface;
   rbReinstalar.Left := 0;
-  rbReinstalar.Top := rbInstalar.Top + ScaleY(34);
+  rbReinstalar.Top := rbInstalar.Top + ScaleY(30);
   rbReinstalar.Width := PageTipo.SurfaceWidth;
-  rbReinstalar.Caption := 'Reinstalar (actualizar): agrega lo que falte sin perder los datos que ya tenes.';
+  rbReinstalar.Caption := 'Actualizar (reinstalar): pone la version nueva y conserva tus datos.';
+  rbReinstalar.OnClick := @TipoClick;
 
   chkBackup := TNewCheckBox.Create(WizardForm);
   chkBackup.Parent := PageTipo.Surface;
   chkBackup.Left := ScaleX(18);
-  chkBackup.Top := rbReinstalar.Top + ScaleY(26);
+  chkBackup.Top := rbReinstalar.Top + ScaleY(22);
   chkBackup.Width := PageTipo.SurfaceWidth - ScaleX(18);
-  chkBackup.Caption := 'Hacer una copia de seguridad de la base antes de actualizar (recomendado)';
+  chkBackup.Caption := 'Hacer una copia de seguridad de la base antes (recomendado)';
   chkBackup.Checked := True;
+
+  rbRestaurar := TNewRadioButton.Create(WizardForm);
+  rbRestaurar.Parent := PageTipo.Surface;
+  rbRestaurar.Left := 0;
+  rbRestaurar.Top := chkBackup.Top + ScaleY(32);
+  rbRestaurar.Width := PageTipo.SurfaceWidth;
+  rbRestaurar.Caption := 'Restaurar (reinstalar): vuelve la base a una copia de seguridad (.bak).';
+  rbRestaurar.OnClick := @TipoClick;
+
+  txtBak := TNewEdit.Create(WizardForm);
+  txtBak.Parent := PageTipo.Surface;
+  txtBak.Left := ScaleX(18);
+  txtBak.Top := rbRestaurar.Top + ScaleY(24);
+  txtBak.Width := PageTipo.SurfaceWidth - ScaleX(18) - ScaleX(96);
+  txtBak.Text := '';
+
+  btnBak := TNewButton.Create(WizardForm);
+  btnBak.Parent := PageTipo.Surface;
+  btnBak.Left := txtBak.Left + txtBak.Width + ScaleX(6);
+  btnBak.Top := txtBak.Top - ScaleY(1);
+  btnBak.Width := ScaleX(90);
+  btnBak.Height := ScaleY(23);
+  btnBak.Caption := 'Examinar...';
+  btnBak.OnClick := @BtnBakClick;
 
   lblPrevia := TNewStaticText.Create(WizardForm);
   lblPrevia.Parent := PageTipo.Surface;
   lblPrevia.Left := 0;
-  lblPrevia.Top := chkBackup.Top + ScaleY(34);
+  lblPrevia.Top := txtBak.Top + ScaleY(34);
   lblPrevia.AutoSize := False;
   lblPrevia.Width := PageTipo.SurfaceWidth;
   lblPrevia.Height := ScaleY(60);
@@ -217,10 +315,10 @@ begin
   begin
     rbInstalar.Checked := True;
     rbReinstalar.Enabled := False;
-    chkBackup.Enabled := False;
-    chkBackup.Checked := False;
+    rbRestaurar.Enabled := False;
     lblPrevia.Caption := 'No se encontro una instalacion anterior en este equipo: solo se puede Instalar.';
   end;
+  ActualizarTipo;
 
   PageInstancia := CreateCustomPage(wpSelectDir,
     'Servidor de base de datos',
@@ -280,6 +378,20 @@ var
   estado: Integer;
 begin
   Result := True;
+  if (CurPageID = PageTipo.ID) and EsRestaurar then
+  begin
+    if (Trim(txtBak.Text) = '') or (not FileExists(Trim(txtBak.Text))) then
+    begin
+      MsgBox('Elegi el archivo .bak que queres restaurar (boton Examinar).', mbError, MB_OK);
+      Result := False;
+      exit;
+    end;
+    Result := (MsgBox('Restaurar reemplaza TODA la base actual por la copia:' + #13#10 +
+                      '    ' + Trim(txtBak.Text) + #13#10#13#10 +
+                      'Lo que se haya cargado despues de esa copia se pierde. Seguimos?',
+                      mbConfirmation, MB_YESNO) = IDYES);
+    exit;
+  end;
   if CurPageID = PageInstancia.ID then
   begin
     inst := InstanciaElegida('');
@@ -336,30 +448,115 @@ begin
        '', SW_HIDE, ewWaitUntilTerminated, rc);
 end;
 
-{ Copia de seguridad de la base antes de actualizar (solo al reinstalar).
-  El .bak queda en la carpeta de backups de SQL Server (el servicio siempre
-  puede escribir ahi). }
+{ Copia de seguridad de la base antes de actualizar (solo en "Actualizar").
+  Queda en {#CarpetaBackup}, la misma carpeta que usa la app, asi se puede
+  restaurar despues desde Admin > Restore o desde este mismo instalador. }
 procedure HacerBackup(const Instancia: String);
 var
   rc: Integer;
   q, archivo: String;
 begin
-  archivo := 'Ing.Software_backup_' + GetDateTimeString('yyyymmdd_hhnnss', #0, #0) + '.bak';
-  q := 'BACKUP DATABASE [Ing.Software] TO DISK = N' + Chr(39) + archivo + Chr(39) + ' WITH INIT';
+  ForceDirectories('{#CarpetaBackup}');
+  archivo := '{#CarpetaBackup}\Ing.Software_antes_v{#AppVersion}_' + GetDateTimeString('yyyymmdd_hhnnss', #0, #0) + '.bak';
+  q := 'IF DB_ID(N' + Chr(39) + 'Ing.Software' + Chr(39) + ') IS NOT NULL BACKUP DATABASE [Ing.Software] TO DISK = N' + Chr(39) + archivo + Chr(39) + ' WITH INIT';
   if Exec(ExpandConstant('{cmd}'),
        '/C sqlcmd -S "' + Instancia + '" -E -b -Q "' + q + '"',
        '', SW_HIDE, ewWaitUntilTerminated, rc) then
   begin
     if rc = 0 then
-      MsgBox('Copia de seguridad hecha: ' + archivo + #13#10 +
-             '(quedo en la carpeta de backups de SQL Server).', mbInformation, MB_OK)
+      MsgBox('Copia de seguridad hecha:' + #13#10 + '    ' + archivo, mbInformation, MB_OK)
     else
       MsgBox('No pude hacer la copia de seguridad (codigo ' + IntToStr(rc) + ').' + #13#10 +
-             'Sigo igual: el script solo agrega lo que falta, no borra datos.', mbInformation, MB_OK);
+             'Sigo igual: la actualizacion solo agrega lo que falta, no borra datos.', mbInformation, MB_OK);
   end;
 end;
 
+{ Restaura la base desde el .bak elegido. Si el archivo no esta en la carpeta de backups
+  lo copio ahi primero: SQL Server lee el archivo con su propia cuenta de servicio y esa
+  carpeta ya sabemos que la puede usar (la app hace sus backups ahi).
+  Devuelve True si salio bien. }
+function RestaurarBase(const Instancia, Origen: String): Boolean;
+var
+  rc: Integer;
+  bak, sql, log, script: String;
+begin
+  Result := False;
+  ForceDirectories('{#CarpetaBackup}');
+  bak := Origen;
+  if CompareText(ExtractFileDir(Origen), '{#CarpetaBackup}') <> 0 then
+  begin
+    bak := '{#CarpetaBackup}\' + ExtractFileName(Origen);
+    if not CopyFile(Origen, bak, False) then
+    begin
+      MsgBox('No pude copiar el .bak a {#CarpetaBackup}.', mbError, MB_OK);
+      exit;
+    end;
+  end;
+
+  { el script va a un archivo pa no pelear con las comillas en la linea de comando.
+    Si el RESTORE falla, la base vuelve a MULTI_USER igual (no queda bloqueada). }
+  sql := ExpandConstant('{tmp}\restore_cinesur.sql');
+  log := ExpandConstant('{app}\Database\restore_log.txt');
+  script :=
+    'USE [master];' + #13#10 +
+    'SET NOCOUNT ON;' + #13#10 +
+    'IF DB_ID(N''Ing.Software'') IS NOT NULL' + #13#10 +
+    '    ALTER DATABASE [Ing.Software] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;' + #13#10 +
+    'BEGIN TRY' + #13#10 +
+    '    RESTORE DATABASE [Ing.Software] FROM DISK = N''' + bak + ''' WITH REPLACE;' + #13#10 +
+    'END TRY' + #13#10 +
+    'BEGIN CATCH' + #13#10 +
+    '    IF DB_ID(N''Ing.Software'') IS NOT NULL ALTER DATABASE [Ing.Software] SET MULTI_USER;' + #13#10 +
+    '    THROW;' + #13#10 +
+    'END CATCH' + #13#10 +
+    'ALTER DATABASE [Ing.Software] SET MULTI_USER;' + #13#10 +
+    'PRINT ''RESTORE_OK'';' + #13#10;
+  if not SaveStringToFile(sql, script, False) then
+    exit;
+
+  if not Exec(ExpandConstant('{cmd}'),
+       '/C sqlcmd -S "' + Instancia + '" -E -b -i "' + sql + '" -o "' + log + '"',
+       '', SW_HIDE, ewWaitUntilTerminated, rc) then
+    exit;
+
+  if rc = 0 then
+  begin
+    Result := True;
+    MsgBox('Base restaurada desde:' + #13#10 + '    ' + bak + #13#10#13#10 +
+           'Ahora se actualiza a la version {#AppVersion} sin tocar esos datos.', mbInformation, MB_OK);
+  end
+  else
+    MsgBox('No se pudo restaurar (codigo ' + IntToStr(rc) + '). La base quedo como estaba.' + #13#10 +
+           'Detalle en:' + #13#10 + '    ' + log, mbError, MB_OK);
+end;
+
 { Corre el script de deploy con sqlcmd. Devuelve 0 si salio bien. }
+{ Saca del log las primeras lineas de error de SQL Server (en ingles "Msg ...",
+  en castellano "Mens. ...") con la linea que sigue, pa mostrarlas en el cartel.
+  Asi el que instala ve el error sin tener que buscar el archivo. }
+function ErroresDelLog(const Log: String): String;
+var
+  lineas: TArrayOfString;
+  i, encontrados: Integer;
+begin
+  Result := '';
+  encontrados := 0;
+  if not LoadStringsFromFile(Log, lineas) then
+    exit;
+  for i := 0 to GetArrayLength(lineas) - 1 do
+  begin
+    if (Pos('Msg ', lineas[i]) = 1) or (Pos('Mens', lineas[i]) = 1) or (Pos('Sqlcmd: Error', lineas[i]) = 1) then
+    begin
+      Result := Result + Trim(lineas[i]) + #13#10;
+      if i + 1 < GetArrayLength(lineas) then
+        Result := Result + '    ' + Trim(lineas[i + 1]) + #13#10;
+      encontrados := encontrados + 1;
+      if encontrados >= 3 then
+        break;
+    end;
+  end;
+end;
+
 procedure CorrerDeploy(const Instancia: String);
 var
   sql, log: String;
@@ -368,7 +565,7 @@ begin
   sql := ExpandConstant('{app}\Database\Deploy_IngSoftware.sql');
   log := ExpandConstant('{app}\Database\deploy_log.txt');
 
-  { si es una reinstalacion y pidio backup, lo hago antes de tocar la base }
+  { si es una actualizacion y pidio backup, lo hago antes de tocar la base }
   if (rbReinstalar <> nil) and rbReinstalar.Checked and (chkBackup <> nil) and chkBackup.Checked then
     HacerBackup(Instancia);
 
@@ -377,7 +574,7 @@ begin
        '', SW_HIDE, ewWaitUntilTerminated, rc) then
   begin
     MsgBox('No pude ejecutar sqlcmd para crear la base.' + #13#10 +
-           'Corre a mano {app}\Database\Deploy_IngSoftware.sql desde SSMS.',
+           'Corre a mano ' + sql + ' desde SSMS.',
            mbInformation, MB_OK);
     exit;
   end;
@@ -386,7 +583,7 @@ begin
   begin
     MsgBox('No encontre "sqlcmd" en esta maquina.' + #13#10 +
            'La app quedo instalada. Para crear la base, corre a mano:' + #13#10 +
-           '    {app}\Database\Deploy_IngSoftware.sql' + #13#10 +
+           '    ' + sql + #13#10 +
            'desde SSMS (Ctrl+A -> F5).',
            mbInformation, MB_OK);
     exit;
@@ -399,9 +596,10 @@ begin
     MsgBox('Base de datos lista.' + #13#10 +
            'Se creo lo que faltaba sin tocar los datos existentes.', mbInformation, MB_OK)
   else
-    MsgBox('El script de base termino con errores (codigo ' + IntToStr(rc) + ').' + #13#10 +
-           'Revisa el detalle en:' + #13#10 +
-           '    {app}\Database\deploy_log.txt',
+    MsgBox('El script de base termino con errores (codigo ' + IntToStr(rc) + ').' + #13#10#13#10 +
+           ErroresDelLog(log) + #13#10 +
+           'Detalle completo en:' + #13#10 +
+           '    ' + log,
            mbError, MB_OK);
 end;
 
@@ -413,7 +611,9 @@ begin
   begin
     inst := InstanciaElegida('');
     ReescribirConfig(inst);   { 1) dejar la cadena apuntando a la instancia elegida }
-    CorrerDeploy(inst);       { 2) crear/omitir la base }
+    if EsRestaurar then       { 2) si eligio Restaurar, primero vuelvo la base al .bak }
+      RestaurarBase(inst, Trim(txtBak.Text));
+    CorrerDeploy(inst);       { 3) crear la base o completarle lo que le falte (migraciones) }
   end;
 end;
 

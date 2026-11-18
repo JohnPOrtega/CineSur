@@ -1,0 +1,594 @@
+﻿{
+  "secciones": [
+    {
+      "titulo": "User",
+      "permiso": "",
+      "pantallas": [
+        {
+          "form": "login",
+          "titulo": "Log in",
+          "permiso": "",
+          "donde": "First screen when CineSur opens.",
+          "descripcion": "This is where you enter the system with your user and password. The menu options you get depend on your profile.",
+          "pasos": [
+            "Type your user name and password.",
+            "Click Log in (or press Enter).",
+            "If you still have the factory password, the system asks you to change it first."
+          ],
+          "campos": [
+            {
+              "nombre": "UserName",
+              "texto": "The user name the administrator gave you.",
+              "permiso": ""
+            },
+            {
+              "nombre": "Password",
+              "texto": "Upper and lower case letters are different.",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "After 3 failed attempts the user is locked and an administrator has to unlock it."
+          ]
+        },
+        {
+          "form": "menu",
+          "titulo": "Main menu",
+          "permiso": "",
+          "donde": "Opens after you log in.",
+          "descripcion": "From the bar at the top you open every screen of the system; they open inside this window. You only see the options your profile allows.",
+          "pasos": [
+            "Choose a section in the bar and then the option you need.",
+            "On any screen you can press F1 (or Help) to see the help for that screen."
+          ],
+          "campos": [
+            {
+              "nombre": "User",
+              "texto": "Change password, change language, log out and re-login.",
+              "permiso": ""
+            },
+            {
+              "nombre": "Admin",
+              "texto": "Users, profiles, audit log and database backup.",
+              "permiso": "Menu_SeccionAdmin"
+            },
+            {
+              "nombre": "Master",
+              "texto": "Movies, screenings, theaters, promotions, customers and change audit.",
+              "permiso": "Menu_SeccionMaster"
+            },
+            {
+              "nombre": "Sales",
+              "texto": "Ticket sales, access control and candy bar.",
+              "permiso": "Menu_SeccionVenta"
+            },
+            {
+              "nombre": "Purchases",
+              "texto": "Products, suppliers, quotes and purchase orders.",
+              "permiso": "Menu_SeccionCompra"
+            },
+            {
+              "nombre": "Reports",
+              "texto": "Reports and control panel.",
+              "permiso": "Menu_SeccionReporte"
+            }
+          ],
+          "notas": []
+        },
+        {
+          "form": "cambiocontraseña",
+          "titulo": "Change password",
+          "permiso": "Usuario_CambioContraseña",
+          "donde": "User > Change Password.",
+          "descripcion": "Replaces your password with a new one.",
+          "pasos": [
+            "Type your current password.",
+            "Type the new one twice (both must match).",
+            "Click Accept. The session closes and you log in again with the new password."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "cambiaridioma",
+          "titulo": "Change language",
+          "permiso": "Usuario_CambioIdioma",
+          "donde": "User > Change Language.",
+          "descripcion": "Changes the language of every screen (Spanish, English or Portuguese).",
+          "pasos": [
+            "Choose the language and click Accept. Open screens are translated right away."
+          ],
+          "campos": [],
+          "notas": [
+            "The language is saved in your user for next time."
+          ]
+        }
+      ]
+    },
+    {
+      "titulo": "Admin",
+      "permiso": "Menu_SeccionAdmin",
+      "pantallas": [
+        {
+          "form": "gestionus",
+          "titulo": "User management",
+          "permiso": "GestionUsuarios_Acceso",
+          "donde": "Admin > User Management.",
+          "descripcion": "Create, modify, activate and unlock the users of the system.",
+          "pasos": [
+            "Filter the grid with Active, All or Locked.",
+            "Create: click Create, enter ID number, name, last name, email and role, and click Apply.",
+            "Modify: select the user, click Modify, change what you need and click Apply.",
+            "Activate/Deactivate or Unlock: select the user and click the button."
+          ],
+          "campos": [
+            {
+              "nombre": "ID number (DNI)",
+              "texto": "Cannot be repeated.",
+              "permiso": ""
+            },
+            {
+              "nombre": "Role",
+              "texto": "The permission profile the user will have.",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "When a user is unlocked, the password goes back to the factory one."
+          ]
+        },
+        {
+          "form": "gestionperfiles",
+          "titulo": "Profile management",
+          "permiso": "GestionPerfiles_Acceso",
+          "donde": "Admin > Profile Management.",
+          "descripcion": "Builds the roles and the permission families.",
+          "pasos": [
+            "With Change Mode you choose whether you work on roles or families.",
+            "Create makes a new one; Modify renames it.",
+            "With a role or family selected, add permissions with -->> and remove them with <<---.",
+            "Click Finish Editing to save."
+          ],
+          "campos": [],
+          "notas": [
+            "Changes apply the next time the user logs in."
+          ]
+        },
+        {
+          "form": "auditoria",
+          "titulo": "Audit log",
+          "permiso": "Auditoria_Acceso",
+          "donde": "Admin > Audit Log.",
+          "descripcion": "Shows what happened in the system: logins, additions, changes, deletions, sales, etc.",
+          "pasos": [
+            "Choose dates, user, module, event or criticality.",
+            "Click Filter.",
+            "Print saves it as PDF."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "backupbd_43bo",
+          "titulo": "Database backup",
+          "permiso": "Admin_Backup",
+          "donde": "Admin > Backup DB.",
+          "descripcion": "Makes a full copy of the database.",
+          "pasos": [
+            "Check the folder (C:\\Backups43BO by default) or change it with Change folder...",
+            "Click Create Backup."
+          ],
+          "campos": [],
+          "notas": [
+            "It is a good idea to keep a copy outside the PC as well."
+          ]
+        },
+        {
+          "form": "restorebd_43bo",
+          "titulo": "Database restore",
+          "permiso": "Admin_Restore",
+          "donde": "Data integrity > RESTORE DB.",
+          "descripcion": "Takes the database back to the state of a backup.",
+          "pasos": [
+            "Choose the backup (the newest one loses less data) or look for another one with Browse...",
+            "Click Restore and confirm.",
+            "Log in again."
+          ],
+          "campos": [],
+          "notas": [
+            "Everything loaded after that backup is lost."
+          ]
+        },
+        {
+          "form": "integridaddv_43bo",
+          "titulo": "Data integrity",
+          "permiso": "Admin_RecalcularDV",
+          "donde": "Opens by itself at login if data was changed outside the system.",
+          "descripcion": "Shows which tables do not match their check digit.",
+          "pasos": [
+            "If the changes are valid, click RECALCULATE DV.",
+            "If someone altered the data, click RESTORE DB and choose an earlier backup."
+          ],
+          "campos": [],
+          "notas": [
+            "Until it is fixed, users who are not administrators cannot log in."
+          ]
+        }
+      ]
+    },
+    {
+      "titulo": "Master",
+      "permiso": "Menu_SeccionMaster",
+      "pantallas": [
+        {
+          "form": "peliculas",
+          "titulo": "Movies",
+          "permiso": "Master_Peliculas_Acceso",
+          "donde": "Master > Movies.",
+          "descripcion": "Add, modify and delete movies, with their poster.",
+          "pasos": [
+            "NEW: enter title, genre and length, choose the poster and click SAVE.",
+            "To modify or delete, select the movie in the grid and click MODIFY or DELETE."
+          ],
+          "campos": [
+            {
+              "nombre": "Length (min)",
+              "texto": "Used to set the screening times.",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "Every change is saved in Change Audit."
+          ]
+        },
+        {
+          "form": "auditoriacambios",
+          "titulo": "Change audit",
+          "permiso": "Maestro_AuditoriaCambios_Acceso",
+          "donde": "Master > Change Audit.",
+          "descripcion": "History of movie changes: the current version and the previous one.",
+          "pasos": [
+            "Type part of the title to filter; you can also set dates and click Apply.",
+            "To undo a change, select the previous version and click Activate."
+          ],
+          "campos": [],
+          "notas": [
+            "If the movie had been deleted, Activate creates it again."
+          ]
+        },
+        {
+          "form": "salas",
+          "titulo": "Theaters",
+          "permiso": "Master_Salas_Acceso",
+          "donde": "Master > Theaters.",
+          "descripcion": "The theaters of the cinema with their rows and seats.",
+          "pasos": [
+            "NEW: enter theater number, rows and seats per row and click SAVE (capacity is calculated).",
+            "View layout shows how it looks; Define aisles marks the aisles."
+          ],
+          "campos": [
+            {
+              "nombre": "Rows / Seats",
+              "texto": "Up to 12 rows and 20 seats per row.",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "Deleting a theater also deletes its seats."
+          ]
+        },
+        {
+          "form": "disenarpasillos_14or",
+          "titulo": "Define aisles",
+          "permiso": "Master_Salas_Acceso",
+          "donde": "Master > Theaters > Define aisles.",
+          "descripcion": "Sets between which columns there is an aisle.",
+          "pasos": [
+            "Click a seat to put an aisle after that column (click again to remove it).",
+            "Click Save and then SAVE on the theater."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "funciones_14or",
+          "titulo": "Screenings",
+          "permiso": "Master_Funciones_Acceso",
+          "donde": "Master > Screenings.",
+          "descripcion": "Which movie is shown, in which theater, on which day and at what time.",
+          "pasos": [
+            "NEW: choose movie, theater, date, time, format, language and price, and click SAVE.",
+            "To modify or delete, select the screening in the grid."
+          ],
+          "campos": [],
+          "notas": [
+            "Only screenings from today on are listed.",
+            "If a screening already has tickets sold, its date, time and theater cannot change: create a new one."
+          ]
+        },
+        {
+          "form": "promociones",
+          "titulo": "Promotions",
+          "permiso": "Master_Promociones_Acceso",
+          "donde": "Master > Promotions.",
+          "descripcion": "Discounts applied when tickets are charged.",
+          "pasos": [
+            "NEW: name, type, percentage and valid dates; tick Active and click SAVE."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "clientes",
+          "titulo": "Customers",
+          "permiso": "Master_Clientes_Acceso",
+          "donde": "Master > Customers.",
+          "descripcion": "Customers and members of the cinema.",
+          "pasos": [
+            "NEW: ID number, name, last name, email and phone; tick Is member if needed and click SAVE.",
+            "SERIALIZE XML saves the customers to a file; DESERIALIZE reads them."
+          ],
+          "campos": [],
+          "notas": [
+            "Members get a discount on tickets."
+          ]
+        }
+      ]
+    },
+    {
+      "titulo": "Sales",
+      "permiso": "Menu_SeccionVenta",
+      "pantallas": [
+        {
+          "form": "cartelera",
+          "titulo": "Billboard",
+          "permiso": "Venta_ReservarButacas_Acceso",
+          "donde": "Sales > Book Seats.",
+          "descripcion": "The movies now showing. It is the first step to sell tickets.",
+          "pasos": [
+            "Click the poster of the movie to see its screenings."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "funcionesporpelicula",
+          "titulo": "Movie screenings",
+          "permiso": "Venta_ReservarButacas_Acceso",
+          "donde": "Sales > Book Seats > movie.",
+          "descripcion": "The screenings of the chosen movie.",
+          "pasos": [
+            "Choose the screening and the theater map opens."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "seleccionbutacas",
+          "titulo": "Choose seats",
+          "permiso": "Venta_ReservarButacas_Acceso",
+          "donde": "Sales > Book Seats > movie > screening.",
+          "descripcion": "The theater map to choose the seats.",
+          "pasos": [
+            "Click the green seats the customer wants (they turn yellow).",
+            "Click Book seats to go to payment."
+          ],
+          "campos": [
+            {
+              "nombre": "Green",
+              "texto": "Free",
+              "permiso": ""
+            },
+            {
+              "nombre": "Yellow",
+              "texto": "Chosen",
+              "permiso": ""
+            },
+            {
+              "nombre": "Red",
+              "texto": "Booked or taken",
+              "permiso": ""
+            },
+            {
+              "nombre": "Blue",
+              "texto": "Accessible",
+              "permiso": ""
+            }
+          ],
+          "notas": []
+        },
+        {
+          "form": "cobro",
+          "titulo": "Payment",
+          "permiso": "Venta_ReservarButacas_Acceso",
+          "donde": "Opens when the seats are booked.",
+          "descripcion": "Identifies the customer, applies discounts and charges.",
+          "pasos": [
+            "Type the ID number and click Search (without it, the sale goes to a final consumer).",
+            "If the customer does not exist, you can make them a member with Make member.",
+            "Choose Cash (how much they pay with) or Card and click Confirm sale."
+          ],
+          "campos": [],
+          "notas": [
+            "If they become a member in this purchase, the discount applies from the next one.",
+            "Cancel frees the seats."
+          ]
+        },
+        {
+          "form": "altasocio_14or",
+          "titulo": "New member",
+          "permiso": "Venta_ReservarButacas_Acceso",
+          "donde": "Payment > Make member.",
+          "descripcion": "Quick sign-up of a member during the sale.",
+          "pasos": [
+            "Enter ID number, name, last name, email and phone and click Accept."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "controlacceso",
+          "titulo": "Access control",
+          "permiso": "Venta_ControlAcceso_Acceso",
+          "donde": "Sales > Access Control.",
+          "descripcion": "Registers who enters the theater.",
+          "pasos": [
+            "Choose the screening (the next one today is preselected).",
+            "When the viewer arrives, click their red seat."
+          ],
+          "campos": [
+            {
+              "nombre": "Red",
+              "texto": "Sold: click to register the entry",
+              "permiso": ""
+            },
+            {
+              "nombre": "Purple",
+              "texto": "Already entered",
+              "permiso": ""
+            },
+            {
+              "nombre": "Green",
+              "texto": "Free",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "A booked seat that was not paid cannot enter: the customer must go to the box office."
+          ]
+        },
+        {
+          "form": "ventacandy",
+          "titulo": "Candy bar",
+          "permiso": "Venta_CandyBar_Acceso",
+          "donde": "Sales > Candy Bar.",
+          "descripcion": "Sale of candy bar products.",
+          "pasos": [
+            "Click the cards to build the order (REMOVE ONE / DELETE to correct it).",
+            "Choose Cash or Card and click CHARGE."
+          ],
+          "campos": [],
+          "notas": [
+            "It does not let you sell more than the stock."
+          ]
+        }
+      ]
+    },
+    {
+      "titulo": "Purchases",
+      "permiso": "Menu_SeccionCompra",
+      "pantallas": [
+        {
+          "form": "productos",
+          "titulo": "Products",
+          "permiso": "Compra_Productos_Acceso",
+          "donde": "Purchases > Products.",
+          "descripcion": "The candy bar products with their stock.",
+          "pasos": [
+            "NEW: name, prices, stock and critical stock; choose the image and click SAVE."
+          ],
+          "campos": [
+            {
+              "nombre": "Critical stock",
+              "texto": "Below this the system suggests restocking.",
+              "permiso": ""
+            }
+          ],
+          "notas": []
+        },
+        {
+          "form": "proveedores",
+          "titulo": "Suppliers",
+          "permiso": "Compra_Proveedores_Acceso",
+          "donde": "Purchases > Suppliers.",
+          "descripcion": "The suppliers that are asked for quotes.",
+          "pasos": [
+            "NEW: company name, CUIT, phone and email, and click SAVE."
+          ],
+          "campos": [
+            {
+              "nombre": "CUIT",
+              "texto": "11 digits, valid and not repeated.",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "A supplier with open quotes or orders cannot be removed."
+          ]
+        },
+        {
+          "form": "presupuestos",
+          "titulo": "Quotes",
+          "permiso": "Compra_Presupuestos_Acceso",
+          "donde": "Purchases > Quotes.",
+          "descripcion": "Ask suppliers for prices and buy.",
+          "pasos": [
+            "Choose the supplier, add products and quantities and click REQUEST QUOTE.",
+            "When they answer, select the quote, enter the prices and click Register quote.",
+            "If it is convenient, Buy supplies creates the purchase order; if not, Reject."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "ordenescompra",
+          "titulo": "Purchase orders",
+          "permiso": "Compra_OrdenesCompra_Acceso",
+          "donde": "Purchases > Purchase Orders.",
+          "descripcion": "Payment of orders and receipt of goods.",
+          "pasos": [
+            "Select the order and click Pay order.",
+            "When the goods arrive, enter the delivery note and what was received and click Register receipt."
+          ],
+          "campos": [],
+          "notas": [
+            "If what was received matches the order, it is closed and the stock is added."
+          ]
+        }
+      ]
+    },
+    {
+      "titulo": "Reports",
+      "permiso": "Menu_SeccionReporte",
+      "pantallas": [
+        {
+          "form": "reportefunciones",
+          "titulo": "Screenings report",
+          "permiso": "Reporte_FuncionesOcupacion_Acceso",
+          "donde": "Reports > Screenings Report.",
+          "descripcion": "Screenings with their theater occupancy.",
+          "pasos": [
+            "Click Refresh; Export PDF saves it."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "reporteordenescompra",
+          "titulo": "Purchasing report",
+          "permiso": "Reporte_FuncionesOcupacion_Acceso",
+          "donde": "Reports > Purchasing Report.",
+          "descripcion": "Detail of each purchase order and what was received.",
+          "pasos": [
+            "Select an order to see its detail; Export PDF saves it."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "panelinteligente",
+          "titulo": "Control panel",
+          "permiso": "Reporte_FuncionesOcupacion_Acceso",
+          "donde": "Reports > Control Panel.",
+          "descripcion": "Summary of the period (income, occupancy, candy and purchases) with recommendations.",
+          "pasos": [
+            "Choose the period and click Refresh.",
+            "Export PDF saves the panel."
+          ],
+          "campos": [],
+          "notas": []
+        }
+      ]
+    }
+  ]
+}

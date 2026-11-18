@@ -53,6 +53,7 @@
     <Compile Include="PN1 %28Venta de entradas%29\TipoPromocion_14OR.cs" />
     <Compile Include="PN1 %28Venta de entradas%29\Promocion_14OR.cs" />
     <Compile Include="PN1 %28Venta de entradas%29\ReporteFuncionOcupacion_14OR.cs" />
+    <Compile Include="PN1 %28Venta de entradas%29\DashboardDTOs_14OR.cs" />
     <Compile Include="PN2 %28Orden de compra%29\Producto_14OR.cs" />
     <Compile Include="PN2 %28Orden de compra%29\Proveedor_14OR.cs" />
     <Compile Include="PN2 %28Orden de compra%29\VentaCandy_14OR.cs" />

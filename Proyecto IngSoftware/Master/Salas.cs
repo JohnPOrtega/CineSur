@@ -344,23 +344,15 @@ namespace Proyecto_IngSoftware
                     return;
                 }
 
-                // armo una ventanita al vuelo con el mapa adentro, solo para ver (no clickeable)
-                Form ventana = new Form();
-                ventana.Text = "Distribucion - Sala " + idSeleccionado_14OR;
-                ventana.StartPosition = FormStartPosition.CenterParent;
-                ventana.Size = new Size(640, 520);
-                ventana.BackColor = Color.FromArgb(25, 27, 34);
-
-                MapaButacas_14OR mapa = new MapaButacas_14OR();
-                mapa.Dock = DockStyle.Fill;
-                ventana.Controls.Add(mapa);
-
                 // uso los pasillos que tiene guardados esta sala (los definio el usuario al crearla)
                 Sala_14OR salaSel = salasActuales_14OR.FirstOrDefault(x => x.IdSala_14OR == idSeleccionado_14OR);
                 List<int> pasillos = ParsearPasillos_14OR(salaSel != null ? salaSel.Pasillos_14OR : "");
-                mapa.Cargar_14OR(celdas, false, pasillos); // false = solo lectura
 
-                ventana.ShowDialog();
+                // ventana con el mapa (armada en el Designer), solo para ver (no clickeable)
+                using (DistribucionSala_14OR ventana = new DistribucionSala_14OR(idSeleccionado_14OR, celdas, pasillos))
+                {
+                    ventana.ShowDialog(this);
+                }
             }
             catch (Exception ex)
             {

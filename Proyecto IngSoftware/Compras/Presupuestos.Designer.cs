@@ -38,6 +38,9 @@ namespace Proyecto_IngSoftware
             this.btnCargarPrecios = new System.Windows.Forms.Button();
             this.btnAceptar = new System.Windows.Forms.Button();
             this.btnRechazar = new System.Windows.Forms.Button();
+            this.rbPendientes = new System.Windows.Forms.RadioButton();
+            this.rbHistorial = new System.Windows.Forms.RadioButton();
+            this.lblProximoPaso = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numCantidad)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNuevoDetalle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPresupuestos)).BeginInit();
@@ -53,7 +56,7 @@ namespace Proyecto_IngSoftware
             this.lblNuevoTitulo.Name = "lblNuevoTitulo";
             this.lblNuevoTitulo.Size = new System.Drawing.Size(239, 20);
             this.lblNuevoTitulo.TabIndex = 0;
-            this.lblNuevoTitulo.Text = "NUEVO PEDIDO DE COTIZACION";
+            this.lblNuevoTitulo.Text = "NUEVA SOLICITUD DE COTIZACION";
             //
             // lblProveedor
             //
@@ -183,7 +186,7 @@ namespace Proyecto_IngSoftware
             this.btnPedir.Name = "btnPedir";
             this.btnPedir.Size = new System.Drawing.Size(180, 32);
             this.btnPedir.TabIndex = 11;
-            this.btnPedir.Text = "PEDIR PRESUPUESTO";
+            this.btnPedir.Text = "SOLICITAR COTIZACION";
             this.btnPedir.UseVisualStyleBackColor = false;
             this.btnPedir.Click += new System.EventHandler(this.btnPedir_Click);
             //
@@ -205,7 +208,33 @@ namespace Proyecto_IngSoftware
             this.lblListaTitulo.Name = "lblListaTitulo";
             this.lblListaTitulo.Size = new System.Drawing.Size(123, 20);
             this.lblListaTitulo.TabIndex = 13;
-            this.lblListaTitulo.Text = "PRESUPUESTOS";
+            this.lblListaTitulo.Text = "COTIZACIONES";
+            //
+            // rbPendientes
+            //
+            this.rbPendientes.AutoSize = true;
+            this.rbPendientes.Checked = true;
+            this.rbPendientes.ForeColor = System.Drawing.Color.Gainsboro;
+            this.rbPendientes.Location = new System.Drawing.Point(640, 13);
+            this.rbPendientes.Name = "rbPendientes";
+            this.rbPendientes.Size = new System.Drawing.Size(83, 19);
+            this.rbPendientes.TabIndex = 21;
+            this.rbPendientes.TabStop = true;
+            this.rbPendientes.Text = "Pendientes";
+            this.rbPendientes.UseVisualStyleBackColor = true;
+            this.rbPendientes.CheckedChanged += new System.EventHandler(this.rbFiltro_CheckedChanged);
+            //
+            // rbHistorial
+            //
+            this.rbHistorial.AutoSize = true;
+            this.rbHistorial.ForeColor = System.Drawing.Color.Gainsboro;
+            this.rbHistorial.Location = new System.Drawing.Point(760, 13);
+            this.rbHistorial.Name = "rbHistorial";
+            this.rbHistorial.Size = new System.Drawing.Size(70, 19);
+            this.rbHistorial.TabIndex = 22;
+            this.rbHistorial.Text = "Historial";
+            this.rbHistorial.UseVisualStyleBackColor = true;
+            this.rbHistorial.CheckedChanged += new System.EventHandler(this.rbFiltro_CheckedChanged);
             //
             // dgvPresupuestos
             //
@@ -225,7 +254,7 @@ namespace Proyecto_IngSoftware
             this.lblDetalleTitulo.Name = "lblDetalleTitulo";
             this.lblDetalleTitulo.Size = new System.Drawing.Size(230, 15);
             this.lblDetalleTitulo.TabIndex = 15;
-            this.lblDetalleTitulo.Text = "Detalle / precios cotizados (editar precio):";
+            this.lblDetalleTitulo.Text = "Detalle de la cotizacion (precio unitario de cada producto):";
             //
             // dgvDetalle
             //
@@ -257,7 +286,7 @@ namespace Proyecto_IngSoftware
             this.btnCargarPrecios.Name = "btnCargarPrecios";
             this.btnCargarPrecios.Size = new System.Drawing.Size(190, 36);
             this.btnCargarPrecios.TabIndex = 18;
-            this.btnCargarPrecios.Text = "Guardar precios (Recibido)";
+            this.btnCargarPrecios.Text = "Registrar cotizacion";
             this.btnCargarPrecios.UseVisualStyleBackColor = false;
             this.btnCargarPrecios.Click += new System.EventHandler(this.btnCargarPrecios_Click);
             //
@@ -271,7 +300,7 @@ namespace Proyecto_IngSoftware
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(200, 36);
             this.btnAceptar.TabIndex = 19;
-            this.btnAceptar.Text = "Aceptar y generar orden";
+            this.btnAceptar.Text = "Comprar insumos";
             this.btnAceptar.UseVisualStyleBackColor = false;
             this.btnAceptar.Click += new System.EventHandler(this.btnAceptar_Click);
             //
@@ -289,12 +318,24 @@ namespace Proyecto_IngSoftware
             this.btnRechazar.UseVisualStyleBackColor = false;
             this.btnRechazar.Click += new System.EventHandler(this.btnRechazar_Click);
             //
+            // lblProximoPaso
+            //
+            this.lblProximoPaso.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(170)))), ((int)(((byte)(230)))));
+            this.lblProximoPaso.Location = new System.Drawing.Point(370, 476);
+            this.lblProximoPaso.Name = "lblProximoPaso";
+            this.lblProximoPaso.Size = new System.Drawing.Size(598, 60);
+            this.lblProximoPaso.TabIndex = 23;
+            this.lblProximoPaso.Text = "";
+            //
             // Presupuestos
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
             this.ClientSize = new System.Drawing.Size(980, 660);
+            this.Controls.Add(this.lblProximoPaso);
+            this.Controls.Add(this.rbHistorial);
+            this.Controls.Add(this.rbPendientes);
             this.Controls.Add(this.btnRechazar);
             this.Controls.Add(this.btnAceptar);
             this.Controls.Add(this.btnCargarPrecios);
@@ -318,7 +359,7 @@ namespace Proyecto_IngSoftware
             this.Controls.Add(this.lblNuevoTitulo);
             this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.Name = "Presupuestos";
-            this.Text = "Presupuestos / Cotizaciones";
+            this.Text = "Cotizaciones";
             ((System.ComponentModel.ISupportInitialize)(this.numCantidad)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNuevoDetalle)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPresupuestos)).EndInit();
@@ -343,6 +384,9 @@ namespace Proyecto_IngSoftware
         private System.Windows.Forms.Button btnQuitarItem;
         private System.Windows.Forms.Button btnPedir;
         private System.Windows.Forms.Label lblCriticos;
+        private System.Windows.Forms.RadioButton rbPendientes;
+        private System.Windows.Forms.RadioButton rbHistorial;
+        private System.Windows.Forms.Label lblProximoPaso;
         private System.Windows.Forms.Label lblListaTitulo;
         private System.Windows.Forms.DataGridView dgvPresupuestos;
         private System.Windows.Forms.Label lblDetalleTitulo;

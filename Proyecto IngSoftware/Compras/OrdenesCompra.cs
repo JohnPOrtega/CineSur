@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace Proyecto_IngSoftware
 {
-    // Lista de ordenes de compra. Por ahora (tanda A) es solo consulta: se ven las ordenes
-    // generadas desde los presupuestos aceptados, en estado "Abierta".
-    // El pago (tanda B) y la recepcion/cierre que sube el stock (tanda C) se agregan despues.
+    // Ordenes de compra: se ven las ordenes generadas desde los presupuestos aceptados,
+    // se pagan (Abierta -> Pagada) y se recibe la mercaderia cargando lo que llego en la
+    // columna "Recibido"; se compara contra la orden y si coincide se cierra y sube el stock.
     public partial class OrdenesCompra : Form, Servicios.IidiomaObserver.IdiomaObserver_43BO
     {
         private BllOrdenCompra_14OR bllOrden = new BllOrdenCompra_14OR();
@@ -19,12 +19,18 @@ namespace Proyecto_IngSoftware
         private int idOrdenSeleccionada_14OR = 0;
         private string estadoOrden_14OR = "";
 
+        // renglones de la orden elegida, aca el supervisor carga la cantidad recibida
+        private List<DetalleOrdenCompra_14OR> detalleActual_14OR = new List<DetalleOrdenCompra_14OR>();
+
         public OrdenesCompra()
         {
             InitializeComponent();
             GestorIdioma_43BO.Instancia.Suscribir_43BO(this);
             this.Text = T_14OR("ordenescompra_titulo", "Ordenes de Compra");
             dgvOrdenes.CellFormatting += Estado_CellFormatting_14OR;
+            dgvDetalleOrden.DataError += DetalleOrden_DataError_14OR;
+            // al cargar la grilla windows marca sola la primer fila, la desmarco si no elegi nada
+            dgvOrdenes.DataBindingComplete += (o, ev) => { if (idOrdenSeleccionada_14OR <= 0) { dgvOrdenes.ClearSelection(); dgvOrdenes.CurrentCell = null; } };
             EstiloGrillas_14OR();
             CargarOrdenes_14OR();
             ActualizarBotones_14OR();
@@ -79,22 +85,7 @@ namespace Proyecto_IngSoftware
 
             try
             {
-                var detalle = bllOrden.ObtenerDetalle_14OR(id).Select(d => new
-                {
-                    d.NombreProducto_14OR,
-                    d.Cantidad_14OR,
-                    PrecioCosto = d.PrecioCosto_14OR,
-                    Subtotal = d.Subtotal_14OR
-                }).ToList();
-
-                dgvDetalleOrden.DataSource = detalle;
-
-                if (dgvDetalleOrden.Columns.Count > 0)
-                {
-                    TraducirColumnas_14OR();
-                    dgvDetalleOrden.Columns["PrecioCosto"].DefaultCellStyle.Format = "0.00";
-                    dgvDetalleOrden.Columns["Subtotal"].DefaultCellStyle.Format = "0.00";
-                }
+                CargarDetalle_14OR(id);
             }
             catch (Exception ex)
             {
@@ -103,19 +94,78 @@ namespace Proyecto_IngSoftware
             }
         }
 
+        // cargo los renglones de la orden. si esta pagada dejo editable solo la columna
+        // "Recibido" pa que el supervisor cargue lo que llego segun el remito
+        private void CargarDetalle_14OR(int idOrden)
+        {
+            detalleActual_14OR = bllOrden.ObtenerDetalle_14OR(idOrden);
+            dgvDetalleOrden.DataSource = null;
+            dgvDetalleOrden.DataSource = detalleActual_14OR;
+
+            if (dgvDetalleOrden.Columns.Count == 0) return;
+
+            dgvDetalleOrden.Columns["IdDetalleOrdenCompra_14OR"].Visible = false;
+            dgvDetalleOrden.Columns["IdOrdenCompra_14OR"].Visible = false;
+            dgvDetalleOrden.Columns["IdProducto_14OR"].Visible = false;
+            dgvDetalleOrden.Columns["PrecioCosto_14OR"].DefaultCellStyle.Format = "0.00";
+            dgvDetalleOrden.Columns["Subtotal_14OR"].DefaultCellStyle.Format = "0.00";
+            dgvDetalleOrden.Columns["CantidadRecibida_14OR"].DisplayIndex = 2;
+            // la columna Recibido solo tiene sentido cuando la mercaderia esta por llegar o ya llego
+            dgvDetalleOrden.Columns["CantidadRecibida_14OR"].Visible =
+                estadoOrden_14OR == OrdenCompra_14OR.EstadoPagada_14OR || estadoOrden_14OR == OrdenCompra_14OR.EstadoCerrada_14OR;
+            TraducirColumnas_14OR();
+
+            bool recibiendo = estadoOrden_14OR == OrdenCompra_14OR.EstadoPagada_14OR;
+            dgvDetalleOrden.ReadOnly = !recibiendo;
+            foreach (DataGridViewColumn col in dgvDetalleOrden.Columns)
+                col.ReadOnly = col.Name != "CantidadRecibida_14OR" || !recibiendo;
+
+            // la columna editable la pinto distinta pa que se note donde se escribe
+            DataGridViewColumn colRecibida = dgvDetalleOrden.Columns["CantidadRecibida_14OR"];
+            colRecibida.DefaultCellStyle.BackColor = recibiendo ? Color.FromArgb(42, 42, 42) : Color.FromArgb(36, 36, 36);
+            colRecibida.DefaultCellStyle.ForeColor = recibiendo ? Color.White : Color.Gainsboro;
+        }
+
+        // si escriben algo que no es un numero en "Recibido" aviso en vez de que reviente la grilla
+        private void DetalleOrden_DataError_14OR(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            MessageBox.Show(T_14OR("ordenescompra_msg_cantidadinvalida", "Ingresa un numero entero valido en la cantidad recibida."),
+                T_14OR("titulo_atencion", "Atencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            e.Cancel = true;
+        }
+
         // Pagar se prende solo si la orden esta abierta, y Recepcion solo si esta pagada
         private void ActualizarBotones_14OR()
         {
             bool hay = idOrdenSeleccionada_14OR > 0;
             btnPagar.Enabled = hay && estadoOrden_14OR == OrdenCompra_14OR.EstadoAbierta_14OR;
             btnRegistrarRecepcion.Enabled = hay && estadoOrden_14OR == OrdenCompra_14OR.EstadoPagada_14OR;
-            txtRemito.Enabled = btnRegistrarRecepcion.Enabled;
+            // el remito solo aparece cuando hay que registrar la recepcion, si no confunde
+            txtRemito.Visible = btnRegistrarRecepcion.Enabled;
+            lblRemito.Visible = btnRegistrarRecepcion.Enabled;
+            ActualizarProximoPaso_14OR();
+        }
+
+        // cartel que explica en criollo que hay que hacer con la orden elegida
+        private void ActualizarProximoPaso_14OR()
+        {
+            string est = idOrdenSeleccionada_14OR > 0 ? estadoOrden_14OR : "";
+
+            if (est == OrdenCompra_14OR.EstadoAbierta_14OR)
+                lblProximoPaso.Text = T_14OR("ordenescompra_paso_abierta", "Esta orden todavía no se pagó. Cuando le pagues al proveedor, tocá \"Pagar orden\".");
+            else if (est == OrdenCompra_14OR.EstadoPagada_14OR)
+                lblProximoPaso.Text = T_14OR("ordenescompra_paso_pagada", "Ya está paga, falta que llegue la mercadería. Cuando llegue, anotá el número de remito y en la columna \"Recibido\" cuánto vino de cada producto. Después tocá \"Registrar recepción\".");
+            else if (est == OrdenCompra_14OR.EstadoCerrada_14OR)
+                lblProximoPaso.Text = T_14OR("ordenescompra_paso_cerrada", "Esta orden ya está cerrada: la mercadería llegó completa y el stock se actualizó.");
+            else
+                lblProximoPaso.Text = T_14OR("ordenescompra_paso_ninguna", "Elegí una orden de la lista para ver qué productos trae y qué falta hacer con ella.");
         }
 
         private void LimpiarSeleccion_14OR()
         {
             idOrdenSeleccionada_14OR = 0;
             estadoOrden_14OR = "";
+            detalleActual_14OR = new List<DetalleOrdenCompra_14OR>();
             dgvDetalleOrden.DataSource = null;
             ActualizarBotones_14OR();
         }
@@ -142,10 +192,14 @@ namespace Proyecto_IngSoftware
             }
         }
 
-        // registro la recepcion (pagada -> cerrada) y sumo el stock
+        // registro la recepcion (pagada -> cerrada) y sumo el stock. la comparacion de lo
+        // recibido contra la orden la hace la bll
         private void btnRegistrarRecepcion_Click(object sender, EventArgs e)
         {
             if (idOrdenSeleccionada_14OR <= 0) return;
+
+            // cierro la edicion de la celda por si quedo escribiendo en "Recibido"
+            dgvDetalleOrden.EndEdit();
 
             if (string.IsNullOrWhiteSpace(txtRemito.Text))
             {
@@ -154,12 +208,12 @@ namespace Proyecto_IngSoftware
                 return;
             }
 
-            if (MessageBox.Show(string.Format(T_14OR("ordenescompra_msg_confirmarrecepcion", "Registrar la recepcion de la orden {0}? Esto cierra la orden y suma el stock."), idOrdenSeleccionada_14OR),
+            if (MessageBox.Show(string.Format(T_14OR("ordenescompra_msg_confirmarrecepcion", "Registrar la recepcion de la orden {0}? Se compara lo recibido contra la orden; si coincide se cierra y se suma el stock."), idOrdenSeleccionada_14OR),
                 T_14OR("titulo_confirmar", "Confirmar"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
 
             try
             {
-                bllOrden.RegistrarIngresoMercaderia_14OR(idOrdenSeleccionada_14OR, txtRemito.Text.Trim());
+                bllOrden.RegistrarIngresoMercaderia_14OR(idOrdenSeleccionada_14OR, txtRemito.Text.Trim(), detalleActual_14OR);
                 MessageBox.Show(T_14OR("ordenescompra_msg_recibida", "Recepcion registrada. La orden quedo 'Cerrada' y se sumo el stock."),
                     T_14OR("titulo_listo", "Listo"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 txtRemito.Clear();
@@ -203,6 +257,12 @@ namespace Proyecto_IngSoftware
             if (e.RowIndex < 0 || e.Value == null) return;
             if (dgv.Columns[e.ColumnIndex].Name != "Estado_14OR") return;
             string estado = e.Value.ToString();
+
+            // cada estado con su color, igual que en Cotizaciones
+            if (estado == OrdenCompra_14OR.EstadoAbierta_14OR) e.CellStyle.ForeColor = Color.FromArgb(231, 168, 26);
+            else if (estado == OrdenCompra_14OR.EstadoPagada_14OR) e.CellStyle.ForeColor = Color.FromArgb(120, 170, 230);
+            else if (estado == OrdenCompra_14OR.EstadoCerrada_14OR) e.CellStyle.ForeColor = Color.FromArgb(90, 190, 120);
+
             e.Value = T_14OR("estado_" + estado.ToLower(), estado);
             e.FormattingApplied = true;
         }
@@ -216,8 +276,9 @@ namespace Proyecto_IngSoftware
             dgvOrdenes.TituloColumna_43BO("Importe", T_14OR("pn2_col_importe", "Importe"));
             dgvDetalleOrden.TituloColumna_43BO("NombreProducto_14OR", T_14OR("pn2_col_producto", "Producto"));
             dgvDetalleOrden.TituloColumna_43BO("Cantidad_14OR", T_14OR("pn2_col_cantidad", "Cantidad"));
-            dgvDetalleOrden.TituloColumna_43BO("PrecioCosto", T_14OR("pn2_col_preciocosto", "Precio costo"));
-            dgvDetalleOrden.TituloColumna_43BO("Subtotal", T_14OR("pn2_col_subtotal", "Subtotal"));
+            dgvDetalleOrden.TituloColumna_43BO("CantidadRecibida_14OR", T_14OR("pn2_col_recibida", "Recibido"));
+            dgvDetalleOrden.TituloColumna_43BO("PrecioCosto_14OR", T_14OR("pn2_col_preciocosto", "Precio costo"));
+            dgvDetalleOrden.TituloColumna_43BO("Subtotal_14OR", T_14OR("pn2_col_subtotal", "Subtotal"));
         }
 
         public void ActualizarIdioma_43BO(System.Collections.Generic.Dictionary<string, string> dic)
@@ -227,6 +288,7 @@ namespace Proyecto_IngSoftware
             this.Text = T_14OR("ordenescompra_titulo", "Ordenes de Compra");
             TraducirColumnas_14OR();
             dgvOrdenes.Invalidate();
+            ActualizarProximoPaso_14OR();
         }
     }
 }

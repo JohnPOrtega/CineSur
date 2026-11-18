@@ -56,3 +56,8 @@ C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto In
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\GUI_43BO.csproj.Up2Date
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto IngSoftware.exe
 C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto IngSoftware.pdb
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.ReporteOrdenesCompra.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\obj\Debug\Proyecto_IngSoftware.PanelInteligente.resources
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Debug\Ayuda\ayuda_es.json
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Debug\Ayuda\ayuda_en.json
+C:\Users\Usuario\Documents\Diploma\Ingenieria-en-requerimiento--beta\Proyecto IngSoftware\bin\Debug\Ayuda\ayuda_pr.json

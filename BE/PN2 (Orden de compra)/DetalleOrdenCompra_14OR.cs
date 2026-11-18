@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace BE
 {
     // Un renglon de una orden de compra: un producto, la cantidad pedida y el precio de costo
-    // (el que acepto el Supervisor del presupuesto). Cuando la orden se cierra, esta cantidad
-    // es la que se suma al stock del producto.
+    // (el que acepto el Supervisor del presupuesto). Al recibir la mercaderia se carga la
+    // cantidad recibida, se compara contra la pedida y esa es la que se suma al stock.
     public class DetalleOrdenCompra_14OR
     {
         private int _idDetalle;
@@ -57,6 +57,15 @@ namespace BE
         {
             get { return _precioCosto; }
             set { _precioCosto = value; }
+        }
+
+        // lo que realmente llego segun el remito. null = todavia no se recibio
+        private int? _cantidadRecibida;
+
+        public int? CantidadRecibida_14OR
+        {
+            get { return _cantidadRecibida; }
+            set { _cantidadRecibida = value; }
         }
 
         public double Subtotal_14OR

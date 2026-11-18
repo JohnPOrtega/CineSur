@@ -76,6 +76,18 @@ namespace BLL
             return dal.Listar_14OR();
         }
 
+        // separa las cotizaciones pa la pantalla: pendientes (solicitadas o cotizadas, todavia hay
+        // algo que hacer) o historial (ya compradas o rechazadas)
+        public List<Presupuesto_14OR> ListarPorVista_14OR(bool pendientes)
+        {
+            return dal.Listar_14OR().Where(p =>
+            {
+                bool esPendiente = p.Estado_14OR == Presupuesto_14OR.EstadoPedido_14OR ||
+                                   p.Estado_14OR == Presupuesto_14OR.EstadoRecibido_14OR;
+                return pendientes ? esPendiente : !esPendiente;
+            }).ToList();
+        }
+
         public List<DetallePresupuesto_14OR> ObtenerDetalle_14OR(int idPresupuesto)
         {
             return dal.ObtenerDetalle_14OR(idPresupuesto);

@@ -279,12 +279,21 @@ namespace Proyecto_IngSoftware
             pbPoster.Image = null;
             if (string.IsNullOrEmpty(archivo)) return;
 
-            string ruta = Path.Combine(CarpetaPosters_14OR(), archivo);
-            if (!File.Exists(ruta)) return;
+            // si no puedo leer el afiche (carpeta sin permiso, archivo roto) no rompo la pantalla:
+            // la pelicula se sigue viendo, solo sin imagen
+            try
+            {
+                string ruta = Path.Combine(CarpetaPosters_14OR(), archivo);
+                if (!File.Exists(ruta)) return;
 
-            // leo los bytes y cargo desde memoria asi el archivo no queda bloqueado
-            byte[] bytes = File.ReadAllBytes(ruta);
-            pbPoster.Image = Image.FromStream(new MemoryStream(bytes));
+                // leo los bytes y cargo desde memoria asi el archivo no queda bloqueado
+                byte[] bytes = File.ReadAllBytes(ruta);
+                pbPoster.Image = Image.FromStream(new MemoryStream(bytes));
+            }
+            catch (Exception)
+            {
+                pbPoster.Image = null;
+            }
         }
 
         // devuelve la carpeta Posters (al lado del exe), la crea si no existe

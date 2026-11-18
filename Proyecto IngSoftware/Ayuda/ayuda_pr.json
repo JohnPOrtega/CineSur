@@ -1,0 +1,594 @@
+﻿{
+  "secciones": [
+    {
+      "titulo": "Usuário",
+      "permiso": "",
+      "pantallas": [
+        {
+          "form": "login",
+          "titulo": "Entrar no sistema",
+          "permiso": "",
+          "donde": "Primeira tela ao abrir o CineSur.",
+          "descripcion": "Aqui você entra no sistema com seu usuário e senha. As opções do menu dependem do seu perfil.",
+          "pasos": [
+            "Digite seu usuário e sua senha.",
+            "Clique em Entrar (ou Enter).",
+            "Se ainda tiver a senha de fábrica, o sistema pede para trocá-la antes de continuar."
+          ],
+          "campos": [
+            {
+              "nombre": "UserName",
+              "texto": "O usuário que o administrador lhe deu.",
+              "permiso": ""
+            },
+            {
+              "nombre": "Senha",
+              "texto": "Diferencia maiúsculas e minúsculas.",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "Com 3 tentativas erradas o usuário é bloqueado e um administrador precisa desbloqueá-lo."
+          ]
+        },
+        {
+          "form": "menu",
+          "titulo": "Menu principal",
+          "permiso": "",
+          "donde": "Abre depois de entrar no sistema.",
+          "descripcion": "Pela barra de cima você abre cada tela do sistema; elas abrem dentro desta janela. Você só vê as opções que seu perfil permite.",
+          "pasos": [
+            "Escolha uma seção da barra e depois a opção que precisa.",
+            "Em qualquer tela você pode apertar F1 (ou Ajuda) para ver a ajuda dessa tela."
+          ],
+          "campos": [
+            {
+              "nombre": "Usuário",
+              "texto": "Alterar senha, alterar idioma, encerrar sessão e re-login.",
+              "permiso": ""
+            },
+            {
+              "nombre": "Admin",
+              "texto": "Usuários, perfis, registro de auditoria e backup da base.",
+              "permiso": "Menu_SeccionAdmin"
+            },
+            {
+              "nombre": "Master",
+              "texto": "Filmes, sessões, salas, promoções, clientes e auditoria de alterações.",
+              "permiso": "Menu_SeccionMaster"
+            },
+            {
+              "nombre": "Vendas",
+              "texto": "Venda de ingressos, controle de acesso e candy bar.",
+              "permiso": "Menu_SeccionVenta"
+            },
+            {
+              "nombre": "Compras",
+              "texto": "Produtos, fornecedores, cotações e ordens de compra.",
+              "permiso": "Menu_SeccionCompra"
+            },
+            {
+              "nombre": "Relatórios",
+              "texto": "Relatórios e painel de controle.",
+              "permiso": "Menu_SeccionReporte"
+            }
+          ],
+          "notas": []
+        },
+        {
+          "form": "cambiocontraseña",
+          "titulo": "Alterar senha",
+          "permiso": "Usuario_CambioContraseña",
+          "donde": "Usuário > Alterar Senha.",
+          "descripcion": "Troca sua senha por uma nova.",
+          "pasos": [
+            "Digite a senha atual.",
+            "Digite a nova duas vezes (devem ser iguais).",
+            "Clique em Aceitar. A sessão é encerrada e você entra de novo com a senha nova."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "cambiaridioma",
+          "titulo": "Alterar idioma",
+          "permiso": "Usuario_CambioIdioma",
+          "donde": "Usuário > Alterar Idioma.",
+          "descripcion": "Muda o idioma de todas as telas (espanhol, inglês ou português).",
+          "pasos": [
+            "Escolha o idioma e clique em Aceitar. As telas abertas são traduzidas na hora."
+          ],
+          "campos": [],
+          "notas": [
+            "O idioma fica salvo no seu usuário para a próxima vez."
+          ]
+        }
+      ]
+    },
+    {
+      "titulo": "Admin",
+      "permiso": "Menu_SeccionAdmin",
+      "pantallas": [
+        {
+          "form": "gestionus",
+          "titulo": "Gestão de usuários",
+          "permiso": "GestionUsuarios_Acceso",
+          "donde": "Admin > Gestão de Usuários.",
+          "descripcion": "Cadastro, alteração, ativação e desbloqueio dos usuários do sistema.",
+          "pasos": [
+            "Filtre a grade com Ativos, Todos ou Bloqueados.",
+            "Criar: clique em Criar, preencha documento, nome, sobrenome, email e perfil, e clique em Aplicar.",
+            "Modificar: escolha o usuário, clique em Modificar, altere o necessário e clique em Aplicar.",
+            "Ativar/Desativar ou Desbloquear: escolha o usuário e clique no botão."
+          ],
+          "campos": [
+            {
+              "nombre": "Documento (DNI)",
+              "texto": "Não pode se repetir.",
+              "permiso": ""
+            },
+            {
+              "nombre": "Perfil",
+              "texto": "O perfil de permissões que ele terá.",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "Ao desbloquear, a senha volta a ser a de fábrica."
+          ]
+        },
+        {
+          "form": "gestionperfiles",
+          "titulo": "Gestão de perfis",
+          "permiso": "GestionPerfiles_Acceso",
+          "donde": "Admin > Gestão de Perfis.",
+          "descripcion": "Para montar os perfis e as famílias de permissões.",
+          "pasos": [
+            "Com Mudar Modo você escolhe se trabalha com perfis ou famílias.",
+            "Criar monta um novo; Modificar troca o nome.",
+            "Com o perfil ou família escolhido, passe permissões com -->> e retire com <<---.",
+            "Clique em Finalizar Edição para salvar."
+          ],
+          "campos": [],
+          "notas": [
+            "As mudanças valem a partir do próximo login do usuário."
+          ]
+        },
+        {
+          "form": "auditoria",
+          "titulo": "Registro de auditoria",
+          "permiso": "Auditoria_Acceso",
+          "donde": "Admin > Registro de Auditoria.",
+          "descripcion": "Mostra o que aconteceu no sistema: logins, cadastros, alterações, exclusões, vendas, etc.",
+          "pasos": [
+            "Escolha datas, usuário, módulo, evento ou criticidade.",
+            "Clique em Filtrar.",
+            "Imprimir gera um PDF."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "backupbd_43bo",
+          "titulo": "Backup da base",
+          "permiso": "Admin_Backup",
+          "donde": "Admin > Backup BD.",
+          "descripcion": "Gera uma cópia completa da base de dados.",
+          "pasos": [
+            "Confira a pasta (por padrão C:\\Backups43BO) ou troque com Mudar pasta...",
+            "Clique em Gerar Backup."
+          ],
+          "campos": [],
+          "notas": [
+            "É bom guardar uma cópia também fora do computador."
+          ]
+        },
+        {
+          "form": "restorebd_43bo",
+          "titulo": "Restore da base",
+          "permiso": "Admin_Restore",
+          "donde": "Integridade dos dados > RESTORE BD.",
+          "descripcion": "Volta a base ao estado de um backup.",
+          "pasos": [
+            "Escolha o backup (o mais novo perde menos dados) ou procure outro com Procurar outro...",
+            "Clique em Restaurar e confirme.",
+            "Entre de novo no sistema."
+          ],
+          "campos": [],
+          "notas": [
+            "Perde-se o que foi cadastrado depois desse backup."
+          ]
+        },
+        {
+          "form": "integridaddv_43bo",
+          "titulo": "Integridade dos dados",
+          "permiso": "Admin_RecalcularDV",
+          "donde": "Abre sozinha no login se os dados foram alterados fora do sistema.",
+          "descripcion": "Mostra quais tabelas não batem com seu dígito verificador.",
+          "pasos": [
+            "Se as mudanças são válidas, clique em RECALCULAR O DV.",
+            "Se alguém alterou os dados, clique em RESTORE BD e escolha um backup anterior."
+          ],
+          "campos": [],
+          "notas": [
+            "Enquanto não for corrigido, quem não é administrador não consegue entrar."
+          ]
+        }
+      ]
+    },
+    {
+      "titulo": "Master",
+      "permiso": "Menu_SeccionMaster",
+      "pantallas": [
+        {
+          "form": "peliculas",
+          "titulo": "Filmes",
+          "permiso": "Master_Peliculas_Acceso",
+          "donde": "Master > Filmes.",
+          "descripcion": "Cadastro, alteração e exclusão dos filmes, com seu cartaz.",
+          "pasos": [
+            "NOVO: preencha título, gênero e duração, escolha o cartaz e clique em SALVAR.",
+            "Para modificar ou excluir, escolha o filme na grade e clique em MODIFICAR ou EXCLUIR."
+          ],
+          "campos": [
+            {
+              "nombre": "Duração (min)",
+              "texto": "Usada para montar os horários das sessões.",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "Cada mudança fica salva na Auditoria de Alterações."
+          ]
+        },
+        {
+          "form": "auditoriacambios",
+          "titulo": "Auditoria de alterações",
+          "permiso": "Maestro_AuditoriaCambios_Acceso",
+          "donde": "Master > Auditoria de Alterações.",
+          "descripcion": "Histórico de mudanças dos filmes: a versão atual e a anterior.",
+          "pasos": [
+            "Digite parte do título para filtrar; se quiser, limite por datas e clique em Aplicar.",
+            "Para desfazer uma mudança, escolha a versão anterior e clique em Ativar."
+          ],
+          "campos": [],
+          "notas": [
+            "Se o filme tinha sido excluído, Ativar o cria de novo."
+          ]
+        },
+        {
+          "form": "salas",
+          "titulo": "Salas",
+          "permiso": "Master_Salas_Acceso",
+          "donde": "Master > Salas.",
+          "descripcion": "As salas do cinema com suas filas e assentos.",
+          "pasos": [
+            "NOVO: número da sala, filas e assentos por fila, e clique em SALVAR (a capacidade é calculada).",
+            "Ver distribuição mostra como fica; Definir corredores marca os corredores."
+          ],
+          "campos": [
+            {
+              "nombre": "Filas / Assentos",
+              "texto": "Até 12 filas e 20 assentos por fila.",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "Ao excluir uma sala, seus assentos também são excluídos."
+          ]
+        },
+        {
+          "form": "disenarpasillos_14or",
+          "titulo": "Definir corredores",
+          "permiso": "Master_Salas_Acceso",
+          "donde": "Master > Salas > Definir corredores.",
+          "descripcion": "Indica entre quais colunas há corredor.",
+          "pasos": [
+            "Clique em um assento para pôr um corredor depois dessa coluna (outro clique o remove).",
+            "Clique em Salvar e depois em SALVAR na sala."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "funciones_14or",
+          "titulo": "Sessões",
+          "permiso": "Master_Funciones_Acceso",
+          "donde": "Master > Sessões.",
+          "descripcion": "Qual filme passa, em que sala, em que dia e a que horas.",
+          "pasos": [
+            "NOVO: escolha filme, sala, data, horário, formato, idioma e preço, e clique em SALVAR.",
+            "Para modificar ou excluir, escolha a sessão na grade."
+          ],
+          "campos": [],
+          "notas": [
+            "Só aparecem as sessões de hoje em diante.",
+            "Se a sessão já tem ingressos vendidos, não dá para mudar data, horário nem sala: crie uma nova."
+          ]
+        },
+        {
+          "form": "promociones",
+          "titulo": "Promoções",
+          "permiso": "Master_Promociones_Acceso",
+          "donde": "Master > Promoções.",
+          "descripcion": "Descontos aplicados ao cobrar os ingressos.",
+          "pasos": [
+            "NOVO: nome, tipo, porcentagem e datas de validade; marque Ativa e clique em SALVAR."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "clientes",
+          "titulo": "Clientes",
+          "permiso": "Master_Clientes_Acceso",
+          "donde": "Master > Clientes.",
+          "descripcion": "Clientes e sócios do cinema.",
+          "pasos": [
+            "NOVO: documento, nome, sobrenome, email e telefone; marque É sócio se for o caso e clique em SALVAR.",
+            "SERIALIZAR XML salva os clientes em um arquivo; DES-SERIALIZAR os lê."
+          ],
+          "campos": [],
+          "notas": [
+            "Os sócios têm desconto nos ingressos."
+          ]
+        }
+      ]
+    },
+    {
+      "titulo": "Vendas",
+      "permiso": "Menu_SeccionVenta",
+      "pantallas": [
+        {
+          "form": "cartelera",
+          "titulo": "Cartaz",
+          "permiso": "Venta_ReservarButacas_Acceso",
+          "donde": "Vendas > Reservar Assentos.",
+          "descripcion": "Os filmes em cartaz. É o primeiro passo para vender ingressos.",
+          "pasos": [
+            "Clique no cartaz do filme e abrem as sessões dele."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "funcionesporpelicula",
+          "titulo": "Sessões do filme",
+          "permiso": "Venta_ReservarButacas_Acceso",
+          "donde": "Vendas > Reservar Assentos > filme.",
+          "descripcion": "As sessões do filme escolhido.",
+          "pasos": [
+            "Escolha a sessão e abre o mapa da sala."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "seleccionbutacas",
+          "titulo": "Escolher assentos",
+          "permiso": "Venta_ReservarButacas_Acceso",
+          "donde": "Vendas > Reservar Assentos > filme > sessão.",
+          "descripcion": "O mapa da sala para escolher os assentos.",
+          "pasos": [
+            "Clique nos assentos verdes que o cliente quer (ficam amarelos).",
+            "Clique em Reservar assentos para ir ao pagamento."
+          ],
+          "campos": [
+            {
+              "nombre": "Verde",
+              "texto": "Livre",
+              "permiso": ""
+            },
+            {
+              "nombre": "Amarelo",
+              "texto": "Escolhido",
+              "permiso": ""
+            },
+            {
+              "nombre": "Vermelho",
+              "texto": "Reservado ou ocupado",
+              "permiso": ""
+            },
+            {
+              "nombre": "Azul",
+              "texto": "Acessível",
+              "permiso": ""
+            }
+          ],
+          "notas": []
+        },
+        {
+          "form": "cobro",
+          "titulo": "Pagamento",
+          "permiso": "Venta_ReservarButacas_Acceso",
+          "donde": "Abre ao reservar os assentos.",
+          "descripcion": "Identifica o cliente, aplica descontos e cobra.",
+          "pasos": [
+            "Digite o documento e clique em Buscar (sem documento vai como consumidor final).",
+            "Se não existir, você pode torná-lo sócio com Tornar sócio.",
+            "Escolha Dinheiro (com quanto paga) ou Cartão e clique em Confirmar venda."
+          ],
+          "campos": [],
+          "notas": [
+            "Se ele se torna sócio nesta compra, o desconto vale a partir da próxima.",
+            "Cancelar libera os assentos."
+          ]
+        },
+        {
+          "form": "altasocio_14or",
+          "titulo": "Cadastro de sócio",
+          "permiso": "Venta_ReservarButacas_Acceso",
+          "donde": "Pagamento > Tornar sócio.",
+          "descripcion": "Cadastro rápido de um sócio durante a venda.",
+          "pasos": [
+            "Preencha documento, nome, sobrenome, email e telefone e clique em Aceitar."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "controlacceso",
+          "titulo": "Controle de acesso",
+          "permiso": "Venta_ControlAcceso_Acceso",
+          "donde": "Vendas > Controle de Acesso.",
+          "descripcion": "Para registrar quem entra na sala.",
+          "pasos": [
+            "Escolha a sessão (aparece a próxima de hoje).",
+            "Quando o espectador chega, clique no assento vermelho dele."
+          ],
+          "campos": [
+            {
+              "nombre": "Vermelho",
+              "texto": "Vendido: clique para registrar a entrada",
+              "permiso": ""
+            },
+            {
+              "nombre": "Violeta",
+              "texto": "Já entrou",
+              "permiso": ""
+            },
+            {
+              "nombre": "Verde",
+              "texto": "Livre",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "Um assento reservado e não pago não pode entrar: o cliente precisa passar na bilheteria."
+          ]
+        },
+        {
+          "form": "ventacandy",
+          "titulo": "Candy bar",
+          "permiso": "Venta_CandyBar_Acceso",
+          "donde": "Vendas > Candy Bar.",
+          "descripcion": "Venda de produtos do candy bar.",
+          "pasos": [
+            "Clique nos cartões para montar o pedido (REMOVER UM / EXCLUIR para corrigir).",
+            "Escolha Dinheiro ou Cartão e clique em COBRAR."
+          ],
+          "campos": [],
+          "notas": [
+            "Não deixa vender mais que o estoque."
+          ]
+        }
+      ]
+    },
+    {
+      "titulo": "Compras",
+      "permiso": "Menu_SeccionCompra",
+      "pantallas": [
+        {
+          "form": "productos",
+          "titulo": "Produtos",
+          "permiso": "Compra_Productos_Acceso",
+          "donde": "Compras > Produtos.",
+          "descripcion": "Os produtos do candy bar com seu estoque.",
+          "pasos": [
+            "NOVO: nome, preços, estoque e estoque crítico; escolha a imagem e clique em SALVAR."
+          ],
+          "campos": [
+            {
+              "nombre": "Estoque crítico",
+              "texto": "Abaixo disso o sistema sugere repor.",
+              "permiso": ""
+            }
+          ],
+          "notas": []
+        },
+        {
+          "form": "proveedores",
+          "titulo": "Fornecedores",
+          "permiso": "Compra_Proveedores_Acceso",
+          "donde": "Compras > Fornecedores.",
+          "descripcion": "Os fornecedores a quem se pedem cotações.",
+          "pasos": [
+            "NOVO: razão social, CUIT, telefone e email, e clique em SALVAR."
+          ],
+          "campos": [
+            {
+              "nombre": "CUIT",
+              "texto": "11 dígitos, válido e sem repetir.",
+              "permiso": ""
+            }
+          ],
+          "notas": [
+            "Não é possível excluir um fornecedor com cotações ou ordens abertas."
+          ]
+        },
+        {
+          "form": "presupuestos",
+          "titulo": "Cotações",
+          "permiso": "Compra_Presupuestos_Acceso",
+          "donde": "Compras > Cotações.",
+          "descripcion": "Pedir preços aos fornecedores e comprar.",
+          "pasos": [
+            "Escolha o fornecedor, adicione produtos e quantidades e clique em SOLICITAR COTAÇÃO.",
+            "Quando ele responder, escolha a cotação, preencha os preços e clique em Registrar cotação.",
+            "Se convier, Comprar insumos gera a ordem de compra; se não, Rejeitar."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "ordenescompra",
+          "titulo": "Ordens de compra",
+          "permiso": "Compra_OrdenesCompra_Acceso",
+          "donde": "Compras > Ordens de Compra.",
+          "descripcion": "Pagamento das ordens e recebimento da mercadoria.",
+          "pasos": [
+            "Escolha a ordem e clique em Pagar pedido.",
+            "Quando a mercadoria chegar, preencha a nota de entrega e o recebido e clique em Registrar recebimento."
+          ],
+          "campos": [],
+          "notas": [
+            "Se o recebido bate com a ordem, ela é fechada e o estoque é somado."
+          ]
+        }
+      ]
+    },
+    {
+      "titulo": "Relatórios",
+      "permiso": "Menu_SeccionReporte",
+      "pantallas": [
+        {
+          "form": "reportefunciones",
+          "titulo": "Relatório de sessões",
+          "permiso": "Reporte_FuncionesOcupacion_Acceso",
+          "donde": "Relatórios > Relatório de Sessões.",
+          "descripcion": "Sessões com a ocupação da sala.",
+          "pasos": [
+            "Clique em Atualizar; Exportar PDF salva o relatório."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "reporteordenescompra",
+          "titulo": "Relatório de compras",
+          "permiso": "Reporte_FuncionesOcupacion_Acceso",
+          "donde": "Relatórios > Relatório de Compras.",
+          "descripcion": "Detalhe de cada ordem de compra e do que foi recebido.",
+          "pasos": [
+            "Escolha uma ordem para ver o detalhe; Exportar PDF salva o relatório."
+          ],
+          "campos": [],
+          "notas": []
+        },
+        {
+          "form": "panelinteligente",
+          "titulo": "Painel de controle",
+          "permiso": "Reporte_FuncionesOcupacion_Acceso",
+          "donde": "Relatórios > Painel de Controle.",
+          "descripcion": "Resumo do período (receita, ocupação, candy e compras) com recomendações.",
+          "pasos": [
+            "Escolha o período e clique em Atualizar.",
+            "Exportar PDF salva o painel."
+          ],
+          "campos": [],
+          "notas": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=CineSur_Ayuda.chm
+Contents file=CineSur_Ayuda.hhc
+Index file=CineSur_Ayuda.hhk
+Default topic=indice.htm
+Display compile progress=No
+Full-text search=Yes
+Language=0x2c0a Spanish (Argentina)
+Title=CineSur - Ayuda
+
+[FILES]
+estilo.css
+indice.htm
+login.htm
+menu.htm
+cambiocontrasena.htm
+cambiaridioma.htm
+gestionus.htm
+gestionperfiles.htm
+auditoria.htm
+backupbd_43bo.htm
+restorebd_43bo.htm
+integridaddv_43bo.htm
+peliculas.htm
+auditoriacambios.htm
+salas.htm
+disenarpasillos_14or.htm
+funciones_14or.htm
+promociones.htm
+clientes.htm
+cartelera.htm
+funcionesporpelicula.htm
+seleccionbutacas.htm
+cobro.htm
+altasocio_14or.htm
+controlacceso.htm
+ventacandy.htm
+productos.htm
+proveedores.htm
+presupuestos.htm
+ordenescompra.htm
+reportefunciones.htm
+reporteordenescompra.htm
+panelinteligente.htm

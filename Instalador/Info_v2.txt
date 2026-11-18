@@ -1,0 +1,27 @@
+CineSur - Sistema de Gestion de Cine  (version 2.0.0)
+=====================================================
+
+Antes de instalar, tene en cuenta:
+
+- Hace falta SQL Server 2016 o superior (Express, Developer o Standard).
+- Para que la base se cree sola, el equipo necesita la herramienta "sqlcmd"
+  (viene con SQL Server, en las "Herramientas de linea de comandos").
+- El usuario de Windows tiene que poder crear bases en la instancia
+  (en SQL Server Express el administrador del equipo normalmente puede).
+
+Que podes hacer con este instalador:
+
+1) Instalar (primera vez): copia CineSur al equipo, te deja elegir la
+   instancia de SQL Server y crea la base Ing.Software con los datos iniciales.
+
+2) Actualizar (si ya estaba instalado): pone la version nueva y le agrega a la
+   base solo lo que le falta, sin tocar los datos cargados. Antes hace una
+   copia de seguridad en C:\Backups43BO (se puede destildar).
+
+3) Restaurar (si ya estaba instalado): vuelve la base a una copia de seguridad
+   (.bak) que elijas, por ejemplo una de C:\Backups43BO, y despues la pone al
+   dia con la version nueva.
+
+La desinstalacion NO borra la base de datos ni las copias de seguridad.
+
+Hace clic en Siguiente cuando estes listo.
