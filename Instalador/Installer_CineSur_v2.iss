@@ -22,8 +22,8 @@
 ;  nuevos en el repo (la cadena vive en el .exe.config) ni correr nada
 ;  destructivo.
 ;
-;  (copia v2 con TODOS los datos: usa Database\Deploy_IngSoftware_v2.sql e Info_v2.txt;
-;   la v3 con base vacia es Installer_CineSur.iss)
+;  (esta es la copia de la v2 con todos los datos, usa Database\Deploy_IngSoftware_v2.sql
+;   y el Info_v2.txt. la v3 con la base vacia es el Installer_CineSur.iss)
 ;
 ;  Ojo antes de compilar: revisa las 3 rutas de los #define de aca abajo.
 ; ============================================================================

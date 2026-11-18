@@ -19,7 +19,7 @@ namespace Proyecto_IngSoftware
     {
         private static Ayuda_43BO _abierta;
 
-        // los controles (arbol, titulo, texto, boton) estan en Ayuda_43BO.Designer.cs
+        // los controles ahora estan en el Ayuda_43BO.Designer.cs
         private readonly Font fNormal = new Font("Segoe UI", 10F);
         private readonly Font fNegrita = new Font("Segoe UI", 10F, FontStyle.Bold);
         private string _claveActual;
@@ -58,7 +58,7 @@ namespace Proyecto_IngSoftware
             GestorIdioma_43BO.Instancia.Suscribir_43BO(this);
         }
 
-        // al elegir una pantalla muestro su ayuda; si es una seccion, salto a su primera pantalla
+        // si toco una pantalla muestro su ayuda y si es una seccion salto a la primera pantalla q tenga
         private void arbol_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (e.Node.Tag is AyudaPantalla_43BO p) { _claveActual = e.Node.Name; Mostrar_43BO(p); }

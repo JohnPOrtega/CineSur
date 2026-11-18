@@ -348,7 +348,7 @@ namespace Proyecto_IngSoftware
                 Sala_14OR salaSel = salasActuales_14OR.FirstOrDefault(x => x.IdSala_14OR == idSeleccionado_14OR);
                 List<int> pasillos = ParsearPasillos_14OR(salaSel != null ? salaSel.Pasillos_14OR : "");
 
-                // ventana con el mapa (armada en el Designer), solo para ver (no clickeable)
+                // abro la ventana del mapa (esta en el designer) solo pa mirar, no se puede clickear
                 using (DistribucionSala_14OR ventana = new DistribucionSala_14OR(idSeleccionado_14OR, celdas, pasillos))
                 {
                     ventana.ShowDialog(this);

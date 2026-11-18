@@ -21,7 +21,7 @@ namespace Proyecto_IngSoftware
     public partial class ReporteOrdenesCompra : Form, Servicios.IidiomaObserver.IdiomaObserver_43BO
     {
         private BllOrdenCompra_14OR bllOrden = new BllOrdenCompra_14OR();
-        // todas: lo que vino de la base; ordenes: lo que queda despues de los filtros (se ve y se exporta)
+        // en todas va lo q vino de la base y en ordenes lo que queda despues de filtrar (eso se ve y se exporta)
         private List<OrdenCompra_14OR> todas_14OR = new List<OrdenCompra_14OR>();
         private List<OrdenCompra_14OR> ordenes = new List<OrdenCompra_14OR>();
         private bool cargando_14OR = false;
@@ -41,7 +41,7 @@ namespace Proyecto_IngSoftware
             return GestorIdioma_43BO.Instancia.ObtenerTexto_43BO(clave, porDefecto);
         }
 
-        // trae de la base y vuelve a aplicar los filtros que esten puestos
+        // traigo de la base y le vuelvo a aplicar los filtros que haya puestos
         private void CargarReporte_14OR()
         {
             try
@@ -57,7 +57,7 @@ namespace Proyecto_IngSoftware
             }
         }
 
-        // combo de proveedores con los que tienen ordenes (sin perder lo elegido)
+        // lleno el combo con los proveedores que tienen ordenes, sin perder el que estaba elegido
         private void LlenarProveedores_14OR()
         {
             cargando_14OR = true;
@@ -72,7 +72,7 @@ namespace Proyecto_IngSoftware
             cargando_14OR = false;
         }
 
-        // filtra en memoria (emision desde/hasta si estan tildadas, estado y proveedor) y refresca todo
+        // filtro en memoria por emision, estado y proveedor, las fechas solo si estan tildadas
         private void AplicarFiltros_14OR()
         {
             IEnumerable<OrdenCompra_14OR> q = todas_14OR;
@@ -115,7 +115,7 @@ namespace Proyecto_IngSoftware
 
             dgvDetalle.DataSource = null;
 
-            // tarjetas: cuantas ordenes, pendientes (no cerradas) vs cerradas y el total comprado
+            // tarjetas: cuantas ordenes hay, cuantas faltan cerrar, las cerradas y lo q se compro
             int pendientes = ordenes.Count(o => o.Estado_14OR != OrdenCompra_14OR.EstadoCerrada_14OR);
             int cerradas = ordenes.Count(o => o.Estado_14OR == OrdenCompra_14OR.EstadoCerrada_14OR);
             double totalComprado = ordenes.Sum(o => o.Importe_14OR);
@@ -128,7 +128,7 @@ namespace Proyecto_IngSoftware
             lblTotales.Text = "Mostrando " + ordenes.Count + " de " + todas_14OR.Count + " ordenes";
         }
 
-        // texto de los filtros activos, para el pdf
+        // armo el texto de los filtros pa ponerlo en el pdf
         private string TextoFiltros_14OR()
         {
             List<string> partes = new List<string>();
@@ -141,7 +141,7 @@ namespace Proyecto_IngSoftware
             return partes.Count == 0 ? "sin filtros" : string.Join(", ", partes);
         }
 
-        // cualquier cambio en un filtro (fechas o combos) refresca la grilla y las tarjetas
+        // si cambia cualquier filtro refresco la grilla y las tarjetas
         private void Filtro_Changed(object sender, EventArgs e)
         {
             if (cargando_14OR) return;
@@ -174,8 +174,8 @@ namespace Proyecto_IngSoftware
                 {
                     Producto = d.NombreProducto_14OR,
                     Pedida = d.Cantidad_14OR,
-                    // la recibida solo se conoce cuando la orden ya se cerro (se confirmo la recepcion)
-                    Recibida = cerrada ? d.Cantidad_14OR : 0,
+                    // muestro lo q de verdad llego (lo carga el CUN-011), si no llego nada va un "-"
+                    Recibida = TextoRecibida_14OR(d, cerrada),
                     CostoUnit = "$ " + d.PrecioCosto_14OR.ToString("0.00"),
                     Subtotal = "$ " + d.Subtotal_14OR.ToString("0.00")
                 }).ToList();
@@ -294,7 +294,7 @@ namespace Proyecto_IngSoftware
                     {
                         tabla.AddCell(Celda_14OR(d.NombreProducto_14OR, fCelda));
                         tabla.AddCell(Celda_14OR(d.Cantidad_14OR.ToString(), fCelda));
-                        tabla.AddCell(Celda_14OR((cerrada ? d.Cantidad_14OR : 0).ToString(), fCelda));
+                        tabla.AddCell(Celda_14OR(TextoRecibida_14OR(d, cerrada), fCelda));
                         tabla.AddCell(Celda_14OR("$ " + d.PrecioCosto_14OR.ToString("0.00"), fCelda));
                         tabla.AddCell(Celda_14OR("$ " + d.Subtotal_14OR.ToString("0.00"), fCelda));
                     }
@@ -312,6 +312,13 @@ namespace Proyecto_IngSoftware
 
                 doc.Close();
             }
+        }
+
+        // si la orden se cerro antes de la v2 la columna esta en null pero llego todo, asi q muestro lo pedido
+        private string TextoRecibida_14OR(DetalleOrdenCompra_14OR d, bool cerrada)
+        {
+            if (d.CantidadRecibida_14OR.HasValue) return d.CantidadRecibida_14OR.Value.ToString();
+            return cerrada ? d.Cantidad_14OR.ToString() : "-";
         }
 
         private PdfPCell Celda_14OR(string texto, iTextFont f)

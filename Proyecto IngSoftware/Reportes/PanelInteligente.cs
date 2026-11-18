@@ -24,8 +24,8 @@ namespace Proyecto_IngSoftware
     // por origen (entradas vs candy) en barras horizontales. Abajo, lo "inteligente": las conclusiones
     // que saca la BLL cruzando funciones, ventas, socios, candy, stock, ordenes y proveedores,
     // pintadas por urgencia. Colores de CineSur: azul noche + azules.
-    // Toda la parte fija (titulos, paneles, barra, grafico) esta en el Designer; por codigo solo se
-    // arman las filas que dependen de los datos (resumen y recomendaciones).
+    // lo fijo (titulos, paneles, la barra y el grafico) quedo en el designer, por codigo solo armo
+    // las filas que dependen de los datos osea el resumen y las recomendaciones
     public partial class PanelInteligente : Form, Servicios.IidiomaObserver.IdiomaObserver_43BO
     {
         private BllReporte_14OR bll = new BllReporte_14OR();
@@ -101,7 +101,7 @@ namespace Proyecto_IngSoftware
             CargarDatos_14OR();
         }
 
-        // los titulos de las secciones estan en el Designer y guardan su clave de idioma en el Tag
+        // los titulos estan en el designer y tienen la clave del idioma en el Tag, aca los traduzco
         private void TraducirTitulos_14OR()
         {
             foreach (Control c in pnlGeneral.Controls)

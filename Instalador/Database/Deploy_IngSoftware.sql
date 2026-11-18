@@ -17,17 +17,15 @@
 
    Esto lo corre el instalador con sqlcmd y cuadno termina bien deja un DEPLOY_OK.
 
-   v3 (base vacia): en una instalacion nueva la base queda SOLO con la estructura,
-   los SP/triggers, los catalogos de seguridad (todos los roles, patentes, familias
-   y sus relaciones) y UN usuario: Sassaroli (DNI 46498814), rol Administrador, con
-   la contraseña de fabrica (DNI + Apellido) asi el sistema le pide cambiarla al entrar.
-   Todos los datos de negocio (peliculas, salas, funciones, ventas, clientes,
-   productos, proveedores, presupuestos, bitacora y el resto de los usuarios) se
-   pasaron a Database\Datos_Prueba.sql, que se corre aparte si se quieren datos
-   de prueba. Despues de correrlo hay que recalcular el DV desde la app
-   (al loguearse el admin aparece la pantalla de Integridad DV -> Recalcular).
-   En una ACTUALIZACION (base que ya tiene las 27 tablas) nada de esto cambia:
-   el bloque de esquema+datos se saltea entero y los datos cargados quedan como estan.
+   v3 (base vacia): si es una instalacion nueva la base queda solo con la estructura,
+   los sp y triggers, los roles patentes y familias como estaban y un solo usuario que es
+   Sassaroli (dni 46498814) como administrador. le deje la contraseña de fabrica (dni +
+   apellido) asi cuando entra el sistema le pide cambiarla
+   los datos de negocio (pelis, salas, funciones, ventas, clientes, productos, proveedores,
+   presupuestos, bitacora y los demas usuarios) los pase a Database\Datos_Prueba.sql que se
+   corre aparte si queres datos de prueba, despues hay que recalcular el dv desde la app
+   si es una actualizacion (la base ya tiene las 27 tablas) no cambia nada, ese bloque se
+   saltea entero y lo que estaba cargado queda igual
    ============================================================================ */
 
 SET ANSI_NULLS ON
@@ -636,7 +634,7 @@ END
 GO
 IF NOT EXISTS (SELECT 1 FROM [dbo].[DV_43BO])
 BEGIN
-/* v3: digitos verificadores calculados para la base vacia (catalogos + Sassaroli) */
+/* v3: los dv ya calculados pa la base vacia (catalogos + Sassaroli) */
 INSERT [dbo].[DV_43BO] ([NombreTabla_43BO], [DVH_43BO], [DVV_43BO]) VALUES (N'AsientoFuncion_14OR', N'0', N'0')
 INSERT [dbo].[DV_43BO] ([NombreTabla_43BO], [DVH_43BO], [DVV_43BO]) VALUES (N'Bitacora_43BO', N'0', N'0')
 INSERT [dbo].[DV_43BO] ([NombreTabla_43BO], [DVH_43BO], [DVV_43BO]) VALUES (N'Butaca_14OR', N'0', N'0')
@@ -803,8 +801,8 @@ END
 GO
 IF NOT EXISTS (SELECT 1 FROM [dbo].[Usuarios_43BO])
 BEGIN
-/* v3: base vacia. Un solo usuario para entrar: Sassaroli, rol Administrador, con la
-   contraseña de fabrica (DNI + Apellido). Al entrar el menu le pide cambiarla. */
+/* v3: base vacia, dejo un solo usuario pa entrar que es Sassaroli como administrador
+   con la contraseña de fabrica (dni + apellido), al entrar el menu le pide cambiarla */
 SET IDENTITY_INSERT [dbo].[Usuarios_43BO] ON 
 
 INSERT [dbo].[Usuarios_43BO] ([IdUser_43BO], [DNI_43BO], [Nombre_43BO], [Apellido_43BO], [Bloqueado_43BO], [Email_43BO], [Activo_43BO], [Hash_43BO], [Rol_43BO], [Idioma_43BO]) VALUES (1, 46498814, N'Joaquin', N'Sassaroli', 0, N'hola.,com', 1, N'4d486479143cb4342e68a9bb77d327a6621a99e96c19b88089263759383c8961', 1, N'es')

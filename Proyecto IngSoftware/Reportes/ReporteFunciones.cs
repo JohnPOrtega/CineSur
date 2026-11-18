@@ -19,7 +19,7 @@ namespace Proyecto_IngSoftware
     public partial class ReporteFunciones : Form, Servicios.IidiomaObserver.IdiomaObserver_43BO
     {
         private BllReporte_14OR bll = new BllReporte_14OR();
-        // todos: lo que vino de la base; datos: lo que queda despues de los filtros (es lo que se ve y se exporta)
+        // en todos guardo lo q vino de la base y en datos lo que queda despues de filtrar, que es lo q se ve y se exporta
         private List<ReporteFuncionOcupacion_14OR> todos_14OR = new List<ReporteFuncionOcupacion_14OR>();
         private List<ReporteFuncionOcupacion_14OR> datos = new List<ReporteFuncionOcupacion_14OR>();
         private bool cargando_14OR = false;
@@ -32,7 +32,7 @@ namespace Proyecto_IngSoftware
             CargarReporte_14OR();
         }
 
-        // trae de la base y vuelve a aplicar los filtros que esten puestos
+        // traigo de la base y le vuelvo a aplicar los filtros que haya puestos
         private void CargarReporte_14OR()
         {
             try
@@ -48,7 +48,7 @@ namespace Proyecto_IngSoftware
             }
         }
 
-        // combos de pelicula y sala con lo que hay en el reporte (sin perder lo elegido)
+        // lleno los combos de peli y sala con lo que hay, sin perder lo que ya estaba elegido
         private void LlenarCombos_14OR()
         {
             cargando_14OR = true;
@@ -72,7 +72,7 @@ namespace Proyecto_IngSoftware
             cargando_14OR = false;
         }
 
-        // filtra en memoria (fecha desde/hasta solo si estan tildadas, pelicula y sala) y refresca todo
+        // filtro en memoria, las fechas solo cuentan si estan tildadas, y despues refresco todo
         private void AplicarFiltros_14OR()
         {
             IEnumerable<ReporteFuncionOcupacion_14OR> q = todos_14OR;
@@ -113,7 +113,7 @@ namespace Proyecto_IngSoftware
                 dgvReporte.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             }
 
-            // tarjetas de arriba
+            // las tarjetas de arriba
             int totalVendidos = datos.Sum(r => r.TicketsVendidos_14OR);
             int totalButacas = datos.Sum(r => r.TicketsVendidos_14OR + r.ButacasDisponibles_14OR);
             double totalRecaudacion = datos.Sum(r => r.RecaudacionParcial_14OR);
@@ -132,7 +132,7 @@ namespace Proyecto_IngSoftware
             return (vendidos * 100.0 / butacas).ToString("0.0") + " %";
         }
 
-        // texto de los filtros activos, para el pie del pdf
+        // armo el texto de los filtros pa ponerlo en el pdf
         private string TextoFiltros_14OR()
         {
             List<string> partes = new List<string>();
@@ -145,7 +145,7 @@ namespace Proyecto_IngSoftware
             return partes.Count == 0 ? "sin filtros" : string.Join(", ", partes);
         }
 
-        // cualquier cambio en un filtro (fechas o combos) refresca la grilla y las tarjetas
+        // si cambia cualquier filtro refresco la grilla y las tarjetas
         private void Filtro_Changed(object sender, EventArgs e)
         {
             if (cargando_14OR) return;

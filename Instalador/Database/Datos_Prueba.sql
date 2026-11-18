@@ -1,16 +1,15 @@
 ﻿/* ============================================================================
    DATOS DE PRUEBA  -  CineSur (base Ing.Software)
    ----------------------------------------------------------------------------
-   El instalador v3 crea la base VACIA (estructura + roles/patentes + Sassaroli).
-   Este script le SUMA los datos de prueba (peliculas, salas, butacas, funciones,
-   asientos, clientes, promociones, ventas, proveedores, productos, presupuestos,
-   el resto de los usuarios y la bitacora) sin borrar ni pisar lo que ya haya.
-   Es lo mismo que hace el instalador v2 al Actualizar.
+   el instalador v3 deja la base vacia (estructura, roles y patentes y solo Sassaroli)
+   y con esto se le suman los datos de prueba: pelis, salas, butacas, funciones,
+   asientos, clientes, promos, ventas, proveedores, productos, presupuestos, el resto
+   de los usuarios y la bitacora. no borra ni pisa lo que ya haya, es lo mismo que
+   hace el instalador v2 cuando actualiza
 
-   Como se usa:
-     - SSMS: abrirlo, Ctrl+A y F5, o
-     - sqlcmd -S .\SQLEXPRESS -E -b -f 65001 -i "Datos_Prueba.sql"
-   Despues entrar con un Administrador: aparece Integridad DV -> Recalcular.
+   se corre en el SSMS (ctrl+A y F5) o con
+   sqlcmd -S .\SQLEXPRESS -E -b -f 65001 -i "Datos_Prueba.sql"
+   despues entras con un admin, sale la pantalla de integridad dv y tocas recalcular
    ============================================================================ */
 SET ANSI_NULLS ON
 GO
@@ -21,22 +20,20 @@ GO
 USE [Ing.Software]
 GO
 
-/* ==================== DATOS DE PRUEBA (se suman a lo que haya) ====================
-   Agrega los datos de prueba que FALTEN, fila por fila, sin tocar ni borrar lo que
-   ya este cargado. Cada fila se inserta solo si no existe una con la misma clave
-   (o, en la bitacora, el mismo usuario/fecha/modulo/evento). Se puede correr las veces
-   que sea: la segunda vez no agrega nada. En una base recien creada no hace nada
-   porque los datos ya entraron arriba.
-   Va todo en una transaccion: si algo falla no queda nada a medias.
-   Los triggers de Pelicula se apagan mientras carga (la bitacora de cambios
-   Pelicula_C_14OR ya viene en los datos) y se vuelven a prender al final.
-   Si se agrego algo, el DV queda desactualizado: al entrar un Administrador aparece
-   la pantalla de Integridad DV -> Recalcular.
-   ================================================================================ */
+/* ==================== datos de prueba (se suman a lo que ya haya) ====================
+   aca agrego los datos de prueba que falten fila por fila, sin borrar ni pisar nada de lo
+   que ya este cargado. cada fila entra solo si no hay otra con la misma clave (en la bitacora
+   miro usuario, fecha, modulo y evento) asi se puede correr las veces q sea y la segunda vez
+   no agrega nada. en una base recien creada no hace nada porque los datos ya entraron arriba
+   va todo en una transaccion pa que si algo falla no quede nada a medias.
+   los triggers de pelicula los apago mientras carga (el historial de Pelicula_C ya viene en
+   los datos) y los vuelvo a prender al final. si se agrego algo el dv queda desactualizado,
+   cuando entra un admin le sale la pantalla de integridad dv y toca recalcular
+   ===================================================================================== */
 SET NOCOUNT ON;
 BEGIN TRY
     BEGIN TRANSACTION;
-    DISABLE TRIGGER ALL ON [dbo].[Pelicula_14OR];
+    ALTER TABLE [dbo].[Pelicula_14OR] DISABLE TRIGGER ALL;
     /* -- Pelicula_14OR -- */
     SET IDENTITY_INSERT [dbo].[Pelicula_14OR] ON;
     IF NOT EXISTS (SELECT 1 FROM [dbo].[Pelicula_14OR] WHERE IdPelicula_14OR = 1) INSERT [dbo].[Pelicula_14OR] ([IdPelicula_14OR], [Titulo_14OR], [Genero_14OR], [Duracion_14OR], [Poster_14OR]) VALUES (1, N'Godzilla Minus One', N'accion,ciencia ficcion', 125, N'Poster GMO.jpg');
@@ -2205,7 +2202,7 @@ BEGIN TRY
     IF NOT EXISTS (SELECT 1 FROM [dbo].[Bitacora_43BO] WHERE DNIuser_43BO = 46498815 AND Fecha_43BO = CAST(N'2026-10-27T16:58:53.270' AS DateTime) AND Modulo_43BO = N'Usuario' AND Evento_43BO = N'Login' AND Criticidad_43BO = 1) INSERT [dbo].[Bitacora_43BO] ([DNIuser_43BO], [Fecha_43BO], [Modulo_43BO], [Evento_43BO], [Criticidad_43BO]) VALUES (46498815, CAST(N'2026-10-27T16:58:53.270' AS DateTime), N'Usuario', N'Login', 1);
     IF NOT EXISTS (SELECT 1 FROM [dbo].[Bitacora_43BO] WHERE DNIuser_43BO = 46498815 AND Fecha_43BO = CAST(N'2026-10-27T17:25:23.143' AS DateTime) AND Modulo_43BO = N'Admin' AND Evento_43BO = N'RecalcularDV' AND Criticidad_43BO = 3) INSERT [dbo].[Bitacora_43BO] ([DNIuser_43BO], [Fecha_43BO], [Modulo_43BO], [Evento_43BO], [Criticidad_43BO]) VALUES (46498815, CAST(N'2026-10-27T17:25:23.143' AS DateTime), N'Admin', N'RecalcularDV', 3);
     IF NOT EXISTS (SELECT 1 FROM [dbo].[Bitacora_43BO] WHERE DNIuser_43BO = 46498815 AND Fecha_43BO = CAST(N'2026-10-27T17:25:39.353' AS DateTime) AND Modulo_43BO = N'Usuario' AND Evento_43BO = N'Login' AND Criticidad_43BO = 1) INSERT [dbo].[Bitacora_43BO] ([DNIuser_43BO], [Fecha_43BO], [Modulo_43BO], [Evento_43BO], [Criticidad_43BO]) VALUES (46498815, CAST(N'2026-10-27T17:25:39.353' AS DateTime), N'Usuario', N'Login', 1);
-    ENABLE TRIGGER ALL ON [dbo].[Pelicula_14OR];
+    ALTER TABLE [dbo].[Pelicula_14OR] ENABLE TRIGGER ALL;
     COMMIT TRANSACTION;
 END TRY
 BEGIN CATCH

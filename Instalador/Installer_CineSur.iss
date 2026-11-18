@@ -1,14 +1,14 @@
 ; ============================================================================
 ;  INSTALADOR CineSur  -  Inno Setup 6  (ISCC.exe)   -   VERSION 3
 ;
-;  Novedades de la v3:
-;   - Instalacion nueva con base VACIA: solo estructura, roles/patentes y un usuario
-;     (Sassaroli, Administrador, con contrasenia de fabrica DNI+Apellido: el sistema
-;     le pide cambiarla al entrar).
-;   - Los datos de prueba se pasaron a Database\Datos_Prueba.sql (se copia junto al
-;     Deploy pero NO se corre solo). Despues de correrlo, el admin recalcula el DV
-;     desde la pantalla de Integridad DV que aparece al loguearse.
-;   - Actualizar sobre una base v2 no cambia: conserva todos los datos cargados.
+;  Que cambia en la v3:
+;  si es una instalacion nueva la base queda vacia, solo la estructura, los roles y
+;  patentes y un usuario (Sassaroli como admin con la contrasenia de fabrica dni+apellido,
+;  al entrar el sistema le pide cambiarla)
+;  los datos de prueba ahora estan en Database\Datos_Prueba.sql, se copia al lado del
+;  deploy pero no se corre solo. despues de correrlo el admin recalcula el dv desde la
+;  pantalla de integridad dv que le sale al loguearse
+;  si actualizas encima de una base v2 no se pierde nada de lo que tenia cargado
 ;
 ;  Novedades de la v2:
 ;   - Tres caminos: Instalar (primera vez), Actualizar (reinstalar sin perder datos,
@@ -45,7 +45,7 @@
 
 ; Script SQL de deploy (el que esta en esta misma carpeta, en Database\).
 #define DeploySql       "Database\Deploy_IngSoftware.sql"
-; Datos de prueba opcionales (v3): se copian pero no se ejecutan.
+; los datos de prueba (v3) se copian pero no se ejecutan solos
 #define DatosPruebaSql  "Database\Datos_Prueba.sql"
 
 ; Carpeta de copias de seguridad (la misma que usa la app en Admin > Backup / Restore).
